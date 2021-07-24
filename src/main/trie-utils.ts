@@ -1,19 +1,24 @@
 export interface ITrieNode<T> {
 
   /**
-   * Remaining chars that the word at this trie node contains.
-   */
-  chars: Array<number> | null;
-
-  /**
    * Char code to trie nodes map.
    */
-  children: Record<number, ITrieNode<T>> | null;
+  children: Record<number, ITrieNode<T> | undefined> | null;
+
+  /**
+   * The key that the leaf node represents or `undefined` for non-leaf nodes.
+   */
+  key: string | undefined;
 
   /**
    * The value held by this node.
    */
   value: T | undefined;
+
+  /**
+   * Remaining chars that the word at this trie node contains.
+   */
+  chars: Array<number> | null;
 
   /**
    * The total number of chars in the word described by this trie node, including {@link chars}.
@@ -33,50 +38,57 @@ export interface ITrieNode<T> {
  */
 export function createTrieNode<T>(): ITrieNode<T> {
   return {
-    chars: null,
     children: null,
+    key: undefined,
     value: undefined,
+    chars: null,
     charCount: 0,
     end: false,
   };
 }
 
+function forkTrie<T>(node: ITrieNode<T>): void {
+  const chars = node.chars;
+
+  if (!chars) {
+    return;
+  }
+
+  const leafNode = createTrieNode<T>();
+
+  node.children = {[chars[0]]: leafNode};
+
+  if (chars.length > 1) {
+    leafNode.chars = chars.slice(1);
+  }
+
+  leafNode.key = node.key;
+  leafNode.value = node.value;
+  leafNode.charCount = node.charCount;
+  leafNode.end = true;
+
+  node.key = undefined;
+  node.value = undefined;
+  node.chars = null;
+  node.charCount -= chars.length;
+  node.end = false;
+}
+
 /**
  * Sets a new key-value pair to the trie node.
  */
-export function setToTrieNode<T>(node: ITrieNode<T>, key: string, value: T): void {
+export function setTrie<T>(node: ITrieNode<T>, key: string, value: T): void {
 
   let i = 0;
   while (i < key.length) {
 
-    const chars = node.chars;
+    forkTrie(node);
 
-    if (chars) {
-      const leafNode = createTrieNode<T>();
-      node.children = {[chars[0]]: leafNode};
-
-      if (chars.length > 1) {
-        leafNode.chars = chars.slice(1);
-      }
-
-      leafNode.charCount = node.charCount;
-      leafNode.value = node.value;
-      leafNode.end = true;
-
-      node.charCount -= chars.length;
-      node.chars = null;
-      node.value = undefined;
-      node.end = false;
-    }
-
-    let children = node.children;
-
-    if (!node.end && children === null) {
+    if (!node.end && !node.children) {
       break;
     }
 
-    children = node.children ||= {};
-
+    const children = node.children ||= {};
     const charCode = key.charCodeAt(i);
     const childNode = children[charCode];
 
@@ -89,32 +101,38 @@ export function setToTrieNode<T>(node: ITrieNode<T>, key: string, value: T): voi
 
     const leafNode = createTrieNode<T>();
     children[charCode] = leafNode;
+    leafNode.key = node.key;
     leafNode.charCount = node.charCount + 1;
     node = leafNode;
     break;
   }
 
+  forkTrie(node);
+
   if (i !== key.length) {
     node.chars = [];
+
     while (i < key.length) {
       node.chars.push(key.charCodeAt(i));
       ++i;
     }
   }
-  node.charCount = i;
+
+  node.key = key;
   node.value = value;
+  node.charCount = i;
   node.end = true;
 }
 
 /**
- * Searches for a leaf trie node that describes the longest substring from `str` starting from `offset`.
+ * Searches for a leaf trie node that describes the longest substring from `input` starting from `offset`.
  *
  * @param node The trie with searched keys.
  * @param input The string to search for the key from the `trie`.
  * @param offset The offset in `str` to start reading substring from.
  * @returns A node or `undefined` if there's no matching key in the `trie`.
  */
-export function searchTrieNode<T>(node: ITrieNode<T>, input: string, offset: number): ITrieNode<T> | undefined {
+export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number): ITrieNode<T> | undefined {
 
   const charCount = input.length;
 
@@ -122,8 +140,9 @@ export function searchTrieNode<T>(node: ITrieNode<T>, input: string, offset: num
 
   forChars: for (let i = offset; i < charCount; ++i) {
 
-    const {chars, children} = node;
-    if (chars !== null) {
+    const chars = node.chars;
+
+    if (chars) {
       const length = chars.length;
 
       if (i + length > charCount) {
@@ -140,16 +159,20 @@ export function searchTrieNode<T>(node: ITrieNode<T>, input: string, offset: num
     if (node.end) {
       lastNode = node;
     }
-    if (children === null) {
+
+    const children = node.children;
+
+    if (!children) {
       break;
     }
 
-    node = children[input.charCodeAt(i)];
+    const childNode = children[input.charCodeAt(i)];
 
-    if (node) {
-      if (node.end && node.chars === null) {
-        lastNode = node;
+    if (childNode) {
+      if (childNode.end && !childNode.chars) {
+        lastNode = childNode;
       }
+      node = childNode;
       continue;
     }
     break;
