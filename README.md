@@ -1,4 +1,4 @@
-# trie
+# trie [![build](https://github.com/smikhalevski/trie/actions/workflows/master.yml/badge.svg?branch=master&event=push)](https://github.com/smikhalevski/trie/actions/workflows/master.yml)
 
 The compact trie data structure.
 
