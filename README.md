@@ -3,7 +3,7 @@
 The compact trie data structure.
 
 ```shell
-npm install --save-dev @smikhalevski/trie
+npm install --save-prod @smikhalevski/trie
 ```
 
 ## Usage
