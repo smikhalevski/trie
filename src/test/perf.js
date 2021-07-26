@@ -1,18 +1,8 @@
-const readline = require('readline');
-const bench = require('nodemark');
-const chalk = require('chalk');
+const {test} = require('@smikhalevski/perf-test');
 const dictionary = require('./dictionary.json');
 const {TrieMap, setTrie, createTrieNode, searchTrie} = require('../../lib/index-cjs');
 
 const dictionaryEntries = dictionary.map((word) => [word, true]);
-
-function test(label, cb, timeout) {
-  global.gc();
-  process.stdout.write(label);
-  readline.cursorTo(process.stdout, 0, null);
-  const result = bench(cb, null, timeout);
-  console.log(label + result);
-}
 
 const trieNode = createTrieNode();
 
@@ -21,8 +11,22 @@ dictionary.forEach((word) => setTrie(trieNode, word, true));
 const trieMap = new TrieMap(dictionaryEntries);
 const nativeMap = new Map(dictionaryEntries);
 
-console.log(chalk.bold.inverse(' Search '));
+test('searchTrie     ', () => searchTrie(trieNode, 'tag', 0));
+test('TrieMap#search ', () => trieMap.search('tag'));
+test('Map#get        ', () => nativeMap.get('tag'));
 
-test('searchTrie     ', () => searchTrie(trieNode, 'tag', 0), 5000);
-test('TrieMap#search ', () => trieMap.search('tag'), 5000);
-test('Map#get        ', () => nativeMap.get('tag'), 5000);
+
+const words = [];
+dictionary.forEach((word) => words[word.length] = word);
+
+console.log('\nTrieMap#search');
+for (const word of words) {
+  test(word.length + '\t', () => trieMap.search(word));
+  global.gc();
+}
+
+console.log('\nMap#get');
+for (const word of words) {
+  test(word.length + '\t', () => nativeMap.get(word));
+  global.gc();
+}
