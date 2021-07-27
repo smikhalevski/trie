@@ -6,7 +6,9 @@ The compact trie data structure.
 npm install --save-prod @smikhalevski/trie
 ```
 
-## Usage
+# Usage
+
+⚠️ [API documentation is available here.](https://smikhalevski.github.io/trie/)
 
 ```ts
 import {TrieMap} from '@smikhalevski/trie';
@@ -21,10 +23,10 @@ trieMap.search('aaafoobbb', 3);
 // → {key: 'foo', value: 123, …}
 ```
 
-## Performance
+# Performance
 
 Clone this repo and use `npm ci && npm run perf` to run the performance testsuite.
 
-### Search performance
+## Search performance
 
 ![Search performance chart](./charts/search.svg)
