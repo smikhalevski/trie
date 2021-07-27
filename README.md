@@ -29,4 +29,4 @@ Clone this repo and use `npm ci && npm run perf` to run the performance testsuit
 
 ## Search performance
 
-![Search performance chart](./charts/search.svg)
+![Search performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-search.svg)
