@@ -9,7 +9,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "set -e; tsc; npm run rollup; npm run terser",
+    "build": "tsc && npm run rollup && npm run terser",
     "rollup": "rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
     "terser": "terser --compress --mangle toplevel --output ./lib/index-cjs.js -- ./lib/index-cjs.js",
     "clean": "rm -rf ./lib",
