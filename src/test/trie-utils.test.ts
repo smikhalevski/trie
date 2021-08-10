@@ -328,4 +328,17 @@ describe('searchTrie', () => {
 
     expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[C]);
   });
+
+  test('uses charCodeAt callback', () => {
+    const node = createTrieNode();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
+
+    const charCodeAtCallback = jest.fn((input, offset) => input.toLowerCase().charCodeAt(offset));
+
+    const leafNode = searchTrie(node, 'ABCDE', 0, charCodeAtCallback);
+
+    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[C]);
+    expect(charCodeAtCallback).toHaveBeenCalledTimes(4);
+  });
 });

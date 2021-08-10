@@ -1,5 +1,5 @@
-/src/main/gen
 /lib/
+/docs/
 *.tgz
 
 # IntelliJ Idea file-based project settings
