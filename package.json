@@ -1,6 +1,6 @@
 {
   "name": "@smikhalevski/trie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The compact trie data structure.",
   "main": "./lib/index-cjs.js",
   "module": "./lib/index.js",
