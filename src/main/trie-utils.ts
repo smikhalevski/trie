@@ -130,9 +130,10 @@ export function setTrie<T>(node: ITrieNode<T>, key: string, value: T): void {
  * @param node The trie with searched keys.
  * @param input The string to search for the key from the `trie`.
  * @param offset The offset in `str` to start reading substring from.
+ * @param charCodeAt The callback that returns the char code at given position.
  * @returns A node or `undefined` if there's no matching key in the `trie`.
  */
-export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number): ITrieNode<T> | undefined {
+export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number, charCodeAt?: (input: string, offset: number) => number): ITrieNode<T> | undefined {
 
   const charCount = input.length;
 
@@ -149,7 +150,7 @@ export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number)
         break;
       }
       for (let j = 0; j < length; ++i, ++j) {
-        if (input.charCodeAt(i) !== chars[j]) {
+        if ((charCodeAt != null ? charCodeAt(input, i) : input.charCodeAt(i)) !== chars[j]) {
           break forChars;
         }
       }
@@ -166,7 +167,7 @@ export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number)
       break;
     }
 
-    const childNode = children[input.charCodeAt(i)];
+    const childNode = children[charCodeAt != null ? charCodeAt(input, i) : input.charCodeAt(i)];
 
     if (childNode) {
       if (childNode.end && !childNode.chars) {

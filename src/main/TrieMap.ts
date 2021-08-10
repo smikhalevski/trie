@@ -24,7 +24,7 @@ export class TrieMap<T> {
     return this.search(key, 0)?.value;
   }
 
-  search(input: string, offset = 0): ITrieNode<T> | undefined {
-    return searchTrie(this.rootNode, input, offset);
+  search(input: string, offset = 0, charCodeAt?: (input: string, offset: number) => number): ITrieNode<T> | undefined {
+    return searchTrie(this.rootNode, input, offset, charCodeAt);
   }
 }
