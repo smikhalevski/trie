@@ -1,14 +1,14 @@
-export interface ITrieNode<T> {
+export interface TrieNode<T> {
 
   /**
-   * Char code to trie nodes map.
+   * A dictionary from a char code to a child trie node.
    */
-  children: Record<number, ITrieNode<T> | undefined> | null;
+  children: { [charCode: number]: TrieNode<T> | undefined } | null;
 
   /**
-   * The key that the leaf node represents or `undefined` for non-leaf nodes.
+   * The key that the leaf node represents or `null` for non-leaf nodes.
    */
-  key: string | undefined;
+  key: string | null;
 
   /**
    * The value held by this node.
@@ -18,17 +18,17 @@ export interface ITrieNode<T> {
   /**
    * Remaining chars that the word at this trie node contains.
    */
-  chars: Array<number> | null;
+  finalCharCodes: Array<number> | null;
 
   /**
-   * The total number of chars in the word described by this trie node, including {@link chars}.
+   * The total number of chars in the word described by this trie node, including {@link finalCharCodes}.
    */
-  charCount: number;
+  length: number;
 
   /**
    * `true` if this node is a leaf node and {@link value} contains an actual value that was set.
    */
-  end: boolean;
+  final: boolean;
 }
 
 /**
@@ -36,55 +36,57 @@ export interface ITrieNode<T> {
  *
  * @see {@link https://en.wikipedia.org/wiki/Trie Trie on Wikipedia}
  */
-export function createTrieNode<T>(): ITrieNode<T> {
+export function createTrieNode<T>(): TrieNode<T> {
   return {
     children: null,
-    key: undefined,
+    key: null,
     value: undefined,
-    chars: null,
-    charCount: 0,
-    end: false,
+    finalCharCodes: null,
+    length: 0,
+    final: false,
   };
 }
 
-function forkTrie<T>(node: ITrieNode<T>): void {
-  const chars = node.chars;
+function forkTrieNode<T>(node: TrieNode<T>): void {
+  const finalCharCodes = node.finalCharCodes;
 
-  if (!chars) {
+  if (finalCharCodes === null) {
     return;
   }
 
   const leafNode = createTrieNode<T>();
 
-  node.children = {[chars[0]]: leafNode};
+  node.children = {[finalCharCodes[0]]: leafNode};
 
-  if (chars.length > 1) {
-    leafNode.chars = chars.slice(1);
+  if (finalCharCodes.length > 1) {
+    leafNode.finalCharCodes = finalCharCodes.slice(1);
   }
 
   leafNode.key = node.key;
   leafNode.value = node.value;
-  leafNode.charCount = node.charCount;
-  leafNode.end = true;
+  leafNode.length = node.length;
+  leafNode.final = true;
 
-  node.key = undefined;
+  node.key = null;
   node.value = undefined;
-  node.chars = null;
-  node.charCount -= chars.length;
-  node.end = false;
+  node.finalCharCodes = null;
+  node.length -= finalCharCodes.length;
+  node.final = false;
 }
 
 /**
  * Sets a new key-value pair to the trie node.
  */
-export function setTrie<T>(node: ITrieNode<T>, key: string, value: T): void {
+export function setTrieNode<T>(node: TrieNode<T>, key: string, value: T): void {
+
+  const keyLength = key.length;
 
   let i = 0;
-  while (i < key.length) {
+  while (i < keyLength) {
 
-    forkTrie(node);
+    forkTrieNode(node);
 
-    if (!node.end && !node.children) {
+    if (!node.final && node.children === null) {
       break;
     }
 
@@ -102,26 +104,26 @@ export function setTrie<T>(node: ITrieNode<T>, key: string, value: T): void {
     const leafNode = createTrieNode<T>();
     children[charCode] = leafNode;
     leafNode.key = node.key;
-    leafNode.charCount = node.charCount + 1;
+    leafNode.length = node.length + 1;
     node = leafNode;
     break;
   }
 
-  forkTrie(node);
+  forkTrieNode(node);
 
-  if (i !== key.length) {
-    node.chars = [];
+  if (i !== keyLength) {
+    node.finalCharCodes = [];
 
-    while (i < key.length) {
-      node.chars.push(key.charCodeAt(i));
+    while (i < keyLength) {
+      node.finalCharCodes.push(key.charCodeAt(i));
       ++i;
     }
   }
 
   node.key = key;
   node.value = value;
-  node.charCount = i;
-  node.end = true;
+  node.length = i;
+  node.final = true;
 }
 
 /**
@@ -130,53 +132,55 @@ export function setTrie<T>(node: ITrieNode<T>, key: string, value: T): void {
  * @param node The trie with searched keys.
  * @param input The string to search for the key from the `trie`.
  * @param offset The offset in `str` to start reading substring from.
- * @param charCodeAt The callback that returns the char code at given position.
- * @returns A node or `undefined` if there's no matching key in the `trie`.
+ * @returns A leaf node in the trie or `undefined` if there's no matching key in the `trie`.
  */
-export function searchTrie<T>(node: ITrieNode<T>, input: string, offset: number, charCodeAt?: (input: string, offset: number) => number): ITrieNode<T> | undefined {
+export function searchTrieNode<T>(node: TrieNode<T>, input: string, offset: number): TrieNode<T> | undefined {
 
-  const charCount = input.length;
+  const inputLength = input.length;
 
-  let lastNode: ITrieNode<T> | undefined;
+  if (inputLength === 0 && node.final && node.key!.length === 0) {
+    return node;
+  }
 
-  forChars: for (let i = offset; i < charCount; ++i) {
+  let lastNode: TrieNode<T> | undefined;
 
-    const chars = node.chars;
+  scan: for (let i = offset; i < inputLength; ++i) {
 
-    if (chars) {
-      const length = chars.length;
+    const finalCharCodes = node.finalCharCodes;
 
-      if (i + length > charCount) {
+    if (finalCharCodes !== null) {
+      const charsLength = finalCharCodes.length;
+
+      if (i + charsLength > inputLength) {
         break;
       }
-      for (let j = 0; j < length; ++i, ++j) {
-        if ((charCodeAt != null ? charCodeAt(input, i) : input.charCodeAt(i)) !== chars[j]) {
-          break forChars;
+      for (let j = 0; j < charsLength; ++i, ++j) {
+        if (input.charCodeAt(i) !== finalCharCodes[j]) {
+          break scan;
         }
       }
       lastNode = node;
       break;
     }
-    if (node.end) {
+
+    if (node.final) {
       lastNode = node;
     }
 
     const children = node.children;
-
-    if (!children) {
+    if (children === null) {
       break;
     }
 
-    const childNode = children[charCodeAt != null ? charCodeAt(input, i) : input.charCodeAt(i)];
-
-    if (childNode) {
-      if (childNode.end && !childNode.chars) {
-        lastNode = childNode;
-      }
-      node = childNode;
-      continue;
+    const childNode = children[input.charCodeAt(i)];
+    if (childNode === undefined) {
+      break;
     }
-    break;
+
+    if (childNode.final && childNode.finalCharCodes === null) {
+      lastNode = childNode;
+    }
+    node = childNode;
   }
 
   return lastNode;

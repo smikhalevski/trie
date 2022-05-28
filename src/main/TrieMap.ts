@@ -1,30 +1,38 @@
-import {createTrieNode, ITrieNode, searchTrie, setTrie} from './trie-utils';
+import {createTrieNode, TrieNode, searchTrieNode, setTrieNode} from './trie-utils';
+
+export namespace TrieMap {
+
+  export type Entries<T> = [string, T][] | ArrayLike<[string, T]> | Iterable<[string, T]>;
+}
 
 export class TrieMap<T> {
 
-  private rootNode = createTrieNode<T>();
+  private _trie = createTrieNode<T>();
 
-  constructor(entries?: Array<[string, T]> | null) {
+  constructor(entries?: TrieMap.Entries<T> | null) {
     if (entries != null) {
       this.setAll(entries);
     }
   }
 
-  set(key: string, value: T): void {
-    setTrie(this.rootNode, key, value);
+  set(key: string, value: T): this {
+    setTrieNode(this._trie, key, value);
+    return this;
   }
 
-  setAll(entries: Array<[string, T]>): void {
-    for (const [key, value] of entries) {
-      setTrie(this.rootNode, key, value);
+  setAll(entries: TrieMap.Entries<T>): this {
+    for (const [key, value] of Array.from(entries)) {
+      setTrieNode(this._trie, key, value);
     }
+    return this;
   }
 
   get(key: string): T | undefined {
-    return this.search(key, 0)?.value;
+    const trie = searchTrieNode(this._trie, key, 0);
+    return trie !== undefined && trie.length === key.length ? trie.value : undefined;
   }
 
-  search(input: string, offset = 0, charCodeAt?: (input: string, offset: number) => number): ITrieNode<T> | undefined {
-    return searchTrie(this.rootNode, input, offset, charCodeAt);
+  search(input: string, offset?: number): TrieNode<T> | undefined {
+    return searchTrieNode(this._trie, input, offset || 0);
   }
 }

@@ -3,13 +3,14 @@
     "declaration": true,
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "preserveConstEnums": true,
-    "resolveJsonModule": true,
     "strict": true,
     "target": "ES5",
     "module": "ES6",
     "rootDir": "./src/main",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "lib": [
+      "ES7"
+    ]
   },
   "include": [
     "./src/main/**/*"
