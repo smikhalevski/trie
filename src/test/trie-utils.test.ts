@@ -1,4 +1,4 @@
-import {createTrieNode, TrieNode, searchTrieNode, setTrieNode} from '../main';
+import {createTrie, TrieNode, searchTrie, setTrie, setAllTrie, getTrie} from '../main';
 
 const A = 97;
 const B = 98;
@@ -7,69 +7,69 @@ const D = 100;
 const E = 101;
 const F = 102;
 
-describe('setTrieNode', () => {
+describe('setTrie', () => {
 
-  test('adds an empty string to a trie', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, '', 123);
+  test('sets an empty string to a trie', () => {
+    const node = createTrie();
+    setTrie(node, '', 123);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      finalCharCodes: null,
-      key: '',
+    expect(node).toEqual(<TrieNode<number>>{
+      leafCharCodes: null,
+      word: '',
       value: 123,
       length: 0,
-      final: true,
+      isLeaf: true,
       children: null,
     });
   });
 
-  test('adds value to an empty trie', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, 'abc', 123);
+  test('sets the value to an empty trie', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      finalCharCodes: [A, B, C],
-      key: 'abc',
+    expect(node).toEqual(<TrieNode<number>>{
+      leafCharCodes: [A, B, C],
+      word: 'abc',
       value: 123,
       length: 3,
-      final: true,
+      isLeaf: true,
       children: null,
     });
   });
 
-  test('adds value to an non-empty trie', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, 'abc', 123);
-    setTrieNode(trie, 'ade', 456);
+  test('sets the value to an non-empty trie', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'ade', 456);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      key: null,
+    expect(node).toEqual(<TrieNode<number>>{
+      word: null,
       value: undefined,
-      finalCharCodes: null,
+      leafCharCodes: null,
       length: 0,
-      final: false,
+      isLeaf: false,
       children: {
         [A]: {
-          key: null,
+          word: null,
           value: undefined,
-          finalCharCodes: null,
+          leafCharCodes: null,
           length: 1,
-          final: false,
+          isLeaf: false,
           children: {
             [B]: {
-              finalCharCodes: [C],
-              key: 'abc',
+              leafCharCodes: [C],
+              word: 'abc',
               value: 123,
               length: 3,
-              final: true,
+              isLeaf: true,
               children: null,
             },
             [D]: {
-              finalCharCodes: [E],
-              key: 'ade',
+              leafCharCodes: [E],
+              word: 'ade',
               value: 456,
               length: 3,
-              final: true,
+              isLeaf: true,
               children: null,
             },
           },
@@ -78,57 +78,57 @@ describe('setTrieNode', () => {
     });
   });
 
-  test('adds value to a deep trie', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, 'abc', 123);
-    setTrieNode(trie, 'ade', 456);
-    setTrieNode(trie, 'abf', 789);
+  test('sets the value to a deep trie node', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'ade', 456);
+    setTrie(node, 'abf', 789);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      finalCharCodes: null,
-      key: null,
+    expect(node).toEqual(<TrieNode<number>>{
+      leafCharCodes: null,
+      word: null,
       value: undefined,
       length: 0,
-      final: false,
+      isLeaf: false,
       children: {
         [A]: {
-          finalCharCodes: null,
-          key: null,
+          leafCharCodes: null,
+          word: null,
           value: undefined,
           length: 1,
-          final: false,
+          isLeaf: false,
           children: {
             [B]: {
-              finalCharCodes: null,
-              key: null,
+              leafCharCodes: null,
+              word: null,
               value: undefined,
               length: 2,
-              final: false,
+              isLeaf: false,
               children: {
                 [C]: {
-                  finalCharCodes: null,
-                  key: 'abc',
+                  leafCharCodes: null,
+                  word: 'abc',
                   value: 123,
                   length: 3,
-                  final: true,
+                  isLeaf: true,
                   children: null,
                 },
                 [F]: {
-                  finalCharCodes: null,
-                  key: 'abf',
+                  leafCharCodes: null,
+                  word: 'abf',
                   value: 789,
                   length: 3,
-                  final: true,
+                  isLeaf: true,
                   children: null,
                 },
               },
             },
             [D]: {
-              finalCharCodes: [E],
-              key: 'ade',
+              leafCharCodes: [E],
+              word: 'ade',
               value: 456,
               length: 3,
-              final: true,
+              isLeaf: true,
               children: null,
             },
           },
@@ -138,44 +138,44 @@ describe('setTrieNode', () => {
   });
 
   test('preserves overlapping keys', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, 'abc', 123);
-    setTrieNode(trie, 'abcdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      key: null,
+    expect(node).toEqual(<TrieNode<number>>{
+      word: null,
       value: undefined,
-      finalCharCodes: null,
+      leafCharCodes: null,
       length: 0,
-      final: false,
+      isLeaf: false,
       children: {
         [A]: {
-          key: null,
+          word: null,
           value: undefined,
-          finalCharCodes: null,
+          leafCharCodes: null,
           length: 1,
-          final: false,
+          isLeaf: false,
           children: {
             [B]: {
-              key: null,
+              word: null,
               value: undefined,
-              finalCharCodes: null,
+              leafCharCodes: null,
               length: 2,
-              final: false,
+              isLeaf: false,
               children: {
                 [C]: {
-                  key: 'abc',
+                  word: 'abc',
                   value: 123,
-                  finalCharCodes: null,
+                  leafCharCodes: null,
                   length: 3,
-                  final: true,
+                  isLeaf: true,
                   children: {
                     [D]: {
-                      key: 'abcdef',
+                      word: 'abcdef',
                       value: 456,
-                      finalCharCodes: [E, F],
+                      leafCharCodes: [E, F],
                       length: 6,
-                      final: true,
+                      isLeaf: true,
                       children: null,
                     },
                   },
@@ -188,61 +188,61 @@ describe('setTrieNode', () => {
     });
   });
 
-  test('adds shorter key after longer key', () => {
-    const trie = createTrieNode();
-    setTrieNode(trie, 'abc', 123);
-    setTrieNode(trie, 'abcdef', 456);
-    setTrieNode(trie, 'abcde', 789);
+  test('sets the shorter key after longer key', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
+    setTrie(node, 'abcde', 789);
 
-    expect(trie).toEqual(<TrieNode<number>>{
-      key: null,
+    expect(node).toEqual(<TrieNode<number>>{
+      word: null,
       value: undefined,
       length: 0,
-      finalCharCodes: null,
-      final: false,
+      leafCharCodes: null,
+      isLeaf: false,
       children: {
         [A]: {
-          key: null,
+          word: null,
           value: undefined,
           length: 1,
-          finalCharCodes: null,
-          final: false,
+          leafCharCodes: null,
+          isLeaf: false,
           children: {
             [B]: {
-              key: null,
+              word: null,
               value: undefined,
               length: 2,
-              finalCharCodes: null,
-              final: false,
+              leafCharCodes: null,
+              isLeaf: false,
               children: {
                 [C]: {
-                  key: 'abc',
+                  word: 'abc',
                   value: 123,
                   length: 3,
-                  finalCharCodes: null,
-                  final: true,
+                  leafCharCodes: null,
+                  isLeaf: true,
                   children: {
                     [D]: {
-                      key: null,
+                      word: null,
                       value: undefined,
                       length: 4,
-                      finalCharCodes: null,
-                      final: false,
+                      leafCharCodes: null,
+                      isLeaf: false,
                       children: {
                         [E]: {
-                          key: 'abcde',
+                          word: 'abcde',
                           value: 789,
                           length: 5,
-                          finalCharCodes: null,
-                          final: true,
+                          leafCharCodes: null,
+                          isLeaf: true,
                           children: {
                             [F]: {
-                              key: 'abcdef',
+                              word: 'abcdef',
                               value: 456,
                               length: 6,
-                              finalCharCodes: null,
+                              leafCharCodes: null,
                               children: null,
-                              final: true,
+                              isLeaf: true,
                             },
                           },
                         },
@@ -260,72 +260,114 @@ describe('setTrieNode', () => {
 
 });
 
-describe('searchTrieNode', () => {
+describe('setAllTrie', () => {
+
+  test('', () => {
+    const node = createTrie();
+    setAllTrie(node, [['abc', 123], ['abd', 456]]);
+
+    const leafNode = searchTrie(node, 'abd', 0);
+
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![D]);
+  });
+});
+
+describe('searchTrie', () => {
+
+  test('finds a node with zero-length key', () => {
+    const node = createTrie();
+    setTrie(node, '', 123);
+
+    expect(searchTrie(node, '', 0)).toBe(node);
+  });
 
   test('finds a node with one entry', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
 
-    expect(searchTrieNode(node, 'abc', 0)).toBe(node);
+    expect(searchTrie(node, 'abc', 0)).toBe(node);
   });
 
   test('finds a node with two leaf entries', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abd', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abd', 456);
 
-    const leafNode = searchTrieNode(node, 'abd', 0);
+    const leafNode = searchTrie(node, 'abd', 0);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[D]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![D]);
   });
 
   test('finds a node with deep char entries', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abdef', 456);
 
-    const leafNode = searchTrieNode(node, 'abdef', 0);
+    const leafNode = searchTrie(node, 'abdef', 0);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[D]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![D]);
   });
 
   test('finds a node at offset', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abdef', 456);
 
-    const leafNode = searchTrieNode(node, 'qqqabdef', 3);
+    const leafNode = searchTrie(node, 'qqqabdef', 3);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[D]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![D]);
   });
 
   test('finds the node with the longest key', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abcdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
 
-    const leafNode = searchTrieNode(node, 'abcdef', 0);
+    const leafNode = searchTrie(node, 'abcdef', 0);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[C]?.children?.[D]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![C]!.children![D]);
   });
 
   test('finds the node with the shortest matched key', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abcdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
 
-    const leafNode = searchTrieNode(node, 'abcdeZZZ', 0);
+    const leafNode = searchTrie(node, 'abcdeZZZ', 0);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[C]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![C]);
   });
 
   test('finds the node with the shortest key on string end', () => {
-    const node = createTrieNode();
-    setTrieNode(node, 'abc', 123);
-    setTrieNode(node, 'abcdef', 456);
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abcdef', 456);
 
-    const leafNode = searchTrieNode(node, 'abcde', 0);
+    const leafNode = searchTrie(node, 'abcde', 0);
 
-    expect(leafNode).toBe(node.children?.[A]?.children?.[B]?.children?.[C]);
+    expect(leafNode).toBe(node.children![A]!.children![B]!.children![C]);
+  });
+
+  test('returns undefined if no node was found', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abdef', 456);
+
+    const leafNode = searchTrie(node, 'abe', 0);
+
+    expect(leafNode).toBeUndefined();
+  });
+});
+
+describe('getTrie', () => {
+
+  test('returns the node that matches the word exactly', () => {
+    const node = createTrie();
+    setTrie(node, 'abc', 123);
+    setTrie(node, 'abdef', 456);
+
+    expect(getTrie(node, 'abc')).toBe(node.children![A]!.children![B]!.children![C]);
+    expect(getTrie(node, 'abdef')).toBe(node.children![A]!.children![B]!.children![D]);
+    expect(getTrie(node, 'abd')).toBeUndefined();
   });
 });

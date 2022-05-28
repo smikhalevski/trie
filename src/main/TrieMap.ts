@@ -1,4 +1,4 @@
-import {createTrieNode, TrieNode, searchTrieNode, setTrieNode} from './trie-utils';
+import {createTrie, TrieNode, searchTrie, setTrie} from './trie-utils';
 
 export namespace TrieMap {
 
@@ -7,7 +7,7 @@ export namespace TrieMap {
 
 export class TrieMap<T> {
 
-  private _trie = createTrieNode<T>();
+  private _trie = createTrie<T>();
 
   constructor(entries?: TrieMap.Entries<T> | null) {
     if (entries != null) {
@@ -16,23 +16,23 @@ export class TrieMap<T> {
   }
 
   set(key: string, value: T): this {
-    setTrieNode(this._trie, key, value);
+    setTrie(this._trie, key, value);
     return this;
   }
 
   setAll(entries: TrieMap.Entries<T>): this {
     for (const [key, value] of Array.from(entries)) {
-      setTrieNode(this._trie, key, value);
+      setTrie(this._trie, key, value);
     }
     return this;
   }
 
   get(key: string): T | undefined {
-    const trie = searchTrieNode(this._trie, key, 0);
+    const trie = searchTrie(this._trie, key, 0);
     return trie !== undefined && trie.length === key.length ? trie.value : undefined;
   }
 
   search(input: string, offset?: number): TrieNode<T> | undefined {
-    return searchTrieNode(this._trie, input, offset || 0);
+    return searchTrie(this._trie, input, offset || 0);
   }
 }
