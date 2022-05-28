@@ -2,66 +2,73 @@ import {Trie} from './trie-types';
 import {createTrie} from './createTrie';
 
 /**
- * Sets a new word-value pair to the trie node.
+ * Sets a new key-value pair to the trie node.
  *
- * @param node The trie root node.
- * @param word The word for which the value must be set.
- * @param value The value to associate with the word.
+ * @param trie The trie to update.
+ * @param key The key of to add to the {@link Trie `Trie`} object.
+ * @param value The value to associate with the key.
  */
-export function setTrie<T>(node: Trie<T>, word: string, value: T): void {
+export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
-  const wordLength = word.length;
+  const keyLength = key.length;
 
   let i = 0;
-  while (i < wordLength) {
 
-    forkTrie(node);
+  key: while (i < keyLength) {
 
-    if (!node.isLeaf && node.children === null) {
+    forkTrie(trie);
+
+    if (!trie.isLeaf && trie.next === null) {
       break;
     }
 
-    const children = node.children ||= [];
-    const childrenCharCodes = node.childrenCharCodes ||= [];
+    const next = trie.next ||= [];
+    const nextCharCodes = trie.nextCharCodes ||= [];
 
-    const charCode = word.charCodeAt(i++);
+    const charCode = key.charCodeAt(i++);
+    const j = nextCharCodes.indexOf(charCode);
 
-    const childIndex = childrenCharCodes.indexOf(charCode);
-
-    const childNode = children[childIndex];
-
-    if (childNode !== undefined) {
-      node = childNode;
+    if (j !== -1) {
+      trie = next[j];
       continue;
     }
 
     const leafNode = createTrie<T>();
-    leafNode.prev = node;
-    leafNode.word = node.word;
-    leafNode.length = node.length + 1;
+    leafNode.prev = trie;
+    leafNode.key = trie.key;
+    leafNode.length = trie.length + 1;
 
-    children.push(leafNode);
-    childrenCharCodes.push(charCode);
+    trie = leafNode;
 
-    node = leafNode;
+    // Keep next* sorted in ascending order
+    for (let k = 0; k < nextCharCodes.length; ++k) {
+      if (nextCharCodes[k] > charCode) {
+        next.splice(k, 0, leafNode);
+        nextCharCodes.splice(k, 0, charCode);
+        break key;
+      }
+    }
+
+    next.push(leafNode);
+    nextCharCodes.push(charCode);
     break;
   }
 
-  forkTrie(node);
+  forkTrie(trie);
 
-  if (i !== wordLength) {
-    node.leafCharCodes = [];
+  if (i !== keyLength) {
+    trie.leafCharCodes = [];
 
-    while (i < wordLength) {
-      node.leafCharCodes.push(word.charCodeAt(i));
+    while (i < keyLength) {
+      trie.leafCharCodes.push(key.charCodeAt(i));
       ++i;
     }
   }
 
-  node.word = word;
-  node.value = value;
-  node.length = i;
-  node.isLeaf = true;
+  trie.key = key;
+  trie.value = value;
+  trie.length = i;
+  trie.isLeaf = true;
 }
 
 function forkTrie<T>(trie: Trie<T>): void {
@@ -74,20 +81,20 @@ function forkTrie<T>(trie: Trie<T>): void {
   const leafTrie = createTrie<T>();
   const charCode = leafCharCodes[0];
 
-  trie.children = [leafTrie];
-  trie.childrenCharCodes = [charCode];
+  trie.next = [leafTrie];
+  trie.nextCharCodes = [charCode];
 
   if (leafCharCodes.length > 1) {
     leafTrie.leafCharCodes = leafCharCodes.slice(1);
   }
 
   leafTrie.prev = trie;
-  leafTrie.word = trie.word;
+  leafTrie.key = trie.key;
   leafTrie.value = trie.value;
   leafTrie.length = trie.length;
   leafTrie.isLeaf = true;
 
-  trie.word = null;
+  trie.key = null;
   trie.value = undefined;
   trie.length -= leafCharCodes.length;
   trie.isLeaf = false;

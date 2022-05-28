@@ -3,41 +3,44 @@
  */
 export interface Trie<T> {
 
+  /**
+   * The previous trie or `null` if this trie is a root.
+   */
   prev: Trie<T> | null;
 
   /**
-   * A dictionary from a char code to a child trie node.
+   * A list of sub-tries that describe consequent substrings.
    */
-  children: Trie<T>[] | null;
+  next: Trie<T>[] | null;
 
   /**
-   * The list of char codes that present in {@link children}.
+   * The char codes _in ascending order_ parallel to {@link next `next`}.
    */
-  childrenCharCodes: number[] | null;
+  nextCharCodes: number[] | null;
 
   /**
-   * The word that the leaf node represents or `null` for non-leaf nodes.
+   * The key that the leaf trie represents or `null` for a non-leaf trie.
    */
-  word: string | null;
+  key: string | null;
 
   /**
-   * The value held by this node.
+   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf `isLeaf`} to distinguish between
+   * leaf and non-leaf tries.
    */
   value: T | undefined;
 
   /**
-   * The total number of chars in the word prefix described by this trie node. Length includes {@link leafCharCodes} if
-   * the trie node is a leaf node.
+   * The length of the prefix described by the trie. Includes {@link leafCharCodes `leafCharCodes`} for leaf tries.
    */
   length: number;
 
   /**
-   * `true` if this node is a leaf node and {@link value} contains an actual value that was set.
+   * `true` if the trie is a leaf and has a {@link value `value`}.
    */
   isLeaf: boolean;
 
   /**
-   * Remaining chars that the word at this trie node contains.
+   * Remaining chars that the key at this trie node contains.
    */
   leafCharCodes: number[] | null;
 }

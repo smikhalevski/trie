@@ -1,72 +1,83 @@
 import {Trie} from './trie-types';
 
 /**
- * Searches for a leaf trie node that describes the longest substring from `input` starting from `offset`.
+ * Searches for a leaf trie that describes the longest substring from `input` starting at `offset`.
  *
- * @param node The trie root node.
- * @param input The string to search for the word from the `trie`.
+ * @param trie The trie to search in.
+ * @param str The string to search for the key from the `trie`.
  * @param offset The offset in `str` to start reading substring from.
- * @returns A leaf node in the trie or `undefined` if there's no matching word in the `trie`.
+ * @returns A leaf in the trie or `undefined` if there's no matching key in the `trie`.
  */
-export function searchTrie<T>(node: Trie<T>, input: string, offset: number): Trie<T> | undefined {
+export function searchTrie<T>(trie: Trie<T>, str: string, offset: number): Trie<T> | undefined {
 
-  const inputLength = input.length;
+  const strLength = str.length;
 
-  if (inputLength === 0 && node.isLeaf && node.word!.length === 0) {
-    return node;
+  if (strLength === 0 && trie.isLeaf && trie.key!.length === 0) {
+    return trie;
   }
 
-  let lastNode: Trie<T> | undefined;
+  let leafTrie: Trie<T> | undefined;
 
-  scan: for (let i = offset; i < inputLength; ++i) {
+  str: for (let i = offset; i < strLength; ++i) {
 
-    const leafCharCodes = node.leafCharCodes;
+    const leafCharCodes = trie.leafCharCodes;
 
     if (leafCharCodes !== null) {
       const leafCharCodesLength = leafCharCodes.length;
 
-      if (i + leafCharCodesLength > inputLength) {
+      if (i + leafCharCodesLength > strLength) {
         break;
       }
       for (let j = 0; j < leafCharCodesLength; ++i, ++j) {
-        if (input.charCodeAt(i) !== leafCharCodes[j]) {
-          break scan;
+        if (str.charCodeAt(i) !== leafCharCodes[j]) {
+          break str;
         }
       }
-      lastNode = node;
+      leafTrie = trie;
       break;
     }
 
-    if (node.isLeaf) {
-      lastNode = node;
+    if (trie.isLeaf) {
+      leafTrie = trie;
     }
 
-    const children = node.children;
-    if (children === null) {
+    const next = trie.next;
+    if (next === null) {
       break;
     }
 
-    const charCode = input.charCodeAt(i);
+    const nextCharCodes = trie.nextCharCodes!;
+    const charCode = str.charCodeAt(i);
 
-    const childrenCharCodes = node.childrenCharCodes!;
+    let j = -1;
+    let m = 0;
+    let n = nextCharCodes.length - 1;
 
-    let j = childrenCharCodes.length - 1;
+    // Binary search of a char code index
+    while (m <= n) {
+      const k = n + m >> 1;
+      const nextCharCode = nextCharCodes[k];
 
-    while (j > -1 && childrenCharCodes[j] !== charCode) {
-      --j;
+      if (nextCharCode < charCode) {
+        m = k + 1;
+      } else if (nextCharCode > charCode) {
+        n = k - 1;
+      } else {
+        j = k;
+        break;
+      }
     }
 
     if (j === -1) {
       break;
     }
 
-    const childNode = children[j];
-
-    if (childNode.isLeaf && childNode.leafCharCodes === null) {
-      lastNode = childNode;
+    const nextTrie = next[j];
+    if (nextTrie.isLeaf && nextTrie.leafCharCodes === null) {
+      leafTrie = nextTrie;
     }
-    node = childNode;
+    trie = nextTrie;
   }
 
-  return lastNode;
+  return leafTrie;
 }
