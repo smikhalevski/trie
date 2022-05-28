@@ -1,7 +1,7 @@
 import {Trie} from './trie-types';
 
 /**
- * Searches for a leaf trie that describes the longest substring from `input` starting at `offset`.
+ * Searches for a leaf trie that describes the longest substring from `str` starting at `offset`.
  *
  * @param trie The trie to search in.
  * @param str The string to search for the key from the `trie`.

@@ -3,7 +3,7 @@ import {Trie} from './trie-types';
 /**
  * Creates a trie node.
  *
- * @see {@link https://en.wikipedia.org/wiki/Trie Trie on Wikipedia}
+ * @see {@link https://en.wikipedia.org/wiki/Trie#Compressed_tries Trie on Wikipedia}
  */
 export function createTrie<T>(): Trie<T> {
   return {
