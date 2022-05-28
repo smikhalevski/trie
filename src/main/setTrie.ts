@@ -14,7 +14,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
   let i = 0;
 
-  key: while (i < keyLength) {
+  keyLoop: while (i < keyLength) {
 
     forkTrie(trie);
 
@@ -45,7 +45,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       if (nextCharCodes[k] > charCode) {
         next.splice(k, 0, leafNode);
         nextCharCodes.splice(k, 0, charCode);
-        break key;
+        break keyLoop;
       }
     }
 
@@ -57,10 +57,11 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
   forkTrie(trie);
 
   if (i !== keyLength) {
-    trie.leafCharCodes = [];
+    // noinspection JSMismatchedCollectionQueryUpdate
+    const leafCharCodes: number[] = trie.leafCharCodes = [];
 
     while (i < keyLength) {
-      trie.leafCharCodes.push(key.charCodeAt(i));
+      leafCharCodes.push(key.charCodeAt(i));
       ++i;
     }
   }

@@ -18,7 +18,7 @@ export function searchTrie<T>(trie: Trie<T>, str: string, offset: number): Trie<
 
   let leafTrie: Trie<T> | undefined;
 
-  str: for (let i = offset; i < strLength; ++i) {
+  strLoop: for (let i = offset; i < strLength; ++i) {
 
     const leafCharCodes = trie.leafCharCodes;
 
@@ -30,7 +30,7 @@ export function searchTrie<T>(trie: Trie<T>, str: string, offset: number): Trie<
       }
       for (let j = 0; j < leafCharCodesLength; ++i, ++j) {
         if (str.charCodeAt(i) !== leafCharCodes[j]) {
-          break str;
+          break strLoop;
         }
       }
       leafTrie = trie;
@@ -56,11 +56,11 @@ export function searchTrie<T>(trie: Trie<T>, str: string, offset: number): Trie<
     // Binary search of a char code index
     while (m <= n) {
       const k = n + m >> 1;
-      const nextCharCode = nextCharCodes[k];
+      const d = nextCharCodes[k] - charCode;
 
-      if (nextCharCode < charCode) {
+      if (d < 0) {
         m = k + 1;
-      } else if (nextCharCode > charCode) {
+      } else if (d > 0) {
         n = k - 1;
       } else {
         j = k;
