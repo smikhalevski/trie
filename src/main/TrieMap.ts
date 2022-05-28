@@ -1,4 +1,5 @@
-import {createTrie, TrieNode, searchTrie, setTrie} from './trie-utils';
+import {createTrie, searchTrie, setTrie} from './trie-utils';
+import {TrieNode} from './trie-types';
 
 export namespace TrieMap {
 

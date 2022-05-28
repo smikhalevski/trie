@@ -1,46 +1,4 @@
-/**
- * The compressed trie data structure.
- */
-export interface TrieNode<T> {
-
-  parent: TrieNode<T> | null;
-
-  /**
-   * A dictionary from a char code to a child trie node.
-   */
-  children: Record<number, TrieNode<T> | undefined> | null;
-
-  /**
-   * The list of char codes that present in {@link children}.
-   */
-  childrenCharCodes: number[] | null;
-
-  /**
-   * The word that the leaf node represents or `null` for non-leaf nodes.
-   */
-  word: string | null;
-
-  /**
-   * The value held by this node.
-   */
-  value: T | undefined;
-
-  /**
-   * The total number of chars in the word prefix described by this trie node. Length includes {@link leafCharCodes} if
-   * the trie node is a leaf node.
-   */
-  length: number;
-
-  /**
-   * `true` if this node is a leaf node and {@link value} contains an actual value that was set.
-   */
-  isLeaf: boolean;
-
-  /**
-   * Remaining chars that the word at this trie node contains.
-   */
-  leafCharCodes: number[] | null;
-}
+import {TrieNode} from './trie-types';
 
 /**
  * Creates a trie node.
@@ -49,7 +7,7 @@ export interface TrieNode<T> {
  */
 export function createTrie<T>(): TrieNode<T> {
   return {
-    parent: null,
+    prev: null,
     children: null,
     childrenCharCodes: null,
     word: null,
@@ -70,14 +28,14 @@ function forkTrie<T>(node: TrieNode<T>): void {
   const leafNode = createTrie<T>();
   const charCode = leafCharCodes[0];
 
-  node.children = {[charCode]: leafNode};
+  node.children = [leafNode];
   node.childrenCharCodes = [charCode];
 
   if (leafCharCodes.length > 1) {
     leafNode.leafCharCodes = leafCharCodes.slice(1);
   }
 
-  leafNode.parent = node;
+  leafNode.prev = node;
   leafNode.word = node.word;
   leafNode.value = node.value;
   leafNode.length = node.length;
@@ -110,23 +68,27 @@ export function setTrie<T>(node: TrieNode<T>, word: string, value: T): void {
       break;
     }
 
-    const children = node.children ||= {};
+    const children = node.children ||= [];
     const childrenCharCodes = node.childrenCharCodes ||= [];
 
     const charCode = word.charCodeAt(i++);
-    const childNode = children[charCode];
+
+    const childIndex = childrenCharCodes.indexOf(charCode);
+
+    const childNode = children[childIndex];
 
     if (childNode !== undefined) {
       node = childNode;
       continue;
     }
 
-    childrenCharCodes.push(charCode);
-
-    const leafNode = children[charCode] = createTrie<T>();
-    leafNode.parent = node;
+    const leafNode = createTrie<T>();
+    leafNode.prev = node;
     leafNode.word = node.word;
     leafNode.length = node.length + 1;
+
+    children.push(leafNode);
+    childrenCharCodes.push(charCode);
 
     node = leafNode;
     break;
@@ -232,10 +194,21 @@ export function searchTrie<T>(node: TrieNode<T>, input: string, offset: number):
       break;
     }
 
-    const childNode = children[input.charCodeAt(i)];
-    if (childNode === undefined) {
+    const charCode = input.charCodeAt(i);
+
+    const childrenCharCodes = node.childrenCharCodes!;
+
+    let j = childrenCharCodes.length - 1;
+
+    while (j > -1 && childrenCharCodes[j] !== charCode) {
+      --j;
+    }
+
+    if (j === -1) {
       break;
     }
+
+    const childNode = children[j];
 
     if (childNode.isLeaf && childNode.leafCharCodes === null) {
       lastNode = childNode;

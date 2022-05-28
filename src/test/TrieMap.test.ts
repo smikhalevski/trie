@@ -1,4 +1,4 @@
-import {TrieMap} from '../main';
+import {TrieMap} from '../main/TrieMap';
 
 describe('TrieMap', () => {
 

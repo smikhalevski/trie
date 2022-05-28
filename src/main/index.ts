@@ -1,2 +1,2 @@
 export * from './trie-utils';
-export * from './TrieMap';
+export {TrieNode} from './trie-types';
