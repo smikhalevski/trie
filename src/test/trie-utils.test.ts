@@ -1,4 +1,4 @@
-import {createTrie, TrieNode, searchTrie, setTrie, setAllTrie, getTrie} from '../main';
+import {createTrie, Trie, searchTrie, setTrie, setAllTrie, getTrie} from '../main';
 
 const A = 97;
 const B = 98;
@@ -13,7 +13,7 @@ describe('setTrie', () => {
     const node = createTrie();
     setTrie(node, '', 123);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    expect(node).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: null,
       word: '',
@@ -29,7 +29,7 @@ describe('setTrie', () => {
     const node = createTrie();
     setTrie(node, 'abc', 123);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    expect(node).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: [A, B, C],
       word: 'abc',
@@ -46,7 +46,7 @@ describe('setTrie', () => {
     setTrie(node, 'abc', 123);
     setTrie(node, 'ade', 456);
 
-    const expectedNode: TrieNode<number> = {
+    const expectedNode: Trie<number> = {
       prev: null,
       word: null,
       value: undefined,
@@ -103,7 +103,7 @@ describe('setTrie', () => {
     setTrie(node, 'ade', 456);
     setTrie(node, 'abf', 789);
 
-    const expectedNode: TrieNode<number> = {
+    const expectedNode: Trie<number> = {
       prev: null,
       leafCharCodes: null,
       word: null,
@@ -183,7 +183,7 @@ describe('setTrie', () => {
     setTrie(node, 'abc', 123);
     setTrie(node, 'abcdef', 456);
 
-    const expectedNode: TrieNode<number> = {
+    const expectedNode: Trie<number> = {
       prev: null,
       word: null,
       value: undefined,
@@ -255,7 +255,7 @@ describe('setTrie', () => {
     setTrie(node, 'abcdef', 456);
     setTrie(node, 'abcde', 789);
 
-    const expectedNode: TrieNode<number> = {
+    const expectedNode: Trie<number> = {
       prev: null,
       word: null,
       value: undefined,

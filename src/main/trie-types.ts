@@ -1,14 +1,14 @@
 /**
  * The compressed trie data structure.
  */
-export interface TrieNode<T> {
+export interface Trie<T> {
 
-  prev: TrieNode<T> | null;
+  prev: Trie<T> | null;
 
   /**
    * A dictionary from a char code to a child trie node.
    */
-  children: TrieNode<T>[] | null;
+  children: Trie<T>[] | null;
 
   /**
    * The list of char codes that present in {@link children}.
