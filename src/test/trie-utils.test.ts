@@ -14,12 +14,14 @@ describe('setTrie', () => {
     setTrie(node, '', 123);
 
     expect(node).toEqual(<TrieNode<number>>{
+      parent: null,
       leafCharCodes: null,
       word: '',
       value: 123,
       length: 0,
       isLeaf: true,
       children: null,
+      childrenCharCodes: null,
     });
   });
 
@@ -28,154 +30,203 @@ describe('setTrie', () => {
     setTrie(node, 'abc', 123);
 
     expect(node).toEqual(<TrieNode<number>>{
+      parent: null,
       leafCharCodes: [A, B, C],
       word: 'abc',
       value: 123,
       length: 3,
       isLeaf: true,
       children: null,
+      childrenCharCodes: null,
     });
   });
 
   test('sets the value to an non-empty trie', () => {
-    const node = createTrie();
+    const node = createTrie<number>();
     setTrie(node, 'abc', 123);
     setTrie(node, 'ade', 456);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    const expectedNode: TrieNode<number> = {
+      parent: null,
       word: null,
       value: undefined,
       leafCharCodes: null,
       length: 0,
       isLeaf: false,
+      childrenCharCodes: [A],
       children: {
         [A]: {
+          parent: null,
           word: null,
           value: undefined,
           leafCharCodes: null,
           length: 1,
           isLeaf: false,
+          childrenCharCodes: [B, D],
           children: {
             [B]: {
+              parent: null,
               leafCharCodes: [C],
               word: 'abc',
               value: 123,
               length: 3,
               isLeaf: true,
+              childrenCharCodes: null,
               children: null,
             },
             [D]: {
+              parent: null,
               leafCharCodes: [E],
               word: 'ade',
               value: 456,
               length: 3,
               isLeaf: true,
+              childrenCharCodes: null,
               children: null,
             },
           },
         },
       },
-    });
+    };
+
+    expectedNode.children![A]!.parent = node;
+
+    expectedNode.children![A]!.children![B]!.parent = expectedNode.children![A]!;
+    expectedNode.children![A]!.children![D]!.parent = expectedNode.children![A]!;
+
+    expect(node).toEqual(expectedNode);
   });
 
   test('sets the value to a deep trie node', () => {
-    const node = createTrie();
+    const node = createTrie<number>();
     setTrie(node, 'abc', 123);
     setTrie(node, 'ade', 456);
     setTrie(node, 'abf', 789);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    const expectedNode: TrieNode<number> = {
+      parent: null,
       leafCharCodes: null,
       word: null,
       value: undefined,
       length: 0,
       isLeaf: false,
+      childrenCharCodes: [A],
       children: {
         [A]: {
+          parent: null,
           leafCharCodes: null,
           word: null,
           value: undefined,
           length: 1,
           isLeaf: false,
+          childrenCharCodes: [B, D],
           children: {
             [B]: {
+              parent: null,
               leafCharCodes: null,
               word: null,
               value: undefined,
               length: 2,
               isLeaf: false,
+              childrenCharCodes: [C, F],
               children: {
                 [C]: {
+                  parent: null,
                   leafCharCodes: null,
                   word: 'abc',
                   value: 123,
                   length: 3,
                   isLeaf: true,
+                  childrenCharCodes: null,
                   children: null,
                 },
                 [F]: {
+                  parent: null,
                   leafCharCodes: null,
                   word: 'abf',
                   value: 789,
                   length: 3,
                   isLeaf: true,
+                  childrenCharCodes: null,
                   children: null,
                 },
               },
             },
             [D]: {
+              parent: null,
               leafCharCodes: [E],
               word: 'ade',
               value: 456,
               length: 3,
               isLeaf: true,
+              childrenCharCodes: null,
               children: null,
             },
           },
         },
       },
-    });
+    };
+
+    expectedNode.children![A]!.parent = node;
+
+    expectedNode.children![A]!.children![B]!.parent = expectedNode.children![A]!;
+    expectedNode.children![A]!.children![D]!.parent = expectedNode.children![A]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.parent = expectedNode.children![A]!.children![B]!;
+    expectedNode.children![A]!.children![B]!.children![F]!.parent = expectedNode.children![A]!.children![B]!;
+
+    expect(node).toEqual(expectedNode);
   });
 
   test('preserves overlapping keys', () => {
-    const node = createTrie();
+    const node = createTrie<number>();
     setTrie(node, 'abc', 123);
     setTrie(node, 'abcdef', 456);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    const expectedNode: TrieNode<number> = {
+      parent: null,
       word: null,
       value: undefined,
       leafCharCodes: null,
       length: 0,
       isLeaf: false,
+      childrenCharCodes: [A],
       children: {
         [A]: {
+          parent: null,
           word: null,
           value: undefined,
           leafCharCodes: null,
           length: 1,
           isLeaf: false,
+          childrenCharCodes: [B],
           children: {
             [B]: {
+              parent: null,
               word: null,
               value: undefined,
               leafCharCodes: null,
               length: 2,
               isLeaf: false,
+              childrenCharCodes: [C],
               children: {
                 [C]: {
+                  parent: null,
                   word: 'abc',
                   value: 123,
                   leafCharCodes: null,
                   length: 3,
                   isLeaf: true,
+                  childrenCharCodes: [D],
                   children: {
                     [D]: {
+                      parent: null,
                       word: 'abcdef',
                       value: 456,
                       leafCharCodes: [E, F],
                       length: 6,
                       isLeaf: true,
+                      childrenCharCodes: null,
                       children: null,
                     },
                   },
@@ -185,63 +236,87 @@ describe('setTrie', () => {
           },
         },
       },
-    });
+    };
+
+    expectedNode.children![A]!.parent = node;
+
+    expectedNode.children![A]!.children![B]!.parent = expectedNode.children![A]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.parent = expectedNode.children![A]!.children![B]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.children![D]!.parent = expectedNode.children![A]!.children![B]!.children![C]!;
+
+    expect(node).toEqual(expectedNode);
   });
 
   test('sets the shorter key after longer key', () => {
-    const node = createTrie();
+    const node = createTrie<number>();
     setTrie(node, 'abc', 123);
     setTrie(node, 'abcdef', 456);
     setTrie(node, 'abcde', 789);
 
-    expect(node).toEqual(<TrieNode<number>>{
+    const expectedNode: TrieNode<number> = {
+      parent: null,
       word: null,
       value: undefined,
       length: 0,
       leafCharCodes: null,
       isLeaf: false,
+      childrenCharCodes: [A],
       children: {
         [A]: {
+          parent: null,
           word: null,
           value: undefined,
           length: 1,
           leafCharCodes: null,
           isLeaf: false,
+          childrenCharCodes: [B],
           children: {
             [B]: {
+              parent: null,
               word: null,
               value: undefined,
               length: 2,
               leafCharCodes: null,
               isLeaf: false,
+              childrenCharCodes: [C],
               children: {
                 [C]: {
+                  parent: null,
                   word: 'abc',
                   value: 123,
                   length: 3,
                   leafCharCodes: null,
                   isLeaf: true,
+                  childrenCharCodes: [D],
                   children: {
                     [D]: {
+                      parent: null,
                       word: null,
                       value: undefined,
                       length: 4,
                       leafCharCodes: null,
                       isLeaf: false,
+                      childrenCharCodes: [E],
                       children: {
                         [E]: {
+                          parent: null,
                           word: 'abcde',
                           value: 789,
                           length: 5,
                           leafCharCodes: null,
                           isLeaf: true,
+                          childrenCharCodes: [F],
                           children: {
                             [F]: {
+                              parent: null,
                               word: 'abcdef',
                               value: 456,
                               length: 6,
                               leafCharCodes: null,
                               children: null,
+                              childrenCharCodes: null,
                               isLeaf: true,
                             },
                           },
@@ -255,7 +330,21 @@ describe('setTrie', () => {
           },
         },
       },
-    });
+    };
+
+    expectedNode.children![A]!.parent = node;
+
+    expectedNode.children![A]!.children![B]!.parent = expectedNode.children![A]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.parent = expectedNode.children![A]!.children![B]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.children![D]!.parent = expectedNode.children![A]!.children![B]!.children![C]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.children![D]!.children![E]!.parent = expectedNode.children![A]!.children![B]!.children![C]!.children![D]!;
+
+    expectedNode.children![A]!.children![B]!.children![C]!.children![D]!.children![E]!.children![F]!.parent = expectedNode.children![A]!.children![B]!.children![C]!.children![D]!.children![E]!;
+
+    expect(node).toEqual(expectedNode);
   });
 
 });

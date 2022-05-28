@@ -3,10 +3,17 @@
  */
 export interface TrieNode<T> {
 
+  parent: TrieNode<T> | null;
+
   /**
    * A dictionary from a char code to a child trie node.
    */
   children: Record<number, TrieNode<T> | undefined> | null;
+
+  /**
+   * The list of char codes that present in {@link children}.
+   */
+  childrenCharCodes: number[] | null;
 
   /**
    * The word that the leaf node represents or `null` for non-leaf nodes.
@@ -32,7 +39,7 @@ export interface TrieNode<T> {
   /**
    * Remaining chars that the word at this trie node contains.
    */
-  leafCharCodes: Array<number> | null;
+  leafCharCodes: number[] | null;
 }
 
 /**
@@ -42,7 +49,9 @@ export interface TrieNode<T> {
  */
 export function createTrie<T>(): TrieNode<T> {
   return {
+    parent: null,
     children: null,
+    childrenCharCodes: null,
     word: null,
     value: undefined,
     length: 0,
@@ -59,13 +68,16 @@ function forkTrie<T>(node: TrieNode<T>): void {
   }
 
   const leafNode = createTrie<T>();
+  const charCode = leafCharCodes[0];
 
-  node.children = {[leafCharCodes[0]]: leafNode};
+  node.children = {[charCode]: leafNode};
+  node.childrenCharCodes = [charCode];
 
   if (leafCharCodes.length > 1) {
     leafNode.leafCharCodes = leafCharCodes.slice(1);
   }
 
+  leafNode.parent = node;
   leafNode.word = node.word;
   leafNode.value = node.value;
   leafNode.length = node.length;
@@ -99,20 +111,23 @@ export function setTrie<T>(node: TrieNode<T>, word: string, value: T): void {
     }
 
     const children = node.children ||= {};
-    const charCode = word.charCodeAt(i);
-    const childNode = children[charCode];
+    const childrenCharCodes = node.childrenCharCodes ||= [];
 
-    ++i;
+    const charCode = word.charCodeAt(i++);
+    const childNode = children[charCode];
 
     if (childNode !== undefined) {
       node = childNode;
       continue;
     }
 
-    const leafNode = createTrie<T>();
-    children[charCode] = leafNode;
+    childrenCharCodes.push(charCode);
+
+    const leafNode = children[charCode] = createTrie<T>();
+    leafNode.parent = node;
     leafNode.word = node.word;
     leafNode.length = node.length + 1;
+
     node = leafNode;
     break;
   }
