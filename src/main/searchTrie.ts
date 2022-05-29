@@ -79,9 +79,5 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
     break;
   }
 
-  if (partial || trie.isLeaf && trie.length <= i - startIndex) {
-    return trie;
-  }
-
-  return leaf;
+  return partial || i === endIndex && trie.isLeaf && trie.length <= i - startIndex ? trie : leaf;
 }
