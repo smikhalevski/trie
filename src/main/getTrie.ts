@@ -2,16 +2,18 @@ import {Trie} from './trie-types';
 import {searchTrie} from './searchTrie';
 
 /**
- * Returns the trie node that matches the exact key.
+ * Returns the trie node that matches the key.
  *
- * @param node The trie root node.
+ * @param trie The trie root.
  * @param key The key to retrieve.
- * @returns The leaf node that holds the value for `key`.
+ * @returns The leaf that holds the value for `key` or `undefined` if there's no such leaf.
+ *
+ * @template T The type of values stored in a trie.
  */
-export function getTrie<T>(node: Trie<T>, key: string): Trie<T> | undefined {
-  const leafNode = searchTrie(node, key, 0);
+export function getTrie<T>(trie: Trie<T>, key: string): Trie<T> | undefined {
+  const leafTrie = searchTrie(trie, key, 0);
 
-  if (leafNode?.key === key) {
-    return leafNode;
+  if (leafTrie?.key === key) {
+    return leafTrie;
   }
 }

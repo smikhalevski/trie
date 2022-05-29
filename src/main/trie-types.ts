@@ -1,5 +1,7 @@
 /**
  * The compressed trie data structure.
+ *
+ * @template T The type of values stored in a trie.
  */
 export interface Trie<T> {
 

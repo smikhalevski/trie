@@ -1,9 +1,10 @@
 import {Trie} from './trie-types';
 
 /**
- * Creates a trie node.
+ * Creates a compressed trie data structure.
  *
- * @see {@link https://en.wikipedia.org/wiki/Trie#Compressed_tries Trie on Wikipedia}
+ * @template T The type of values stored in a trie.
+ * @see {@link https://en.wikipedia.org/wiki/Trie#Compressed_tries Compressed tries on Wikipedia}
  */
 export function createTrie<T>(): Trie<T> {
   return {

@@ -2,11 +2,13 @@ import {Trie} from './trie-types';
 import {createTrie} from './createTrie';
 
 /**
- * Sets a new key-value pair to the trie node.
+ * Sets a new key-value pair to the trie.
  *
  * @param trie The trie to update.
- * @param key The key of to add to the {@link Trie `Trie`} object.
+ * @param key The key of to add to the trie.
  * @param value The value to associate with the key.
+ *
+ * @template T The type of values stored in a trie.
  */
 export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
@@ -33,23 +35,23 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       continue;
     }
 
-    const leafNode = createTrie<T>();
-    leafNode.prev = trie;
-    leafNode.key = trie.key;
-    leafNode.length = trie.length + 1;
+    const leafTrie = createTrie<T>();
+    leafTrie.prev = trie;
+    leafTrie.key = trie.key;
+    leafTrie.length = trie.length + 1;
 
-    trie = leafNode;
+    trie = leafTrie;
 
     // Keep next* sorted in ascending order
     for (let k = 0; k < nextCharCodes.length; ++k) {
       if (nextCharCodes[k] > charCode) {
-        next.splice(k, 0, leafNode);
+        next.splice(k, 0, leafTrie);
         nextCharCodes.splice(k, 0, charCode);
         break forking;
       }
     }
 
-    next.push(leafNode);
+    next.push(leafTrie);
     nextCharCodes.push(charCode);
     break;
   }
