@@ -1,7 +1,7 @@
 import {Trie} from './trie-types';
 
 /**
- * Searches for a leaf trie that describes the longest substring from `input` starting at `offset`.
+ * Searches for a leaf that describes the longest substring from `input` starting at `offset`.
  *
  * The maximum key length read from the `input` is `endIndex - startIndex`.
  *
@@ -18,7 +18,7 @@ import {Trie} from './trie-types';
 export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | undefined {
 
   // The longest matched leaf
-  let leafTrie: Trie<T> | undefined;
+  let leaf: Trie<T> | undefined;
 
   search: for (let i = startIndex; i < endIndex; ++i) {
 
@@ -39,12 +39,12 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
         }
 
         // Matched a leaf with leafCharCodes
-        leafTrie = trie;
+        leaf = trie;
         break;
       }
 
       // Matched a leaf without leafCharCodes, must check next tries
-      leafTrie = trie;
+      leaf = trie;
     }
 
     const next = trie.next;
@@ -81,9 +81,9 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
     trie = next[j];
   }
 
-  if (partial || leafTrie === undefined && trie.isLeaf) {
+  if (partial || leaf === undefined && trie.isLeaf) {
     return trie;
   }
 
-  return leafTrie;
+  return leaf;
 }

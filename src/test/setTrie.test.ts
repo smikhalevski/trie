@@ -3,20 +3,20 @@ import {createTrie, setTrie, Trie} from '../main';
 describe('setTrie', () => {
 
   test('preserves ascending order of char codes in next*', () => {
-    const node = createTrie<number>();
-    setTrie(node, 'b', 222);
-    setTrie(node, 'c', 333);
-    setTrie(node, 'a', 111);
-    setTrie(node, 'd', 444);
+    const trie = createTrie<number>();
+    setTrie(trie, 'b', 222);
+    setTrie(trie, 'c', 333);
+    setTrie(trie, 'a', 111);
+    setTrie(trie, 'd', 444);
 
-    expect(node.nextCharCodes).toEqual([97, 98, 99, 100]);
+    expect(trie.nextCharCodes).toEqual([97, 98, 99, 100]);
   });
 
   test('sets an empty string to a trie', () => {
-    const node = createTrie();
-    setTrie(node, '', 111);
+    const trie = createTrie();
+    setTrie(trie, '', 111);
 
-    expect(node).toEqual(<Trie<number>>{
+    expect(trie).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: null,
       key: '',
@@ -29,10 +29,10 @@ describe('setTrie', () => {
   });
 
   test('sets the value to an empty trie', () => {
-    const node = createTrie();
-    setTrie(node, 'abc', 111);
+    const trie = createTrie();
+    setTrie(trie, 'abc', 111);
 
-    expect(node).toEqual(<Trie<number>>{
+    expect(trie).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: [97, 98, 99],
       key: 'abc',
@@ -45,11 +45,11 @@ describe('setTrie', () => {
   });
 
   test('sets the value to an non-empty trie', () => {
-    const node = createTrie<number>();
-    setTrie(node, 'abc', 111);
-    setTrie(node, 'ade', 222);
+    const trie = createTrie<number>();
+    setTrie(trie, 'abc', 111);
+    setTrie(trie, 'ade', 222);
 
-    const expectedNode: Trie<number> = {
+    const expectedTrie: Trie<number> = {
       prev: null,
       key: null,
       value: undefined,
@@ -92,21 +92,21 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0].prev = node;
+    expectedTrie.next![0].prev = trie;
 
-    expectedNode.next![0].next![0].prev = expectedNode.next![0];
-    expectedNode.next![0].next![1].prev = expectedNode.next![0];
+    expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
+    expectedTrie.next![0].next![1].prev = expectedTrie.next![0];
 
-    expect(node).toEqual(expectedNode);
+    expect(trie).toEqual(expectedTrie);
   });
 
-  test('sets the value to a deep trie node', () => {
-    const node = createTrie<number>();
-    setTrie(node, 'abc', 111);
-    setTrie(node, 'ade', 222);
-    setTrie(node, 'abf', 333);
+  test('sets the value to a deep trie trie', () => {
+    const trie = createTrie<number>();
+    setTrie(trie, 'abc', 111);
+    setTrie(trie, 'ade', 222);
+    setTrie(trie, 'abf', 333);
 
-    const expectedNode: Trie<number> = {
+    const expectedTrie: Trie<number> = {
       prev: null,
       leafCharCodes: null,
       key: null,
@@ -170,23 +170,23 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0].prev = node;
+    expectedTrie.next![0].prev = trie;
 
-    expectedNode.next![0].next![0].prev = expectedNode.next![0];
-    expectedNode.next![0].next![1].prev = expectedNode.next![0];
+    expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
+    expectedTrie.next![0].next![1].prev = expectedTrie.next![0];
 
-    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
-    expectedNode.next![0].next![0].next![1].prev = expectedNode.next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].prev = expectedTrie.next![0].next![0];
+    expectedTrie.next![0].next![0].next![1].prev = expectedTrie.next![0].next![0];
 
-    expect(node).toEqual(expectedNode);
+    expect(trie).toEqual(expectedTrie);
   });
 
   test('preserves overlapping keys', () => {
-    const node = createTrie<number>();
-    setTrie(node, 'abc', 111);
-    setTrie(node, 'abcdef', 222);
+    const trie = createTrie<number>();
+    setTrie(trie, 'abc', 111);
+    setTrie(trie, 'abcdef', 222);
 
-    const expectedNode: Trie<number> = {
+    const expectedTrie: Trie<number> = {
       prev: null,
       key: null,
       value: undefined,
@@ -241,24 +241,24 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0].prev = node;
+    expectedTrie.next![0].prev = trie;
 
-    expectedNode.next![0].next![0].prev = expectedNode.next![0];
+    expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
 
-    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].prev = expectedTrie.next![0].next![0];
 
-    expectedNode.next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].next![0].prev = expectedTrie.next![0].next![0].next![0];
 
-    expect(node).toEqual(expectedNode);
+    expect(trie).toEqual(expectedTrie);
   });
 
   test('sets the shorter key after longer key', () => {
-    const node = createTrie<number>();
-    setTrie(node, 'abc', 111);
-    setTrie(node, 'abcdef', 222);
-    setTrie(node, 'abcde', 333);
+    const trie = createTrie<number>();
+    setTrie(trie, 'abc', 111);
+    setTrie(trie, 'abcdef', 222);
+    setTrie(trie, 'abcde', 333);
 
-    const expectedNode: Trie<number> = {
+    const expectedTrie: Trie<number> = {
       prev: null,
       key: null,
       value: undefined,
@@ -335,18 +335,18 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0].prev = node;
+    expectedTrie.next![0].prev = trie;
 
-    expectedNode.next![0].next![0].prev = expectedNode.next![0];
+    expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
 
-    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].prev = expectedTrie.next![0].next![0];
 
-    expectedNode.next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].next![0].prev = expectedTrie.next![0].next![0].next![0];
 
-    expectedNode.next![0].next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].next![0].next![0].prev = expectedTrie.next![0].next![0].next![0].next![0];
 
-    expectedNode.next![0].next![0].next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0].next![0].next![0];
+    expectedTrie.next![0].next![0].next![0].next![0].next![0].next![0].prev = expectedTrie.next![0].next![0].next![0].next![0].next![0];
 
-    expect(node).toEqual(expectedNode);
+    expect(trie).toEqual(expectedTrie);
   });
 });

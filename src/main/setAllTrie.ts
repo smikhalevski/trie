@@ -2,7 +2,7 @@ import {Trie} from './trie-types';
 import {setTrie} from './setTrie';
 
 /**
- * Sets all key-value pairs to the trie node.
+ * Sets all key-value pairs to the trie.
  *
  * @param trie The trie to update.
  * @param entries The set of key-value pairs to set.

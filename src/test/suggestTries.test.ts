@@ -3,35 +3,35 @@ import {createTrie, setTrie, suggestTries} from '../main';
 describe('suggestTries', () => {
 
   test('suggests leaf tries', () => {
-    const node = createTrie();
+    const trie = createTrie();
 
-    setTrie(node, 'abcd', 111);
-    setTrie(node, 'abc', 222);
-    setTrie(node, 'abef', 333);
-    setTrie(node, 'a', 444);
+    setTrie(trie, 'abcd', 111);
+    setTrie(trie, 'abc', 222);
+    setTrie(trie, 'abef', 333);
+    setTrie(trie, 'a', 444);
 
-    const suggestions = suggestTries(node, 'abc', 0);
+    const suggestions = suggestTries(trie, 'abc', 0);
 
     expect(suggestions).toEqual([
-      node.next![0].next![0].next![0],
-      node.next![0].next![0].next![0].next![0],
+      trie.next![0].next![0].next![0],
+      trie.next![0].next![0].next![0].next![0],
     ]);
   });
 
   test('suggests leaf tries with endIndex', () => {
-    const node = createTrie();
+    const trie = createTrie();
 
-    setTrie(node, 'abcd', 111);
-    setTrie(node, 'abc', 222);
-    setTrie(node, 'abef', 333);
-    setTrie(node, 'a', 444);
+    setTrie(trie, 'abcd', 111);
+    setTrie(trie, 'abc', 222);
+    setTrie(trie, 'abef', 333);
+    setTrie(trie, 'a', 444);
 
-    const suggestions = suggestTries(node, 'abcd', 0, 2);
+    const suggestions = suggestTries(trie, 'abcd', 0, 2);
 
     expect(suggestions).toEqual([
-      node.next![0].next![0].next![0],
-      node.next![0].next![0].next![0].next![0],
-      node.next![0].next![0].next![1],
+      trie.next![0].next![0].next![0],
+      trie.next![0].next![0].next![0].next![0],
+      trie.next![0].next![0].next![1],
     ]);
   });
 });

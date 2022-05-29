@@ -35,23 +35,23 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       continue;
     }
 
-    const leafTrie = createTrie<T>();
-    leafTrie.prev = trie;
-    leafTrie.key = trie.key;
-    leafTrie.length = trie.length + 1;
+    const leaf = createTrie<T>();
+    leaf.prev = trie;
+    leaf.key = trie.key;
+    leaf.length = trie.length + 1;
 
-    trie = leafTrie;
+    trie = leaf;
 
     // Keep next* sorted in ascending order
     for (let k = 0; k < nextCharCodes.length; ++k) {
       if (nextCharCodes[k] > charCode) {
-        next.splice(k, 0, leafTrie);
+        next.splice(k, 0, leaf);
         nextCharCodes.splice(k, 0, charCode);
         break forking;
       }
     }
 
-    next.push(leafTrie);
+    next.push(leaf);
     nextCharCodes.push(charCode);
     break;
   }
@@ -81,21 +81,21 @@ function forkTrie<T>(trie: Trie<T>): void {
     return;
   }
 
-  const leafTrie = createTrie<T>();
-  const charCode = leafCharCodes[0];
+  const leaf = createTrie<T>();
+  const leafCharCode = leafCharCodes[0];
 
-  trie.next = [leafTrie];
-  trie.nextCharCodes = [charCode];
+  trie.next = [leaf];
+  trie.nextCharCodes = [leafCharCode];
 
   if (leafCharCodes.length > 1) {
-    leafTrie.leafCharCodes = leafCharCodes.slice(1);
+    leaf.leafCharCodes = leafCharCodes.slice(1);
   }
 
-  leafTrie.prev = trie;
-  leafTrie.key = trie.key;
-  leafTrie.value = trie.value;
-  leafTrie.length = trie.length;
-  leafTrie.isLeaf = true;
+  leaf.prev = trie;
+  leaf.key = trie.key;
+  leaf.value = trie.value;
+  leaf.length = trie.length;
+  leaf.isLeaf = true;
 
   trie.key = null;
   trie.value = undefined;
