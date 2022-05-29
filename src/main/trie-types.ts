@@ -40,7 +40,8 @@ export interface Trie<T> {
   isLeaf: boolean;
 
   /**
-   * Remaining chars that the key at this trie node contains.
+   * Remaining chars that the key at this trie node contains. `null` if node is not a leaf or if it has
+   * {@link next `next`}.
    */
   leafCharCodes: number[] | null;
 }

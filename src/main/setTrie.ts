@@ -14,7 +14,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
   let i = 0;
 
-  keyLoop: while (i < keyLength) {
+  forking: while (i < keyLength) {
 
     forkTrie(trie);
 
@@ -45,7 +45,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       if (nextCharCodes[k] > charCode) {
         next.splice(k, 0, leafNode);
         nextCharCodes.splice(k, 0, charCode);
-        break keyLoop;
+        break forking;
       }
     }
 

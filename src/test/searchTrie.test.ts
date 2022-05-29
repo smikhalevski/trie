@@ -23,7 +23,7 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abd', 0);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![1]);
+    expect(leafNode).toBe(node.next![0].next![0].next![1]);
   });
 
   test('finds a node with deep char entries', () => {
@@ -33,17 +33,27 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abdef', 0);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![1]);
+    expect(leafNode).toBe(node.next![0].next![0].next![1]);
   });
 
-  test('finds a node at offset', () => {
+  test('finds a node at startIndex', () => {
     const node = createTrie();
     setTrie(node, 'abc', 111);
     setTrie(node, 'abdef', 222);
 
     const leafNode = searchTrie(node, 'qqqabdef', 3);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![1]);
+    expect(leafNode).toBe(node.next![0].next![0].next![1]);
+  });
+
+  test('finds a node with length limited by endIndex', () => {
+    const node = createTrie();
+    setTrie(node, 'ab', 111);
+    setTrie(node, 'abc', 222);
+
+    const leafNode = searchTrie(node, 'abc', 0, 2);
+
+    expect(leafNode).toBe(node.next![0].next![0]);
   });
 
   test('finds the node with the longest key', () => {
@@ -53,7 +63,7 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abcdef', 0);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![0]!.next![0]);
+    expect(leafNode).toBe(node.next![0].next![0].next![0].next![0]);
   });
 
   test('finds the node with the shortest matched key', () => {
@@ -63,7 +73,7 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abcdeZZZ', 0);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![0]);
+    expect(leafNode).toBe(node.next![0].next![0].next![0]);
   });
 
   test('finds the node with the shortest key on string end', () => {
@@ -73,7 +83,7 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abcde', 0);
 
-    expect(leafNode).toBe(node.next![0]!.next![0]!.next![0]);
+    expect(leafNode).toBe(node.next![0].next![0].next![0]);
   });
 
   test('returns undefined if no node was found', () => {

@@ -92,10 +92,10 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0]!.prev = node;
+    expectedNode.next![0].prev = node;
 
-    expectedNode.next![0]!.next![0]!.prev = expectedNode.next![0]!;
-    expectedNode.next![0]!.next![1]!.prev = expectedNode.next![0]!;
+    expectedNode.next![0].next![0].prev = expectedNode.next![0];
+    expectedNode.next![0].next![1].prev = expectedNode.next![0];
 
     expect(node).toEqual(expectedNode);
   });
@@ -170,13 +170,13 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0]!.prev = node;
+    expectedNode.next![0].prev = node;
 
-    expectedNode.next![0]!.next![0]!.prev = expectedNode.next![0]!;
-    expectedNode.next![0]!.next![1]!.prev = expectedNode.next![0]!;
+    expectedNode.next![0].next![0].prev = expectedNode.next![0];
+    expectedNode.next![0].next![1].prev = expectedNode.next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!;
-    expectedNode.next![0]!.next![0]!.next![1]!.prev = expectedNode.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
+    expectedNode.next![0].next![0].next![1].prev = expectedNode.next![0].next![0];
 
     expect(node).toEqual(expectedNode);
   });
@@ -241,13 +241,13 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0]!.prev = node;
+    expectedNode.next![0].prev = node;
 
-    expectedNode.next![0]!.next![0]!.prev = expectedNode.next![0]!;
+    expectedNode.next![0].next![0].prev = expectedNode.next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0];
 
     expect(node).toEqual(expectedNode);
   });
@@ -335,17 +335,17 @@ describe('setTrie', () => {
       ],
     };
 
-    expectedNode.next![0]!.prev = node;
+    expectedNode.next![0].prev = node;
 
-    expectedNode.next![0]!.next![0]!.prev = expectedNode.next![0]!;
+    expectedNode.next![0].next![0].prev = expectedNode.next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].prev = expectedNode.next![0].next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0].next![0];
 
-    expectedNode.next![0]!.next![0]!.next![0]!.next![0]!.next![0]!.next![0]!.prev = expectedNode.next![0]!.next![0]!.next![0]!.next![0]!.next![0]!;
+    expectedNode.next![0].next![0].next![0].next![0].next![0].next![0].prev = expectedNode.next![0].next![0].next![0].next![0].next![0];
 
     expect(node).toEqual(expectedNode);
   });
