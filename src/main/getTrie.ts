@@ -10,10 +10,8 @@ import {searchTrie} from './searchTrie';
  *
  * @template T The type of values stored in a trie.
  */
-export function getTrie<T>(trie: Trie<T>, word: string): Trie<T> | undefined {
+export function getTrie<T>(trie: Trie<T>, word: string): Trie<T> | null {
   const leaf = searchTrie(trie, word, 0);
 
-  if (leaf !== undefined && leaf.word!.length === word.length) {
-    return leaf;
-  }
+  return leaf !== null && leaf.word!.length === word.length ? leaf : null;
 }

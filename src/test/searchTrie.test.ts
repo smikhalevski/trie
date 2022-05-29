@@ -86,21 +86,21 @@ describe('searchTrie', () => {
     expect(leaf).toBe(trie.next![0].next![0].next![0]);
   });
 
-  test('returns undefined if no trie was found', () => {
+  test('returns null if no trie was found', () => {
     const trie = createTrie();
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abdef', 222);
 
     const leaf = searchTrie(trie, 'abe', 0);
 
-    expect(leaf).toBe(undefined);
+    expect(leaf).toBe(null);
   });
 
-  test('returns undefined for a non-matching leaf root', () => {
+  test('returns null for a non-matching leaf root', () => {
     const trie = createTrie();
     setTrie(trie, 'abcd', 111);
 
-    expect(searchTrie(trie, 'abc', 0)).toBe(undefined);
+    expect(searchTrie(trie, 'abc', 0)).toBe(null);
   });
 
   test('returns root for a matching leaf root', () => {

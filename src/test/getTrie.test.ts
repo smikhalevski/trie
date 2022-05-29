@@ -9,6 +9,6 @@ describe('getTrie', () => {
 
     expect(getTrie(trie, 'abc')).toBe(trie.next![0]!.next![0]!.next![0]);
     expect(getTrie(trie, 'abdef')).toBe(trie.next![0]!.next![0]!.next![1]);
-    expect(getTrie(trie, 'abd')).toBeUndefined();
+    expect(getTrie(trie, 'abd')).toBe(null);
   });
 });

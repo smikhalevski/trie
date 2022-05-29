@@ -4,7 +4,7 @@ import {searchTrie} from './searchTrie';
 export function deleteTrie(trie: Trie<any>, word: string): boolean {
   let leaf = searchTrie(trie, word, 0)!;
 
-  if (leaf === undefined) {
+  if (leaf === null) {
     return false;
   }
 

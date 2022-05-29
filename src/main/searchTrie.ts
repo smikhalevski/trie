@@ -15,10 +15,10 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | undefined {
+export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | null {
 
   // The longest matched leaf
-  let leaf: Trie<T> | undefined;
+  let leaf: Trie<T> | null = null;
 
   search: for (let i = startIndex; i < endIndex; ++i) {
 
@@ -77,7 +77,7 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
     break;
   }
 
-  if (partial || leaf === undefined && trie.isLeaf && trie.length <= endIndex - startIndex) {
+  if (partial || leaf === null && trie.isLeaf && trie.length <= endIndex - startIndex) {
     return trie;
   }
 
