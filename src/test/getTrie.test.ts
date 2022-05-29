@@ -2,7 +2,7 @@ import {createTrie, getTrie, setTrie} from '../main';
 
 describe('getTrie', () => {
 
-  test('returns the leaf that matches the key exactly', () => {
+  test('returns the leaf that matches the word exactly', () => {
     const trie = createTrie();
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abdef', 222);

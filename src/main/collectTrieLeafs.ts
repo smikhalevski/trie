@@ -14,8 +14,8 @@ export function collectTrieLeafs<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<
     leafs.push(trie);
   }
   if (trie.next !== null) {
-    for (const nextTrie of trie.next) {
-      collectTrieLeafs(nextTrie, leafs);
+    for (const root of trie.next) {
+      collectTrieLeafs(root, leafs);
     }
   }
   return leafs;

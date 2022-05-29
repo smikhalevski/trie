@@ -12,20 +12,52 @@ describe('setTrie', () => {
     expect(trie.nextCharCodes).toEqual([97, 98, 99, 100]);
   });
 
-  test('sets an empty string to a trie', () => {
+  test('sets an empty word to a trie', () => {
     const trie = createTrie();
     setTrie(trie, '', 111);
 
     expect(trie).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: null,
-      key: '',
+      word: '',
       value: 111,
       length: 0,
       isLeaf: true,
-      next: null,
       nextCharCodes: null,
+      next: null,
     });
+  });
+
+  test('sets an empty word and a non-empty word to a trie', () => {
+    const trie = createTrie<number>();
+    setTrie(trie, '', 111);
+    setTrie(trie, 'a', 222);
+
+    const expectedTrie: Trie<number> = {
+      prev: null,
+      leafCharCodes: null,
+      word: '',
+      value: 111,
+      length: 0,
+      isLeaf: true,
+      nextCharCodes: [97],
+      next: [
+        {
+          prev: null,
+          leafCharCodes: null,
+          word: 'a',
+          value: 222,
+          length: 1,
+          isLeaf: true,
+          nextCharCodes: null,
+          next: null,
+        }
+      ],
+    };
+
+    expectedTrie.next![0].prev = trie;
+
+    expect(trie).toEqual(expectedTrie);
   });
 
   test('sets the value to an empty trie', () => {
@@ -35,12 +67,12 @@ describe('setTrie', () => {
     expect(trie).toEqual(<Trie<number>>{
       prev: null,
       leafCharCodes: [97, 98, 99],
-      key: 'abc',
+      word: 'abc',
       value: 111,
       length: 3,
       isLeaf: true,
-      next: null,
       nextCharCodes: null,
+      next: null,
     });
   });
 
@@ -51,7 +83,7 @@ describe('setTrie', () => {
 
     const expectedTrie: Trie<number> = {
       prev: null,
-      key: null,
+      word: null,
       value: undefined,
       leafCharCodes: null,
       length: 0,
@@ -60,7 +92,7 @@ describe('setTrie', () => {
       next: [
         {
           prev: null,
-          key: null,
+          word: null,
           value: undefined,
           leafCharCodes: null,
           length: 1,
@@ -70,7 +102,7 @@ describe('setTrie', () => {
             {
               prev: null,
               leafCharCodes: [99],
-              key: 'abc',
+              word: 'abc',
               value: 111,
               length: 3,
               isLeaf: true,
@@ -80,7 +112,7 @@ describe('setTrie', () => {
             {
               prev: null,
               leafCharCodes: [101],
-              key: 'ade',
+              word: 'ade',
               value: 222,
               length: 3,
               isLeaf: true,
@@ -109,7 +141,7 @@ describe('setTrie', () => {
     const expectedTrie: Trie<number> = {
       prev: null,
       leafCharCodes: null,
-      key: null,
+      word: null,
       value: undefined,
       length: 0,
       isLeaf: false,
@@ -118,7 +150,7 @@ describe('setTrie', () => {
         {
           prev: null,
           leafCharCodes: null,
-          key: null,
+          word: null,
           value: undefined,
           length: 1,
           isLeaf: false,
@@ -127,7 +159,7 @@ describe('setTrie', () => {
             {
               prev: null,
               leafCharCodes: null,
-              key: null,
+              word: null,
               value: undefined,
               length: 2,
               isLeaf: false,
@@ -136,7 +168,7 @@ describe('setTrie', () => {
                 {
                   prev: null,
                   leafCharCodes: null,
-                  key: 'abc',
+                  word: 'abc',
                   value: 111,
                   length: 3,
                   isLeaf: true,
@@ -146,7 +178,7 @@ describe('setTrie', () => {
                 {
                   prev: null,
                   leafCharCodes: null,
-                  key: 'abf',
+                  word: 'abf',
                   value: 333,
                   length: 3,
                   isLeaf: true,
@@ -158,7 +190,7 @@ describe('setTrie', () => {
             {
               prev: null,
               leafCharCodes: [101],
-              key: 'ade',
+              word: 'ade',
               value: 222,
               length: 3,
               isLeaf: true,
@@ -181,14 +213,14 @@ describe('setTrie', () => {
     expect(trie).toEqual(expectedTrie);
   });
 
-  test('preserves overlapping keys', () => {
+  test('preserves overlapping words', () => {
     const trie = createTrie<number>();
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abcdef', 222);
 
     const expectedTrie: Trie<number> = {
       prev: null,
-      key: null,
+      word: null,
       value: undefined,
       leafCharCodes: null,
       length: 0,
@@ -197,7 +229,7 @@ describe('setTrie', () => {
       next: [
         {
           prev: null,
-          key: null,
+          word: null,
           value: undefined,
           leafCharCodes: null,
           length: 1,
@@ -206,7 +238,7 @@ describe('setTrie', () => {
           next: [
             {
               prev: null,
-              key: null,
+              word: null,
               value: undefined,
               leafCharCodes: null,
               length: 2,
@@ -215,7 +247,7 @@ describe('setTrie', () => {
               next: [
                 {
                   prev: null,
-                  key: 'abc',
+                  word: 'abc',
                   value: 111,
                   leafCharCodes: null,
                   length: 3,
@@ -224,7 +256,7 @@ describe('setTrie', () => {
                   next: [
                     {
                       prev: null,
-                      key: 'abcdef',
+                      word: 'abcdef',
                       value: 222,
                       leafCharCodes: [101, 102],
                       length: 6,
@@ -252,7 +284,7 @@ describe('setTrie', () => {
     expect(trie).toEqual(expectedTrie);
   });
 
-  test('sets the shorter key after longer key', () => {
+  test('sets the shorter word after longer word', () => {
     const trie = createTrie<number>();
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abcdef', 222);
@@ -260,7 +292,7 @@ describe('setTrie', () => {
 
     const expectedTrie: Trie<number> = {
       prev: null,
-      key: null,
+      word: null,
       value: undefined,
       length: 0,
       leafCharCodes: null,
@@ -269,7 +301,7 @@ describe('setTrie', () => {
       next: [
         {
           prev: null,
-          key: null,
+          word: null,
           value: undefined,
           length: 1,
           leafCharCodes: null,
@@ -278,7 +310,7 @@ describe('setTrie', () => {
           next: [
             {
               prev: null,
-              key: null,
+              word: null,
               value: undefined,
               length: 2,
               leafCharCodes: null,
@@ -287,7 +319,7 @@ describe('setTrie', () => {
               next: [
                 {
                   prev: null,
-                  key: 'abc',
+                  word: 'abc',
                   value: 111,
                   length: 3,
                   leafCharCodes: null,
@@ -296,7 +328,7 @@ describe('setTrie', () => {
                   next: [
                     {
                       prev: null,
-                      key: null,
+                      word: null,
                       value: undefined,
                       length: 4,
                       leafCharCodes: null,
@@ -305,7 +337,7 @@ describe('setTrie', () => {
                       next: [
                         {
                           prev: null,
-                          key: 'abcde',
+                          word: 'abcde',
                           value: 333,
                           length: 5,
                           leafCharCodes: null,
@@ -314,7 +346,7 @@ describe('setTrie', () => {
                           next: [
                             {
                               prev: null,
-                              key: 'abcdef',
+                              word: 'abcdef',
                               value: 222,
                               length: 6,
                               leafCharCodes: null,

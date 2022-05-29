@@ -2,21 +2,21 @@ import {Trie} from './trie-types';
 import {createTrie} from './createTrie';
 
 /**
- * Sets a new key-value pair to the trie.
+ * Sets a new word-value pair to the trie.
  *
  * @param trie The trie to update.
- * @param key The key of to add to the trie.
- * @param value The value to associate with the key.
+ * @param word The word of to add to the trie.
+ * @param value The value to associate with the word.
  *
  * @template T The type of values stored in a trie.
  */
-export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
+export function setTrie<T>(trie: Trie<T>, word: string, value: T): void {
 
-  const keyLength = key.length;
+  const wordLength = word.length;
 
   let i = 0;
 
-  forking: while (i < keyLength) {
+  forking: while (i < wordLength) {
 
     forkTrie(trie);
 
@@ -27,7 +27,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
     const next = trie.next ||= [];
     const nextCharCodes = trie.nextCharCodes ||= [];
 
-    const charCode = key.charCodeAt(i++);
+    const charCode = word.charCodeAt(i++);
     const j = nextCharCodes.indexOf(charCode);
 
     if (j !== -1) {
@@ -37,7 +37,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
     const leaf = createTrie<T>();
     leaf.prev = trie;
-    leaf.key = trie.key;
+    leaf.word = trie.word;
     leaf.length = trie.length + 1;
 
     trie = leaf;
@@ -58,17 +58,17 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
   forkTrie(trie);
 
-  if (i !== keyLength) {
+  if (i !== wordLength) {
     // noinspection JSMismatchedCollectionQueryUpdate
     const leafCharCodes: number[] = trie.leafCharCodes = [];
 
-    while (i < keyLength) {
-      leafCharCodes.push(key.charCodeAt(i));
+    while (i < wordLength) {
+      leafCharCodes.push(word.charCodeAt(i));
       ++i;
     }
   }
 
-  trie.key = key;
+  trie.word = word;
   trie.value = value;
   trie.length = i;
   trie.isLeaf = true;
@@ -92,12 +92,12 @@ function forkTrie<T>(trie: Trie<T>): void {
   }
 
   leaf.prev = trie;
-  leaf.key = trie.key;
+  leaf.word = trie.word;
   leaf.value = trie.value;
   leaf.length = trie.length;
   leaf.isLeaf = true;
 
-  trie.key = null;
+  trie.word = null;
   trie.value = undefined;
   trie.length -= leafCharCodes.length;
   trie.isLeaf = false;

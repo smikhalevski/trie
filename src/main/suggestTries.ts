@@ -3,10 +3,10 @@ import {searchTrie} from './searchTrie';
 import {collectTrieLeafs} from './collectTrieLeafs';
 
 /**
- * Returns the list of trie leafs that have keys that start with `input.substring(startIndex, endIndex)`.
+ * Returns the list of trie leafs that have words that start with `input.substring(startIndex, endIndex)`.
  *
  * @param trie The trie to search in.
- * @param input The string to search for the key from the `trie`.
+ * @param input The string to search for the word from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
  * @param leafs The mutable in-out array of leafs that is populated during `trie` traversal.
@@ -15,7 +15,7 @@ import {collectTrieLeafs} from './collectTrieLeafs';
  * @template T The type of values stored in a trie.
  */
 export function suggestTries<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
-  const lastTrie = searchTrie(trie, input, startIndex, endIndex, true);
+  const root = searchTrie(trie, input, startIndex, endIndex, true);
 
-  return lastTrie?.length === endIndex - startIndex ? collectTrieLeafs(lastTrie, leafs) : leafs;
+  return root !== undefined && root.length === endIndex - startIndex ? collectTrieLeafs(root, leafs) : leafs;
 }

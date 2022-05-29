@@ -21,9 +21,9 @@ export interface Trie<T> {
   nextCharCodes: number[] | null;
 
   /**
-   * The key that the leaf trie represents or `null` for a non-leaf trie.
+   * The word that the leaf trie represents or `null` for a non-leaf trie.
    */
-  key: string | null;
+  word: string | null;
 
   /**
    * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf `isLeaf`} to distinguish between
@@ -42,7 +42,7 @@ export interface Trie<T> {
   isLeaf: boolean;
 
   /**
-   * Remaining chars that the key at this trie contains. `null` if node is not a leaf or if it has {@link next `next`}.
+   * Remaining chars that the word at this trie contains. `null` if node is not a leaf or if it has {@link next `next`}.
    */
   leafCharCodes: number[] | null;
 }
