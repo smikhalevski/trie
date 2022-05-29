@@ -93,6 +93,6 @@ describe('searchTrie', () => {
 
     const leafNode = searchTrie(node, 'abe', 0);
 
-    expect(leafNode).toBeUndefined();
+    expect(leafNode).toBe(null);
   });
 });
