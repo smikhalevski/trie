@@ -13,5 +13,5 @@ import {searchTrie} from './searchTrie';
 export function getTrie<T>(trie: Trie<T>, word: string): Trie<T> | null {
   const leaf = searchTrie(trie, word, 0);
 
-  return leaf !== null && leaf.word!.length === word.length ? leaf : null;
+  return leaf === null || leaf.word !== word ? null : leaf;
 }

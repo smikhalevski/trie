@@ -17,5 +17,5 @@ import {collectTrieLeafs} from './collectTrieLeafs';
 export function suggestTries<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
   const root = searchTrie(trie, input, startIndex, endIndex, true);
 
-  return root !== null && root.length === endIndex - startIndex ? collectTrieLeafs(root, leafs) : leafs;
+  return root === null || root.length !== endIndex - startIndex ? leafs : collectTrieLeafs(root, leafs);
 }
