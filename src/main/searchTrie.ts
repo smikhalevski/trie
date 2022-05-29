@@ -19,8 +19,9 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
 
   // The longest matched leaf
   let leaf: Trie<T> | null = null;
+  let i = startIndex;
 
-  search: for (let i = startIndex; i < endIndex; ++i) {
+  search: while (i < endIndex) {
 
     if (trie.isLeaf) {
       const leafCharCodes = trie.leafCharCodes;
@@ -69,6 +70,7 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
         b = j - 1;
       } else {
         trie = next[j];
+        ++i;
         continue search;
       }
     }
@@ -77,7 +79,7 @@ export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, 
     break;
   }
 
-  if (partial || leaf === null && trie.isLeaf && trie.length <= endIndex - startIndex) {
+  if (partial || trie.isLeaf && trie.length <= i - startIndex) {
     return trie;
   }
 
