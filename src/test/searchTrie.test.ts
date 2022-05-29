@@ -93,6 +93,6 @@ describe('searchTrie', () => {
 
     const leaf = searchTrie(trie, 'abe', 0);
 
-    expect(leaf).toBe(null);
+    expect(leaf).toBe(undefined);
   });
 });
