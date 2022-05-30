@@ -1,21 +1,21 @@
 import {Trie} from './trie-types';
 
 /**
- * Searches for a leaf that describes the longest substring from `input` starting at `offset`.
+ * Finds a leaf with the key that matches the longest substring from `input` that starts at `startIndex`.
  *
- * The maximum word length read from the `input` is `endIndex - startIndex`.
+ * The maximum key length that is read from the `input` is `endIndex - startIndex`.
  *
  * @param trie The trie to search in.
- * @param input The string to search for the word from the `trie`.
+ * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
  * @param partial If `false` then the longest matched leaf is returned. Otherwise, the longest matched trie is returned
  * that may not be a leaf.
- * @returns A leaf in the trie or `undefined` if there's no matching word in the `trie`.
+ * @returns A leaf in the trie or `undefined` if there's no matching key in the `trie`.
  *
  * @template T The type of values stored in a trie.
  */
-export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | null {
+export function findTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | null {
 
   // The longest matched leaf
   let leaf: Trie<T> | null = null;

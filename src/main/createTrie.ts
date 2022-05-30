@@ -11,7 +11,7 @@ export function createTrie<T>(): Trie<T> {
     prev: null,
     next: null,
     nextCharCodes: null,
-    word: null,
+    key: null,
     value: undefined,
     length: 0,
     isLeaf: false,

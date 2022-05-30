@@ -16,33 +16,33 @@ export interface Trie<T> {
   next: Trie<T>[] | null;
 
   /**
-   * The char codes _in ascending order_ parallel to {@link next `next`}.
+   * The char codes _in ascending order_, parallel to {@link next}.
    */
   nextCharCodes: number[] | null;
 
   /**
-   * The word that the leaf trie represents or `null` for a non-leaf trie.
+   * The key that the leaf trie represents or `null` for a non-leaf trie.
    */
-  word: string | null;
+  key: string | null;
 
   /**
-   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf `isLeaf`} to distinguish between
+   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between
    * leaf and non-leaf tries.
    */
   value: T | undefined;
 
   /**
-   * The length of the prefix described by the trie. Includes {@link leafCharCodes `leafCharCodes`} for leaf tries.
+   * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
    */
   length: number;
 
   /**
-   * `true` if the trie is a leaf and has a {@link value `value`}.
+   * `true` if the trie is a leaf and has a {@link value}.
    */
   isLeaf: boolean;
 
   /**
-   * Remaining chars that the word at this trie contains. `null` if node is not a leaf or if it has {@link next `next`}.
+   * Remaining chars that the key at this trie contains. `null` if node is not a leaf or if it has {@link next}.
    */
   leafCharCodes: number[] | null;
 }

@@ -2,10 +2,10 @@ import {Trie} from './trie-types';
 import {setTrie} from './setTrie';
 
 /**
- * Sets all word-value pairs to the trie.
+ * Sets all key-value pairs to the trie.
  *
  * @param trie The trie to update.
- * @param entries The set of word-value pairs to set.
+ * @param entries The set of key-value pairs to set.
  *
  * @template T The type of values stored in a trie.
  */

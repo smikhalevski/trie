@@ -1,4 +1,4 @@
-import {createTrie, searchTrie, setAllTrie} from '../main';
+import {createTrie, getTrie, setAllTrie} from '../main';
 
 describe('setAllTrie', () => {
 
@@ -6,7 +6,7 @@ describe('setAllTrie', () => {
     const trie = createTrie();
     setAllTrie(trie, [['abc', 111], ['abd', 222]]);
 
-    expect(searchTrie(trie, 'abc', 0)).toBe(trie.next![0]!.next![0]!.next![0]);
-    expect(searchTrie(trie, 'abd', 0)).toBe(trie.next![0]!.next![0]!.next![1]);
+    expect(getTrie(trie, 'abc')).toBe(trie.next![0]!.next![0]!.next![0]);
+    expect(getTrie(trie, 'abd')).toBe(trie.next![0]!.next![0]!.next![1]);
   });
 });
