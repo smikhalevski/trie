@@ -35,9 +35,10 @@ export function deleteTrie(trie: Trie<any>, key: string): boolean {
 
     // Prev always includes leaf under next
     const arr = prev.next!;
+    const arrLength = arr.length;
 
     // Prev with a single leaf if also a leaf or a trie root, otherwise it was already compacted
-    if (arr.length === 1) {
+    if (arrLength === 1) {
       prev.next = null;
       prev.nextCharCodes = null;
       return true;
@@ -47,7 +48,7 @@ export function deleteTrie(trie: Trie<any>, key: string): boolean {
     arr.splice(i, 1);
     prev.nextCharCodes!.splice(i, 1);
 
-    if (prev.isLeaf || arr.length !== 1) {
+    if (prev.isLeaf || arrLength > 2) {
       // Prev cannot be compacted, since it's a leaf itself, or it has multiple nexts available after leaf deletion
       return true;
     }
