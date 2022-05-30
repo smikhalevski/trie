@@ -9,7 +9,7 @@ import {setTrie} from './setTrie';
  *
  * @template T The type of values stored in a trie.
  */
-export function setAllTrie<T>(trie: Trie<T>, entries: [string, T][] | ArrayLike<[string, T]> | Iterable<[string, T]>): void {
+export function setTrieEntries<T>(trie: Trie<T>, entries: [string, T][] | ArrayLike<[string, T]> | Iterable<[string, T]>): void {
   for (const [word, value] of Array.from(entries)) {
     setTrie(trie, word, value);
   }

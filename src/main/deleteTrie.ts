@@ -1,8 +1,15 @@
 import {Trie} from './trie-types';
-import {findTrie} from './findTrie';
+import {searchTrie} from './searchTrie';
 
+/**
+ * Deletes the key and its corresponding value from the trie.
+ *
+ * @param trie The trie to update.
+ * @param key The key to delete from the trie.
+ * @returns `true` if the key was deleted or `false` if the key wasn't found in the trie.
+ */
 export function deleteTrie(trie: Trie<any>, key: string): boolean {
-  let leaf = findTrie(trie, key, 0)!;
+  let leaf = searchTrie(trie, key);
 
   if (leaf === null || leaf.key !== key) {
     return false;
@@ -60,7 +67,7 @@ export function deleteTrie(trie: Trie<any>, key: string): boolean {
 
   // Merge leaf into prev
   while (leaf.prev !== null) {
-    const prev = leaf.prev;
+    const prev: Trie<any> = leaf.prev;
 
     if (prev.isLeaf || prev.next!.length > 1) {
       // Cannot be compacted, since prev is a leaf itself, or prev has multiple leafs

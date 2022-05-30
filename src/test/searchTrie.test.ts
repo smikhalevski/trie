@@ -1,19 +1,19 @@
-import {createTrie, findTrie, setTrie} from '../main';
+import {createTrie, searchTrie, setTrie} from '../main';
 
-describe('findTrie', () => {
+describe('searchTrie', () => {
 
   test('finds a trie with zero-length key', () => {
     const trie = createTrie();
     setTrie(trie, '', 111);
 
-    expect(findTrie(trie, '', 0)).toBe(trie);
+    expect(searchTrie(trie, '', 0)).toBe(trie);
   });
 
   test('finds a trie with one entry', () => {
     const trie = createTrie();
     setTrie(trie, 'abc', 111);
 
-    expect(findTrie(trie, 'abc', 0)).toBe(trie);
+    expect(searchTrie(trie, 'abc', 0)).toBe(trie);
   });
 
   test('finds a trie with two leaf entries', () => {
@@ -21,7 +21,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abd', 222);
 
-    const leaf = findTrie(trie, 'abd', 0);
+    const leaf = searchTrie(trie, 'abd', 0);
 
     expect(leaf).toBe(trie.next![0].next![0].next![1]);
   });
@@ -31,7 +31,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abdef', 222);
 
-    const leaf = findTrie(trie, 'abdef', 0);
+    const leaf = searchTrie(trie, 'abdef', 0);
 
     expect(leaf).toBe(trie.next![0].next![0].next![1]);
   });
@@ -41,7 +41,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abdef', 222);
 
-    const leaf = findTrie(trie, 'qqqabdef', 3);
+    const leaf = searchTrie(trie, 'qqqabdef', 3);
 
     expect(leaf).toBe(trie.next![0].next![0].next![1]);
   });
@@ -51,7 +51,7 @@ describe('findTrie', () => {
     setTrie(trie, 'ab', 111);
     setTrie(trie, 'abc', 222);
 
-    const leaf = findTrie(trie, 'abc', 0, 2);
+    const leaf = searchTrie(trie, 'abc', 0, 2);
 
     expect(leaf).toBe(trie.next![0].next![0]);
   });
@@ -61,7 +61,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abcdef', 222);
 
-    const leaf = findTrie(trie, 'abcdef', 0);
+    const leaf = searchTrie(trie, 'abcdef', 0);
 
     expect(leaf).toBe(trie.next![0].next![0].next![0].next![0]);
   });
@@ -71,7 +71,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abcdef', 222);
 
-    const leaf = findTrie(trie, 'abcdeZZZ', 0);
+    const leaf = searchTrie(trie, 'abcdeZZZ', 0);
 
     expect(leaf).toBe(trie.next![0].next![0].next![0]);
   });
@@ -81,7 +81,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abcdef', 222);
 
-    const leaf = findTrie(trie, 'abcde', 0);
+    const leaf = searchTrie(trie, 'abcde', 0);
 
     expect(leaf).toBe(trie.next![0].next![0].next![0]);
   });
@@ -91,7 +91,7 @@ describe('findTrie', () => {
     setTrie(trie, 'abc', 111);
     setTrie(trie, 'abdef', 222);
 
-    const leaf = findTrie(trie, 'abe', 0);
+    const leaf = searchTrie(trie, 'abe', 0);
 
     expect(leaf).toBe(null);
   });
@@ -100,13 +100,13 @@ describe('findTrie', () => {
     const trie = createTrie();
     setTrie(trie, 'abcd', 111);
 
-    expect(findTrie(trie, 'abc', 0)).toBe(null);
+    expect(searchTrie(trie, 'abc', 0)).toBe(null);
   });
 
   test('returns root for a matching leaf root', () => {
     const trie = createTrie();
     setTrie(trie, 'abc', 111);
 
-    expect(findTrie(trie, 'abc', 0)).toBe(trie);
+    expect(searchTrie(trie, 'abc', 0)).toBe(trie);
   });
 });

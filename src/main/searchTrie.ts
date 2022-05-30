@@ -15,7 +15,7 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function findTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, partial = false): Trie<T> | null {
+export function searchTrie<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length, partial = false): Trie<T> | null {
 
   // The longest matched leaf
   let leaf: Trie<T> | null = null;

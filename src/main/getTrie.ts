@@ -1,5 +1,5 @@
 import {Trie} from './trie-types';
-import {findTrie} from './findTrie';
+import {searchTrie} from './searchTrie';
 
 /**
  * Returns the leaf that describes the key.
@@ -11,7 +11,7 @@ import {findTrie} from './findTrie';
  * @template T The type of values stored in a trie.
  */
 export function getTrie<T>(trie: Trie<T>, key: string): Trie<T> | null {
-  const leaf = findTrie(trie, key, 0);
+  const leaf = searchTrie(trie, key);
 
   return leaf === null || leaf.key !== key ? null : leaf;
 }

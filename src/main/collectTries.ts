@@ -9,13 +9,13 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function collectTrieLeafs<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<T>[] {
+export function collectTries<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<T>[] {
   if (trie.isLeaf) {
     leafs.push(trie);
   }
   if (trie.next !== null) {
     for (const root of trie.next) {
-      collectTrieLeafs(root, leafs);
+      collectTries(root, leafs);
     }
   }
   return leafs;

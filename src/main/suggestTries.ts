@@ -1,6 +1,6 @@
 import {Trie} from './trie-types';
-import {findTrie} from './findTrie';
-import {collectTrieLeafs} from './collectTrieLeafs';
+import {searchTrie} from './searchTrie';
+import {collectTries} from './collectTries';
 
 /**
  * Returns the list of trie leafs that have keys that start with `input.substring(startIndex, endIndex)`.
@@ -14,8 +14,8 @@ import {collectTrieLeafs} from './collectTrieLeafs';
  *
  * @template T The type of values stored in a trie.
  */
-export function suggestTries<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
-  const root = findTrie(trie, input, startIndex, endIndex, true);
+export function suggestTries<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
+  const root = searchTrie(trie, input, startIndex, endIndex, true);
 
-  return root === null || root.length !== endIndex - startIndex ? leafs : collectTrieLeafs(root, leafs);
+  return root === null || root.length !== endIndex - startIndex ? leafs : collectTries(root, leafs);
 }
