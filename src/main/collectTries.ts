@@ -13,9 +13,12 @@ export function collectTries<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<T>[]
   if (trie.isLeaf) {
     leafs.push(trie);
   }
-  if (trie.next !== null) {
-    for (const root of trie.next) {
-      collectTries(root, leafs);
+
+  const next = trie.next;
+
+  if (next !== null) {
+    for (const charCode in next) {
+      collectTries(next[charCode]!, leafs);
     }
   }
   return leafs;

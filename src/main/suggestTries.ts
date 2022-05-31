@@ -1,5 +1,4 @@
 import {Trie} from './trie-types';
-import {searchTrie} from './searchTrie';
 import {collectTries} from './collectTries';
 
 /**
@@ -14,8 +13,21 @@ import {collectTries} from './collectTries';
  *
  * @template T The type of values stored in a trie.
  */
-export function suggestTries<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
-  const root = searchTrie(trie, input, startIndex, endIndex, true);
+export function suggestTries<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
+  for (let i = startIndex; i < endIndex; ++i) {
 
-  return root === null || root.length !== endIndex - startIndex ? leafs : collectTries(root, leafs);
+    const next = trie.next;
+    if (next === null) {
+      break;
+    }
+
+    const nextTrie = next[input.charCodeAt(i)];
+    if (nextTrie === undefined) {
+      break;
+    }
+
+    trie = nextTrie;
+  }
+
+  return collectTries(trie, leafs);
 }

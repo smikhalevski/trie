@@ -13,12 +13,12 @@ export interface Trie<T> {
   /**
    * A list of sub-tries that describe consequent substrings.
    */
-  next: Trie<T>[] | null;
+  next: Record<number, Trie<T> | undefined> | null;
 
-  /**
-   * The char codes _in ascending order_, parallel to {@link next}.
-   */
-  nextCharCodes: number[] | null;
+  // /**
+  //  * The keys of {@link next}.
+  //  */
+  // nextCharCodes: number[] | null;
 
   /**
    * The key that the leaf trie represents or `null` for a non-leaf trie.

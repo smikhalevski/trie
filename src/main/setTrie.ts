@@ -16,7 +16,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
   let i = 0;
 
-  forking: while (i < keyLength) {
+  while (i < keyLength) {
 
     forkTrie(trie);
 
@@ -24,35 +24,21 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       break;
     }
 
-    const next = trie.next ||= [];
-    const nextCharCodes = trie.nextCharCodes ||= [];
-
+    const next = trie.next ||= {};
     const charCode = key.charCodeAt(i++);
-    const j = nextCharCodes.indexOf(charCode);
+    const nextTrie = next[charCode];
 
-    if (j !== -1) {
-      trie = next[j];
+    if (nextTrie !== undefined) {
+      trie = nextTrie;
       continue;
     }
 
-    const leaf = createTrie<T>();
+    const leaf = next[charCode] = createTrie<T>();
     leaf.prev = trie;
     leaf.key = trie.key;
     leaf.length = trie.length + 1;
 
     trie = leaf;
-
-    // Keep next* sorted in ascending order
-    for (let k = 0; k < nextCharCodes.length; ++k) {
-      if (nextCharCodes[k] > charCode) {
-        next.splice(k, 0, leaf);
-        nextCharCodes.splice(k, 0, charCode);
-        break forking;
-      }
-    }
-
-    next.push(leaf);
-    nextCharCodes.push(charCode);
     break;
   }
 
@@ -63,8 +49,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
     const leafCharCodes: number[] = trie.leafCharCodes = [];
 
     while (i < keyLength) {
-      leafCharCodes.push(key.charCodeAt(i));
-      ++i;
+      leafCharCodes.push(key.charCodeAt(i++));
     }
   }
 
@@ -82,10 +67,6 @@ function forkTrie<T>(trie: Trie<T>): void {
   }
 
   const leaf = createTrie<T>();
-  const leafCharCode = leafCharCodes[0];
-
-  trie.next = [leaf];
-  trie.nextCharCodes = [leafCharCode];
 
   if (leafCharCodes.length > 1) {
     leaf.leafCharCodes = leafCharCodes.slice(1);
@@ -97,6 +78,7 @@ function forkTrie<T>(trie: Trie<T>): void {
   leaf.length = trie.length;
   leaf.isLeaf = true;
 
+  trie.next = {[leafCharCodes[0]]: leaf};
   trie.key = null;
   trie.value = undefined;
   trie.length -= leafCharCodes.length;

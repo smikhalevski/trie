@@ -11,7 +11,7 @@ import {searchTrie} from './searchTrie';
  * @template T The type of values stored in a trie.
  */
 export function getTrie<T>(trie: Trie<T>, key: string): Trie<T> | null {
-  const leaf = searchTrie(trie, key);
+  const leaf = searchTrie(trie, key, 0);
 
   return leaf === null || leaf.key !== key ? null : leaf;
 }
