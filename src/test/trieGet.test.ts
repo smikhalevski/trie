@@ -12,9 +12,8 @@ describe('trieGet', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abdef', 222);
 
-    expect(trieGet(trie, 'abc')).toBe(trie.next![A]!.next![B]!.next![C]);
-    expect(trieGet(trie, 'abdef')).toBe(trie.next![A]!.next![B]!.next![D]);
-    expect(trieGet(trie, 'abd')).toBe(undefined);
+    expect(trieGet(trie, 'abc')).toBe(trie[A]![B]![C]);
+    expect(trieGet(trie, 'abdef')).toBe(trie[A]![B]![D]);
   });
 
   test('returns undefined is the key not found', () => {

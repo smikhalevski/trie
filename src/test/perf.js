@@ -1,6 +1,6 @@
 const TrieSearch = require('trie-search');
 const dictionary = require('./dictionary.json');
-const {trieSet, trieCreate, trieDelete, trieSearch} = require('../../lib/index-cjs');
+const {trieSet, trieCreate, trieDelete, trieSearch, trieGet} = require('../../lib/index-cjs');
 
 const wordsByLengthMap = new Map();
 
@@ -67,6 +67,26 @@ describe('Search (miss, shorter key)', () => {
       test('trie-search', (measure) => {
         measure(() => {
           libTrieSearch.search(word);
+        });
+      });
+    });
+  });
+}, {warmupIterationCount: 100, targetRme: 0.001});
+
+describe('Get', () => {
+  wordsByLengthMap.forEach(([word], length) => {
+
+    describe('Key length ' + length, () => {
+
+      test('Map', (measure) => {
+        measure(() => {
+          libMap.get(word);
+        });
+      });
+
+      test('@smikhalevski/trie', (measure) => {
+        measure(() => {
+          trieGet(trie, word);
         });
       });
     });

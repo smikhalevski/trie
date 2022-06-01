@@ -19,8 +19,8 @@ describe('trieSuggest', () => {
     const suggestions = trieSuggest(trie, 'abc', 0);
 
     expect(suggestions).toEqual([
-      trie.next![A]!.next![B]!.next![C],
-      trie.next![A]!.next![B]!.next![C]!.next![D],
+      trie[A]![B]![C],
+      trie[A]![B]![C]![D],
     ]);
   });
 
@@ -35,9 +35,9 @@ describe('trieSuggest', () => {
     const suggestions = trieSuggest(trie, 'abcd', 0, 2);
 
     expect(suggestions).toEqual([
-      trie.next![A]!.next![B]!.next![C],
-      trie.next![A]!.next![B]!.next![C]!.next![D],
-      trie.next![A]!.next![B]!.next![E],
+      trie[A]![B]![C],
+      trie[A]![B]![C]![D],
+      trie[A]![B]![E],
     ]);
   });
 });

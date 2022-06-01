@@ -14,7 +14,7 @@ describe('trieSetEntries', () => {
       ['abd', 222],
     ]);
 
-    expect(trieGet(trie, 'abc')).toBe(trie.next![A]!.next![B]!.next![C]);
-    expect(trieGet(trie, 'abd')).toBe(trie.next![A]!.next![B]!.next![D]);
+    expect(trieGet(trie, 'abc')).toBe(trie[A]![B]![C]);
+    expect(trieGet(trie, 'abd')).toBe(trie[A]![B]![D]);
   });
 });
