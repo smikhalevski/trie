@@ -15,11 +15,6 @@ export interface Trie<T> {
    */
   next: Record<number, Trie<T> | undefined> | null;
 
-  // /**
-  //  * The keys of {@link next}.
-  //  */
-  // nextCharCodes: number[] | null;
-
   /**
    * The key that the leaf trie represents or `null` for a non-leaf trie.
    */

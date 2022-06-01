@@ -1,7 +1,7 @@
 import {Trie} from './trie-types';
 
 /**
- * Finds a leaf with the key that matches the longest substring from `input` that starts at `startIndex`.
+ * Searches for a leaf with the key that matches the longest substring from `input` that starts at `startIndex`.
  *
  * @param trie The trie to search in.
  * @param input The string to search for the key from the `trie`.
@@ -11,9 +11,9 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function searchTrie<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length): Trie<T> | null {
+export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length): Trie<T> | undefined {
 
-  let leaf: Trie<T> | null = null;
+  let leaf: Trie<T> | undefined;
   let i = startIndex;
 
   while (i < endIndex) {

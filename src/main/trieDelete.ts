@@ -1,5 +1,5 @@
 import {Trie} from './trie-types';
-import {searchTrie} from './searchTrie';
+import {trieGet} from './trieGet';
 
 /**
  * Deletes the key and its corresponding value from the trie.
@@ -8,10 +8,10 @@ import {searchTrie} from './searchTrie';
  * @param key The key to delete from the trie.
  * @returns `true` if the key was deleted or `false` if the key wasn't found in the trie.
  */
-export function deleteTrie(trie: Trie<any>, key: string): boolean {
-  // let leaf = searchTrie(trie, key);
+export function trieDelete(trie: Trie<any>, key: string): boolean {
+  // let leaf = trieGet(trie, key);
   //
-  // if (leaf === null || leaf.key !== key) {
+  // if (leaf == undefined) {
   //   return false;
   // }
   //

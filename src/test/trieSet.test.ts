@@ -1,4 +1,4 @@
-import {createTrie, setTrie, Trie} from '../main';
+import {trieCreate, trieSet, Trie} from '../main';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -7,11 +7,11 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 const F = 'f'.charCodeAt(0);
 
-describe('setTrie', () => {
+describe('trieSet', () => {
 
   test('sets an empty key to a trie', () => {
-    const trie = createTrie();
-    setTrie(trie, '', 111);
+    const trie = trieCreate();
+    trieSet(trie, '', 111);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -27,9 +27,9 @@ describe('setTrie', () => {
   });
 
   test('sets an empty key and a non-empty key to a trie', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, '', 111);
-    setTrie(trie, 'a', 222);
+    const trie = trieCreate<number>();
+    trieSet(trie, '', 111);
+    trieSet(trie, 'a', 222);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -57,8 +57,8 @@ describe('setTrie', () => {
   });
 
   test('sets the value to an empty trie', () => {
-    const trie = createTrie();
-    setTrie(trie, 'abc', 111);
+    const trie = trieCreate();
+    trieSet(trie, 'abc', 111);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -74,9 +74,9 @@ describe('setTrie', () => {
   });
 
   test('sets the value to an non-empty trie', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'abc', 111);
-    setTrie(trie, 'ade', 222);
+    const trie = trieCreate<number>();
+    trieSet(trie, 'abc', 111);
+    trieSet(trie, 'ade', 222);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -126,10 +126,10 @@ describe('setTrie', () => {
   });
 
   test('sets the value to a deep trie trie', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'abc', 111);
-    setTrie(trie, 'ade', 222);
-    setTrie(trie, 'abf', 333);
+    const trie = trieCreate<number>();
+    trieSet(trie, 'abc', 111);
+    trieSet(trie, 'ade', 222);
+    trieSet(trie, 'abf', 333);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -201,9 +201,9 @@ describe('setTrie', () => {
   });
 
   test('preserves overlapping keys', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'abc', 111);
-    setTrie(trie, 'abcdef', 222);
+    const trie = trieCreate<number>();
+    trieSet(trie, 'abc', 111);
+    trieSet(trie, 'abcdef', 222);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -267,10 +267,10 @@ describe('setTrie', () => {
   });
 
   test('sets the shorter key after longer key', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'abc', 111);
-    setTrie(trie, 'abcdef', 222);
-    setTrie(trie, 'abcde', 333);
+    const trie = trieCreate<number>();
+    trieSet(trie, 'abc', 111);
+    trieSet(trie, 'abcdef', 222);
+    trieSet(trie, 'abcde', 333);
 
     const expectedTrie: Trie<number> = {
       prev: null,

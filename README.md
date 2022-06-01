@@ -14,78 +14,78 @@ npm install --save-prod @smikhalevski/trie
 argument to various functions that traverse and update the data structure.
 
 ```ts
-const trie = createTrie();
+const trie = trieCreate();
 // → {key: null, value: null, …}
 ```
 
-### `setTrie(trie, key, value)` and `setTrieEntries(key, entries)`
+### `trieSet(trie, key, value)` and `trieSetEntries(key, entries)`
 
 Populates a trie by setting an individual key-value or by setting a bulk list of entries.
 
 ```ts
-setTrie(trie, 'foo', 123);
+trieSet(trie, 'foo', 123);
 
-setTrieEntries(trie, new Map([['bar', 456], ['baz', 789]]));
+trieSetEntries(trie, new Map([['bar', 456], ['baz', 789]]));
 ```
 
-### `getTrie(trie, key)`
+### `trieGet(trie, key)`
 
 Retrieve a trie leaf that was associated with a particular key.
 
 ```ts
-getTrie(trie, 'foo'); // → {key: 'foo', value: 123, …}
+trieGet(trie, 'foo'); // → {key: 'foo', value: 123, …}
 
-getTrie(trie, 'woopsie'); // → undefined
+trieGet(trie, 'woopsie'); // → undefined
 ```
 
-### `deleteTrie(trie, key)`
+### `trieDelete(trie, key)`
 
 Deletes the key and its corresponding value from the trie. Returns `true` if the key was deleted and `false` if there's
 no such key in the trie.
 
 ```ts
-setTrie('foo', 123);
+trieSet('foo', 123);
 
-deleteTrie(trie, 'foo'); // → true
+trieDelete(trie, 'foo'); // → true
 
-deleteTrie(trie, 'foo'); // → false
+trieDelete(trie, 'foo'); // → false
 ```
 
-### `searchTrie(trie, input, startIndex?, endIndex?)`
+### `trieSearch(trie, input, startIndex?, endIndex?)`
 
 Finds a trie leaf with the key that matches the longest substring from `input` starting at `startIndex`.
 
 ```ts
-setTrie(trie, 'foo', 123);
-setTrie(trie, 'foobar', 456);
+trieSet(trie, 'foo', 123);
+trieSet(trie, 'foobar', 456);
 
-searchTrie(trie, '___foobar___', 3);
+trieSearch(trie, '___foobar___', 3);
 // → {key: 'foobar', value: 456, length: 6, …}
 
-searchTrie(trie, '___fooba___', 3);
+trieSearch(trie, '___fooba___', 3);
 // → {key: 'foo', value: 123, length: 3, …}
 ```
 
 You can provide the `endIndex` to limit the searched key length:
 
 ```ts
-searchTrie(trie, '___foobar___', 3, 4);
+trieSearch(trie, '___foobar___', 3, 4);
 // → {key: 'foo', value: 123, length: 3, …}
 ```
 
-### `suggestTries(trie, input, startIndex?, endIndex?, leafs?)`
+### `trieSuggest(trie, input, startIndex?, endIndex?, leafs?)`
 
 Returns the list of trie leafs that have keys that start with `input.substring(startIndex, endIndex)`.
 
 ```ts
-setTrie(trie, 'hotdog', 123);
-setTrie(trie, 'hotter', 456);
-setTrie(trie, 'hottest', 456);
+trieSet(trie, 'hotdog', 123);
+trieSet(trie, 'hotter', 456);
+trieSet(trie, 'hottest', 456);
 
-suggestTries(trie, 'hot'); 
+trieSuggest(trie, 'hot'); 
 // → [{key: 'hotdog', …}, {key: 'hotter', …}, {key: 'hottest', …}]
 
-suggestTries(trie, 'hott'); 
+trieSuggest(trie, 'hott'); 
 // → [{key: 'hotter', …}, {key: 'hottest', …}]
 ```
 

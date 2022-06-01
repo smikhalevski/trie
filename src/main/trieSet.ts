@@ -1,5 +1,5 @@
 import {Trie} from './trie-types';
-import {createTrie} from './createTrie';
+import {trieCreate} from './trieCreate';
 
 /**
  * Sets a new key-value pair to the trie.
@@ -10,7 +10,7 @@ import {createTrie} from './createTrie';
  *
  * @template T The type of values stored in a trie.
  */
-export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
+export function trieSet<T>(trie: Trie<T>, key: string, value: T): void {
 
   const keyLength = key.length;
 
@@ -18,7 +18,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
 
   while (i < keyLength) {
 
-    forkTrie(trie);
+    trieFork(trie);
 
     if (!trie.isLeaf && trie.next === null) {
       break;
@@ -33,7 +33,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
       continue;
     }
 
-    const leaf = next[charCode] = createTrie<T>();
+    const leaf = next[charCode] = trieCreate<T>();
     leaf.prev = trie;
     leaf.key = trie.key;
     leaf.length = trie.length + 1;
@@ -42,7 +42,7 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
     break;
   }
 
-  forkTrie(trie);
+  trieFork(trie);
 
   if (i !== keyLength) {
     // noinspection JSMismatchedCollectionQueryUpdate
@@ -59,14 +59,14 @@ export function setTrie<T>(trie: Trie<T>, key: string, value: T): void {
   trie.isLeaf = true;
 }
 
-function forkTrie<T>(trie: Trie<T>): void {
+function trieFork<T>(trie: Trie<T>): void {
   const leafCharCodes = trie.leafCharCodes;
 
   if (leafCharCodes === null) {
     return;
   }
 
-  const leaf = createTrie<T>();
+  const leaf = trieCreate<T>();
 
   if (leafCharCodes.length > 1) {
     leaf.leafCharCodes = leafCharCodes.slice(1);

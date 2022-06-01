@@ -1,26 +1,26 @@
-import {createTrie, deleteTrie, setTrie, Trie} from '../main';
+import {trieCreate, trieDelete, trieSet, Trie} from '../main';
 
 describe('deleteTrie', () => {
 
   test('returns false if key is not found', () => {
-    const trie = createTrie();
-    setTrie(trie, 'abcd', 111);
+    const trie = trieCreate();
+    trieSet(trie, 'abcd', 111);
 
-    expect(deleteTrie(trie, 'abc')).toBe(false);
+    expect(trieDelete(trie, 'abc')).toBe(false);
   });
 
   test('returns true if key was deleted', () => {
-    const trie = createTrie();
-    setTrie(trie, 'abc', 111);
+    const trie = trieCreate();
+    trieSet(trie, 'abc', 111);
 
-    expect(deleteTrie(trie, 'abc')).toBe(true);
-    expect(deleteTrie(trie, 'abc')).toBe(false);
+    expect(trieDelete(trie, 'abc')).toBe(true);
+    expect(trieDelete(trie, 'abc')).toBe(false);
   });
 
   test('deletes by an empty key', () => {
-    const trie = createTrie();
-    setTrie(trie, '', 111);
-    deleteTrie(trie, '');
+    const trie = trieCreate();
+    trieSet(trie, '', 111);
+    trieDelete(trie, '');
 
     expect(trie).toEqual(<Trie<number>>{
       prev: null,
@@ -35,10 +35,10 @@ describe('deleteTrie', () => {
   });
 
   test('flattens the tree after deleting an intermediate leaf', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'ab', 111);
-    setTrie(trie, 'abc', 222);
-    deleteTrie(trie, 'ab');
+    const trie = trieCreate<number>();
+    trieSet(trie, 'ab', 111);
+    trieSet(trie, 'abc', 222);
+    trieDelete(trie, 'ab');
 
     expect(trie).toEqual(<Trie<number>>{
       prev: null,
@@ -53,11 +53,11 @@ describe('deleteTrie', () => {
   });
 
   test('deletes an intermediate leaf', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'ab', 111);
-    setTrie(trie, 'abc', 222);
-    setTrie(trie, 'abd', 333);
-    deleteTrie(trie, 'ab');
+    const trie = trieCreate<number>();
+    trieSet(trie, 'ab', 111);
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abd', 333);
+    trieDelete(trie, 'ab');
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -124,11 +124,11 @@ describe('deleteTrie', () => {
   });
 
   test('deletes a leaf that has siblings', () => {
-    const trie = createTrie<number>();
-    setTrie(trie, 'ab', 111);
-    setTrie(trie, 'abc', 222);
-    setTrie(trie, 'abd', 333);
-    deleteTrie(trie, 'abd');
+    const trie = trieCreate<number>();
+    trieSet(trie, 'ab', 111);
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abd', 333);
+    trieDelete(trie, 'abd');
 
     const expectedTrie: Trie<number> = {
       prev: null,
