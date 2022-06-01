@@ -7,10 +7,11 @@ import {trieCreate} from './trieCreate';
  * @param trie The trie to update.
  * @param key The key of to add to the trie.
  * @param value The value to associate with the key.
+ * @returns The leaf to which the value was set.
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSet<T>(trie: Trie<T>, key: string, value: T): void {
+export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
   const keyLength = key.length;
 
@@ -57,6 +58,8 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): void {
   trie.value = value;
   trie.length = i;
   trie.isLeaf = true;
+
+  return trie;
 }
 
 function trieFork<T>(trie: Trie<T>): void {

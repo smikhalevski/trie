@@ -11,7 +11,8 @@ describe('trieSet', () => {
 
   test('sets an empty key to a trie', () => {
     const trie = trieCreate();
-    trieSet(trie, '', 111);
+
+    expect(trieSet(trie, '', 111)).toBe(trie);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -28,8 +29,9 @@ describe('trieSet', () => {
 
   test('sets an empty key and a non-empty key to a trie', () => {
     const trie = trieCreate<number>();
-    trieSet(trie, '', 111);
-    trieSet(trie, 'a', 222);
+
+    expect(trieSet(trie, '', 111)).toBe(trie);
+    expect(trieSet(trie, 'a', 222)).toBe(trie.next![A]);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -75,8 +77,9 @@ describe('trieSet', () => {
 
   test('sets the value to an non-empty trie', () => {
     const trie = trieCreate<number>();
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'ade', 222);
+
+    expect(trieSet(trie, 'abc', 111)).toBe(trie);
+    expect(trieSet(trie, 'ade', 222)).toBe(trie.next![A]!.next![D]);
 
     const expectedTrie: Trie<number> = {
       prev: null,
