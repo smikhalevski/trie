@@ -1,4 +1,4 @@
-import {trieCreate, trieSet, Trie} from '../main';
+import {Trie, trieCreate, trieSet} from '../main';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -21,7 +21,7 @@ describe('trieSet', () => {
       value: 111,
       length: 0,
       isLeaf: true,
-      next: null,
+      nextCharCodes: null,
     };
 
     expect(trie).toEqual(expectedTrie);
@@ -31,7 +31,7 @@ describe('trieSet', () => {
     const trie = trieCreate<number>();
 
     expect(trieSet(trie, '', 111)).toBe(trie);
-    expect(trieSet(trie, 'a', 222)).toBe(trie.next![A]);
+    expect(trieSet(trie, 'a', 222)).toBe(trie[A]);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -40,20 +40,19 @@ describe('trieSet', () => {
       value: 111,
       length: 0,
       isLeaf: true,
-      next: {
-        [A]: {
-          prev: null,
-          leafCharCodes: null,
-          key: 'a',
-          value: 222,
-          length: 1,
-          isLeaf: true,
-          next: null,
-        },
+      nextCharCodes: [A],
+      [A]: {
+        prev: null,
+        leafCharCodes: null,
+        key: 'a',
+        value: 222,
+        length: 1,
+        isLeaf: true,
+        nextCharCodes: null,
       },
     };
 
-    expectedTrie.next![A]!.prev = trie;
+    expectedTrie[A]!.prev = trie;
 
     expect(trie).toEqual(expectedTrie);
   });
@@ -69,7 +68,7 @@ describe('trieSet', () => {
       value: 111,
       length: 3,
       isLeaf: true,
-      next: null,
+      nextCharCodes: null,
     };
 
     expect(trie).toEqual(expectedTrie);
@@ -79,7 +78,7 @@ describe('trieSet', () => {
     const trie = trieCreate<number>();
 
     expect(trieSet(trie, 'abc', 111)).toBe(trie);
-    expect(trieSet(trie, 'ade', 222)).toBe(trie.next![A]!.next![D]);
+    expect(trieSet(trie, 'ade', 222)).toBe(trie![A]![D]);
 
     const expectedTrie: Trie<number> = {
       prev: null,
@@ -88,42 +87,40 @@ describe('trieSet', () => {
       leafCharCodes: null,
       length: 0,
       isLeaf: false,
-      next: {
-        [A]: {
+      nextCharCodes: [A],
+      [A]: {
+        prev: null,
+        key: null,
+        value: undefined,
+        leafCharCodes: null,
+        length: 1,
+        isLeaf: false,
+        nextCharCodes: [B, D],
+        [B]: {
           prev: null,
-          key: null,
-          value: undefined,
-          leafCharCodes: null,
-          length: 1,
-          isLeaf: false,
-          next: {
-            [B]: {
-              prev: null,
-              leafCharCodes: [C],
-              key: 'abc',
-              value: 111,
-              length: 3,
-              isLeaf: true,
-              next: null,
-            },
-            [D]: {
-              prev: null,
-              leafCharCodes: [E],
-              key: 'ade',
-              value: 222,
-              length: 3,
-              isLeaf: true,
-              next: null,
-            }
-          },
+          leafCharCodes: [C],
+          key: 'abc',
+          value: 111,
+          length: 3,
+          isLeaf: true,
+          nextCharCodes: null,
         },
+        [D]: {
+          prev: null,
+          leafCharCodes: [E],
+          key: 'ade',
+          value: 222,
+          length: 3,
+          isLeaf: true,
+          nextCharCodes: null,
+        }
       },
     };
 
-    expectedTrie.next![A]!.prev = trie;
+    expectedTrie[A]!.prev = trie;
 
-    expectedTrie.next![A]!.next![B]!.prev = expectedTrie.next![A]!;
-    expectedTrie.next![A]!.next![D]!.prev = expectedTrie.next![A]!;
+    expectedTrie[A]![B]!.prev = expectedTrie[A]!;
+    expectedTrie[A]![D]!.prev = expectedTrie[A]!;
 
     expect(trie).toEqual(expectedTrie);
   });
@@ -141,64 +138,61 @@ describe('trieSet', () => {
       value: undefined,
       length: 0,
       isLeaf: false,
-      next: {
-        [A]: {
+      nextCharCodes: [A],
+      [A]: {
+        prev: null,
+        leafCharCodes: null,
+        key: null,
+        value: undefined,
+        length: 1,
+        isLeaf: false,
+        nextCharCodes: [B, D],
+        [B]: {
           prev: null,
           leafCharCodes: null,
           key: null,
           value: undefined,
-          length: 1,
+          length: 2,
           isLeaf: false,
-          next: {
-            [B]: {
-              prev: null,
-              leafCharCodes: null,
-              key: null,
-              value: undefined,
-              length: 2,
-              isLeaf: false,
-              next: {
-                [C]: {
-                  prev: null,
-                  leafCharCodes: null,
-                  key: 'abc',
-                  value: 111,
-                  length: 3,
-                  isLeaf: true,
-                  next: null,
-                },
-                [F]: {
-                  prev: null,
-                  leafCharCodes: null,
-                  key: 'abf',
-                  value: 333,
-                  length: 3,
-                  isLeaf: true,
-                  next: null,
-                }
-              },
-            },
-            [D]: {
-              prev: null,
-              leafCharCodes: [E],
-              key: 'ade',
-              value: 222,
-              length: 3,
-              isLeaf: true,
-              next: null,
-            },
+          nextCharCodes: [C, F],
+          [C]: {
+            prev: null,
+            leafCharCodes: null,
+            key: 'abc',
+            value: 111,
+            length: 3,
+            isLeaf: true,
+            nextCharCodes: null,
           },
+          [F]: {
+            prev: null,
+            leafCharCodes: null,
+            key: 'abf',
+            value: 333,
+            length: 3,
+            isLeaf: true,
+            nextCharCodes: null,
+          }
+        },
+        [D]: {
+          prev: null,
+          leafCharCodes: [E],
+          key: 'ade',
+          value: 222,
+          length: 3,
+          isLeaf: true,
+          nextCharCodes: null,
         },
       },
     };
 
-    expectedTrie.next![A]!.prev = trie;
+    expectedTrie[A]!.prev = trie;
 
-    expectedTrie.next![A]!.next![B]!.prev = expectedTrie.next![A]!;
-    expectedTrie.next![A]!.next![D]!.prev = expectedTrie.next![A]!;
+    expectedTrie[A]![B]!.prev = expectedTrie[A]!;
+    expectedTrie[A]![D]!.prev = expectedTrie[A]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.prev = expectedTrie.next![A]!.next![B]!;
-    expectedTrie.next![A]!.next![B]!.next![F]!.prev = expectedTrie.next![A]!.next![B]!;
+    expectedTrie[A]![B]![C]!.prev = expectedTrie[A]![B]!;
+    expectedTrie[A]![B]![F]!.prev = expectedTrie[A]![B]!;
 
     expect(trie).toEqual(expectedTrie);
   });
@@ -215,56 +209,52 @@ describe('trieSet', () => {
       leafCharCodes: null,
       length: 0,
       isLeaf: false,
-      next: {
-        [A]: {
+      nextCharCodes: [A],
+      [A]: {
+        prev: null,
+        key: null,
+        value: undefined,
+        leafCharCodes: null,
+        length: 1,
+        isLeaf: false,
+        nextCharCodes: [B],
+        [B]: {
           prev: null,
           key: null,
           value: undefined,
           leafCharCodes: null,
-          length: 1,
+          length: 2,
           isLeaf: false,
-          next: {
-            [B]: {
+          nextCharCodes: [C],
+          [C]: {
+            prev: null,
+            key: 'abc',
+            value: 111,
+            leafCharCodes: null,
+            length: 3,
+            isLeaf: true,
+            nextCharCodes: [D],
+            [D]: {
               prev: null,
-              key: null,
-              value: undefined,
-              leafCharCodes: null,
-              length: 2,
-              isLeaf: false,
-              next: {
-                [C]: {
-                  prev: null,
-                  key: 'abc',
-                  value: 111,
-                  leafCharCodes: null,
-                  length: 3,
-                  isLeaf: true,
-                  next: {
-                    [D]: {
-                      prev: null,
-                      key: 'abcdef',
-                      value: 222,
-                      leafCharCodes: [E, F],
-                      length: 6,
-                      isLeaf: true,
-                      next: null,
-                    },
-                  },
-                },
-              },
+              key: 'abcdef',
+              value: 222,
+              leafCharCodes: [E, F],
+              length: 6,
+              isLeaf: true,
+              nextCharCodes: null,
             },
           },
         },
       },
     };
 
-    expectedTrie.next![A]!.prev = trie;
+    expectedTrie[A]!.prev = trie;
 
-    expectedTrie.next![A]!.next![B]!.prev = expectedTrie.next![A]!;
+    expectedTrie[A]![B]!.prev = expectedTrie[A]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.prev = expectedTrie.next![A]!.next![B]!;
+    expectedTrie[A]![B]![C]!.prev = expectedTrie[A]![B]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!.prev = expectedTrie.next![A]!.next![B]!.next![C]!;
+    expectedTrie[A]![B]![C]![D]!.prev = expectedTrie[A]![B]![C]!;
 
     expect(trie).toEqual(expectedTrie);
   });
@@ -282,61 +272,55 @@ describe('trieSet', () => {
       length: 0,
       leafCharCodes: null,
       isLeaf: false,
-      next: {
-        [A]: {
+      nextCharCodes: [A],
+      [A]: {
+        prev: null,
+        key: null,
+        value: undefined,
+        length: 1,
+        leafCharCodes: null,
+        isLeaf: false,
+        nextCharCodes: [B],
+        [B]: {
           prev: null,
           key: null,
           value: undefined,
-          length: 1,
+          length: 2,
           leafCharCodes: null,
           isLeaf: false,
-          next: {
-            [B]: {
+          nextCharCodes: [C],
+          [C]: {
+            prev: null,
+            key: 'abc',
+            value: 111,
+            length: 3,
+            leafCharCodes: null,
+            isLeaf: true,
+            nextCharCodes: [D],
+            [D]: {
               prev: null,
               key: null,
               value: undefined,
-              length: 2,
+              length: 4,
               leafCharCodes: null,
               isLeaf: false,
-              next: {
-                [C]: {
+              nextCharCodes: [E],
+              [E]: {
+                prev: null,
+                key: 'abcde',
+                value: 333,
+                length: 5,
+                leafCharCodes: null,
+                isLeaf: true,
+                nextCharCodes: [F],
+                [F]: {
                   prev: null,
-                  key: 'abc',
-                  value: 111,
-                  length: 3,
+                  key: 'abcdef',
+                  value: 222,
+                  length: 6,
                   leafCharCodes: null,
                   isLeaf: true,
-                  next: {
-                    [D]: {
-                      prev: null,
-                      key: null,
-                      value: undefined,
-                      length: 4,
-                      leafCharCodes: null,
-                      isLeaf: false,
-                      next: {
-                        [E]: {
-                          prev: null,
-                          key: 'abcde',
-                          value: 333,
-                          length: 5,
-                          leafCharCodes: null,
-                          isLeaf: true,
-                          next: {
-                            [F]: {
-                              prev: null,
-                              key: 'abcdef',
-                              value: 222,
-                              length: 6,
-                              leafCharCodes: null,
-                              next: null,
-                              isLeaf: true,
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
+                  nextCharCodes: null,
                 },
               },
             },
@@ -345,17 +329,17 @@ describe('trieSet', () => {
       },
     };
 
-    expectedTrie.next![A]!.prev = trie;
+    expectedTrie[A]!.prev = trie;
 
-    expectedTrie.next![A]!.next![B]!.prev = expectedTrie.next![A]!;
+    expectedTrie[A]![B]!.prev = expectedTrie[A]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.prev = expectedTrie.next![A]!.next![B]!;
+    expectedTrie[A]![B]![C]!.prev = expectedTrie[A]![B]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!.prev = expectedTrie.next![A]!.next![B]!.next![C]!;
+    expectedTrie[A]![B]![C]![D]!.prev = expectedTrie[A]![B]![C]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!.next![E]!.prev = expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!;
+    expectedTrie[A]![B]![C]![D]![E]!.prev = expectedTrie[A]![B]![C]![D]!;
 
-    expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!.next![E]!.next![F]!.prev = expectedTrie.next![A]!.next![B]!.next![C]!.next![D]!.next![E]!;
+    expectedTrie[A]![B]![C]![D]![E]![F]!.prev = expectedTrie[A]![B]![C]![D]![E]!;
 
     expect(trie).toEqual(expectedTrie);
   });

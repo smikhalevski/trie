@@ -21,20 +21,23 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
     trieFork(trie);
 
-    if (!trie.isLeaf && trie.next === null) {
+    if (!trie.isLeaf && trie.nextCharCodes === null) {
       break;
     }
 
-    const next = trie.next ||= {};
     const charCode = key.charCodeAt(i++);
-    const nextTrie = next[charCode];
+    const next = trie[charCode];
 
-    if (nextTrie !== undefined) {
-      trie = nextTrie;
+    if (next !== undefined) {
+      trie = next;
       continue;
     }
 
-    const leaf = next[charCode] = trieCreate<T>();
+    const nextCharCodes = trie.nextCharCodes ||= [];
+
+    nextCharCodes.push(charCode);
+
+    const leaf = trie[charCode] = trieCreate<T>();
     leaf.prev = trie;
     leaf.key = trie.key;
     leaf.length = trie.length + 1;
@@ -70,10 +73,7 @@ function trieFork<T>(trie: Trie<T>): void {
   }
 
   const leaf = trieCreate<T>();
-
-  if (leafCharCodes.length > 1) {
-    leaf.leafCharCodes = leafCharCodes.slice(1);
-  }
+  const leafCharCode = leafCharCodes[0];
 
   leaf.prev = trie;
   leaf.key = trie.key;
@@ -81,7 +81,12 @@ function trieFork<T>(trie: Trie<T>): void {
   leaf.length = trie.length;
   leaf.isLeaf = true;
 
-  trie.next = {[leafCharCodes[0]]: leaf};
+  if (leafCharCodes.length > 1) {
+    leaf.leafCharCodes = leafCharCodes.slice(1);
+  }
+
+  trie[leafCharCode] = leaf;
+  trie.nextCharCodes = [leafCharCode];
   trie.key = null;
   trie.value = undefined;
   trie.length -= leafCharCodes.length;

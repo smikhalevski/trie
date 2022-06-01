@@ -26,9 +26,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abd', 222);
 
-    const leaf = trieSearch(trie, 'abd', 0);
-
-    expect(leaf).toBe(trie.next![A]!.next![B]!.next![D]!);
+    expect(trieSearch(trie, 'abd', 0)).toBe(trie[A]![B]![D]!);
   });
 
   test('finds the trie with the longest key', () => {
@@ -36,9 +34,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
-    const leaf = trieSearch(trie, 'abcdef', 0);
-
-    expect(leaf).toBe(trie.next![A]!.next![B]!.next![C]!.next![D]!);
+    expect(trieSearch(trie, 'abcdef', 0)).toBe(trie[A]![B]![C]![D]!);
   });
 
   test('finds a trie at startIndex', () => {
@@ -46,9 +42,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abdef', 222);
 
-    const leaf = trieSearch(trie, 'qqqabdef', 3);
-
-    expect(leaf).toBe(trie.next![A]!.next![B]!.next![D]!);
+    expect(trieSearch(trie, 'qqqabdef', 3)).toBe(trie[A]![B]![D]!);
   });
 
   test('finds the trie with the shortest matched key', () => {
@@ -56,9 +50,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
-    const leaf = trieSearch(trie, 'abcdeZZZ', 0);
-
-    expect(leaf).toBe(trie.next![A]!.next![B]!.next![C]!);
+    expect(trieSearch(trie, 'abcdeZZZ', 0)).toBe(trie[A]![B]![C]!);
   });
 
   test('finds the trie with the shortest key on string end', () => {
@@ -66,9 +58,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
-    const leaf = trieSearch(trie, 'abcde', 0);
-
-    expect(leaf).toBe(trie.next![A]!.next![B]!.next![C]!);
+    expect(trieSearch(trie, 'abcde', 0)).toBe(trie[A]![B]![C]!);
   });
 
   test('returns undefined if no trie was found', () => {
@@ -76,9 +66,7 @@ describe('trieSearch', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abdef', 222);
 
-    const leaf = trieSearch(trie, 'abe', 0);
-
-    expect(leaf).toBe(undefined);
+    expect(trieSearch(trie, 'abe', 0)).toBe(undefined);
   });
 
   test('returns undefined for a non-matching leaf root', () => {
@@ -86,12 +74,5 @@ describe('trieSearch', () => {
     trieSet(trie, 'abcd', 111);
 
     expect(trieSearch(trie, 'abc', 0)).toBe(undefined);
-  });
-
-  test('returns root for a matching leaf root', () => {
-    const trie = trieCreate();
-    trieSet(trie, 'abc', 111);
-
-    expect(trieSearch(trie, 'abc', 0)).toBe(trie);
   });
 });

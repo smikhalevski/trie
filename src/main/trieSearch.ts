@@ -17,18 +17,19 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, 
   let i = startIndex;
 
   while (i < endIndex) {
-    const next = trie.next;
 
-    if (next !== null) {
-      const nextTrie = next[input.charCodeAt(i)];
+    if (trie.nextCharCodes !== null) {
 
       if (trie.isLeaf) {
         leaf = trie;
       }
-      if (nextTrie === undefined) {
+
+      const next = trie[input.charCodeAt(i)];
+      if (next === undefined) {
         break;
       }
-      trie = nextTrie;
+
+      trie = next;
       ++i;
 
     } else {

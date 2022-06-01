@@ -5,15 +5,14 @@
  */
 export interface Trie<T> {
 
+  [charCode: number]: Trie<T> | undefined;
+
+  nextCharCodes: number[] | null;
+
   /**
    * The previous trie or `null` if this trie is a root.
    */
   prev: Trie<T> | null;
-
-  /**
-   * A list of sub-tries that describe consequent substrings.
-   */
-  next: Record<number, Trie<T> | undefined> | null;
 
   /**
    * The key that the leaf trie represents or `null` for a non-leaf trie.

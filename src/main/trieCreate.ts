@@ -8,8 +8,8 @@ import {Trie} from './trie-types';
  */
 export function trieCreate<T>(): Trie<T> {
   return {
+    nextCharCodes: null,
     prev: null,
-    next: null,
     key: null,
     value: undefined,
     length: 0,

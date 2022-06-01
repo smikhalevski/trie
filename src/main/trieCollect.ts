@@ -10,16 +10,16 @@ import {Trie} from './trie-types';
  * @template T The type of values stored in a trie.
  */
 export function trieCollect<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<T>[] {
-  if (trie.isLeaf) {
-    leafs.push(trie);
-  }
-
-  const next = trie.next;
-
-  if (next !== null) {
-    for (const charCode in next) {
-      trieCollect(next[charCode]!, leafs);
-    }
-  }
+  // if (trie.isLeaf) {
+  //   leafs.push(trie);
+  // }
+  //
+  // const next = trie.next;
+  //
+  // if (next !== null) {
+  //   for (const charCode in next) {
+  //     trieCollect(next[charCode]!, leafs);
+  //   }
+  // }
   return leafs;
 }
