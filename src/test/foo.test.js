@@ -15,6 +15,8 @@ const trie = trieCreate();
 dictionary.forEach((word) => {
   trieSet(trie, word, word);
 });
+// eval("%CollectGarbage('all')");
+
 console.log('trie', (process.memoryUsage().heapUsed - startHeapUsed2) / 1024 / 1024);
 
 // console.log(%HaveSameMap( trie[97], trie[98] ))
@@ -27,4 +29,5 @@ dictionary.forEach((word) => {
 console.log('Map', (process.memoryUsage().heapUsed - startHeapUsed3) / 1024 / 1024);
 
 
-test('', () => {})
+// test('', () => {
+// })

@@ -12,11 +12,9 @@ import {trieCreate} from './trieCreate';
  * @template T The type of values stored in a trie.
  */
 export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
-
   const keyLength = key.length;
 
   let i = 0;
-
   while (i < keyLength) {
 
     trieFork(trie);
@@ -63,6 +61,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
   trieFork(trie);
 
+  // Put remaining key chars into a leafCharCodes array
   if (i !== keyLength) {
     // noinspection JSMismatchedCollectionQueryUpdate
     const leafCharCodes: number[] = trie.leafCharCodes = [];
@@ -79,32 +78,45 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   return trie;
 }
 
+/**
+ * Forks a leaf from a trie (most trie properties are omitted for clarity):
+ * ```
+ * {leafCharCodes: [A, B]} → {A: {leafCharCodes: [B]}}
+ * ```
+ *
+ * @param trie The trie to fork.
+ * @returns The forked leaf or the original trie.
+ */
 function trieFork<T>(trie: Trie<T>): void {
   const leafCharCodes = trie.leafCharCodes;
 
   if (leafCharCodes === null) {
+    // Nothing to fork
     return;
   }
 
+  const next = trie.next;
   const leafCharCode = leafCharCodes[0];
 
+  // Create a leaf and attach it to the trie
   const leaf = trieCreate<T>();
   leaf.charCode = leafCharCode;
   leaf.left = trie;
   leaf.prev = trie;
-  leaf.next = trie.next;
+  leaf.next = next;
   leaf.key = trie.key;
   leaf.value = trie.value;
   leaf.isLeaf = true;
-
-  if (trie.next !== null) {
-    trie.next.prev = leaf;
-  }
 
   if (leafCharCodes.length !== 1) {
     leaf.leafCharCodes = leafCharCodes.slice(1);
   }
 
+  if (next !== null) {
+    next.prev = leaf;
+  }
+
+  // The trie is no longer a leaf
   trie[leafCharCode] = leaf;
   trie.next = leaf;
   trie.last = leaf;
