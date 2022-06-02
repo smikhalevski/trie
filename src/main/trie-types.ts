@@ -29,17 +29,20 @@ export interface Trie<T> {
    */
   hasContinuation: boolean;
 
-  // prev: Trie<T> | null;
-  //
-  // /**
-  //  * The next trie in the ordered linked list of all tries.
-  //  */
-  // next: Trie<T> | null;
-  //
-  // /**
-  //  * The last child of the trie.
-  //  */
-  // last: Trie<T> | null;
+  /**
+   * The preceding trie in the linked list of all nodes in the trie.
+   */
+  prev: Trie<T> | null;
+
+  /**
+   * The next trie in the linked list of all nodes in the trie.
+   */
+  next: Trie<T> | null;
+
+  /**
+   * The last child of the trie.
+   */
+  last: Trie<T> | null;
 
   /**
    * The key that the leaf trie represents or `null` for a non-leaf trie.
@@ -62,8 +65,8 @@ export interface Trie<T> {
    */
   leafCharCodes: number[] | null;
 
-  /**
-   * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
-   */
-  length: number;
+  // /**
+  //  * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
+  //  */
+  // length: number;
 }
