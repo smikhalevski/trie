@@ -24,12 +24,12 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, 
         leaf = trie;
       }
 
-      const next = trie[input.charCodeAt(i)];
-      if (next === undefined) {
+      const right = trie[input.charCodeAt(i)];
+      if (right === undefined) {
         break;
       }
 
-      trie = next;
+      trie = right;
       ++i;
 
     } else {

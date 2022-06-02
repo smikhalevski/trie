@@ -15,51 +15,55 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   const keyLength = key.length;
 
   let i = 0;
-  while (i < keyLength) {
 
-    trieFork(trie);
+  // Non-leaf node without last is possible only for an empty trie
+  if (trie.isLeaf || trie.last !== null) {
+    while (i < keyLength) {
 
-    if (!trie.isLeaf && trie.last === null) {
+      trieFork(trie);
+
+      const leafCharCode = key.charCodeAt(i++);
+      const right = trie[leafCharCode];
+
+      if (right !== undefined) {
+        trie = right;
+        continue;
+      }
+
+      const leaf = trieCreate<T>();
+      leaf.charCode = leafCharCode;
+      leaf.left = trie;
+      leaf.key = trie.key;
+
+      trie[leafCharCode] = leaf;
+
+      if (trie.last === null) {
+        leaf.prev = trie;
+        leaf.next = trie.next;
+        trie.next = leaf;
+        trie.last = leaf;
+      } else {
+        leaf.prev = trie.last;
+        leaf.next = trie.last.next;
+
+        if (trie.last.next !== null) {
+          trie.last.next.prev = leaf;
+        }
+
+        trie.last.next = leaf;
+        trie.last = leaf;
+      }
+
+      trie = leaf;
       break;
     }
 
-    const leafCharCode = key.charCodeAt(i++);
-    const right = trie[leafCharCode];
-
-    if (right !== undefined) {
-      trie = right;
-      continue;
-    }
-
-    const leaf = trieCreate<T>();
-    leaf.charCode = leafCharCode;
-    leaf.left = trie;
-    leaf.key = trie.key;
-
-    trie[leafCharCode] = leaf;
-
-    if (trie.last === null) {
-      leaf.prev = trie;
-      leaf.next = trie.next;
-      trie.next = leaf;
-      trie.last = leaf;
-    } else {
-      leaf.prev = trie.last;
-      leaf.next = trie.last.next;
-
-      if (trie.last.next !== null) {
-        trie.last.next.prev = leaf;
-      }
-
-      trie.last.next = leaf;
-      trie.last = leaf;
-    }
-
-    trie = leaf;
-    break;
+    trieFork(trie);
   }
 
-  trieFork(trie);
+  trie.key = key;
+  trie.value = value;
+  trie.isLeaf = true;
 
   // Put remaining key chars into a leafCharCodes array
   if (i !== keyLength) {
@@ -70,10 +74,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       leafCharCodes.push(key.charCodeAt(i++));
     }
   }
-
-  trie.key = key;
-  trie.value = value;
-  trie.isLeaf = true;
 
   return trie;
 }
