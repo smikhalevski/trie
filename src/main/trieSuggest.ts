@@ -14,20 +14,20 @@ import {trieCollect} from './trieCollect';
  * @template T The type of values stored in a trie.
  */
 export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
-  // for (let i = startIndex; i < endIndex; ++i) {
-  //
-  //   const next = trie.next;
-  //   if (next === null) {
-  //     break;
-  //   }
-  //
-  //   const nextTrie = next[input.charCodeAt(i)];
-  //   if (nextTrie === undefined) {
-  //     break;
-  //   }
-  //
-  //   trie = nextTrie;
-  // }
+
+  for (let i = startIndex; i < endIndex; ++i) {
+
+    if (trie.nextCharCodes === null) {
+      break;
+    }
+
+    const next = trie[input.charCodeAt(i)];
+    if (next === undefined) {
+      break;
+    }
+
+    trie = next;
+  }
 
   return trieCollect(trie, leafs);
 }

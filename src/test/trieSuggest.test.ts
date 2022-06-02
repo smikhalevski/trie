@@ -24,6 +24,24 @@ describe('trieSuggest', () => {
     ]);
   });
 
+  test('suggests leaf tries for an empty key', () => {
+    const trie = trieCreate();
+
+    trieSet(trie, 'abcd', 111);
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abef', 333);
+    trieSet(trie, 'a', 444);
+
+    const suggestions = trieSuggest(trie, '', 0);
+
+    expect(suggestions).toEqual([
+      trie[A],
+      trie[A]![B]![C],
+      trie[A]![B]![C]![D],
+      trie[A]![B]![E],
+    ]);
+  });
+
   test('suggests leaf tries with endIndex', () => {
     const trie = trieCreate();
 

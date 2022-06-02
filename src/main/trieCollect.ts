@@ -1,7 +1,7 @@
 import {Trie} from './trie-types';
 
 /**
- * Collects all trie leafs contained under the `trie` root.
+ * Collects all trie leafs contained under the `trie` root, including `trie` itself if it is a leaf.
  *
  * @param trie The trie root.
  * @param leafs The mutable in-out array of leafs that is populated during `trie` traversal.
