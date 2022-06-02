@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import {Trie} from '../trie-types';
 import {trieCollect} from './trieCollect';
 
 /**
@@ -15,19 +15,19 @@ import {trieCollect} from './trieCollect';
  */
 export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
 
-  for (let i = startIndex; i < endIndex; ++i) {
-
-    if (trie.nextCharCodes === null) {
-      break;
-    }
-
-    const next = trie[input.charCodeAt(i)];
-    if (next === undefined) {
-      break;
-    }
-
-    trie = next;
-  }
+  // for (let i = startIndex; i < endIndex; ++i) {
+  //
+  //   if (trie.nextCharCodes === null) {
+  //     break;
+  //   }
+  //
+  //   const next = trie[input.charCodeAt(i)];
+  //   if (next === undefined) {
+  //     break;
+  //   }
+  //
+  //   trie = next;
+  // }
 
   return trieCollect(trie, leafs);
 }

@@ -1,5 +1,5 @@
-import {Trie} from './trie-types';
-import {trieSet} from './trieSet';
+import {Trie} from '../trie-types';
+import {trieSet} from '../trieSet';
 
 /**
  * Sets all key-value pairs to the trie.

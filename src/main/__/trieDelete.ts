@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import {Trie} from '../trie-types';
 import {trieGet} from './trieGet';
 
 /**

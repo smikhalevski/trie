@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import {Trie} from '../trie-types';
 
 /**
  * Returns the leaf that describes the key.

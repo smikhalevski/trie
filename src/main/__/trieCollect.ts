@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import {Trie} from '../trie-types';
 
 /**
  * Collects all trie leafs contained under the `trie` root, including `trie` itself if it is a leaf.
@@ -10,16 +10,16 @@ import {Trie} from './trie-types';
  * @template T The type of values stored in a trie.
  */
 export function trieCollect<T>(trie: Trie<T>, leafs: Trie<T>[] = []): Trie<T>[] {
-  if (trie.isLeaf) {
-    leafs.push(trie);
-  }
-
-  const nextCharCodes = trie.nextCharCodes;
-  if (nextCharCodes !== null) {
-    for (const charCode of nextCharCodes) {
-      trieCollect(trie[charCode]!, leafs);
-    }
-  }
+  // if (trie.isLeaf) {
+  //   leafs.push(trie);
+  // }
+  //
+  // const nextCharCodes = trie.nexts;
+  // if (nextCharCodes !== null) {
+  //   for (const charCode of nextCharCodes) {
+  //     trieCollect(trie[charCode]!, leafs);
+  //   }
+  // }
 
   return leafs;
 }
