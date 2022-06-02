@@ -18,8 +18,7 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, 
 
   while (i < endIndex) {
 
-    // if (trie.nexts !== null) {
-    if (trie.hasContinuation) {
+    if (trie.last !== null) {
 
       if (trie.isLeaf) {
         leaf = trie;

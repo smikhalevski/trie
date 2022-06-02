@@ -21,7 +21,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
     trieFork(trie);
 
-    if (!trie.isLeaf && !trie.hasContinuation) {
+    if (!trie.isLeaf && trie.last === null) {
       break;
     }
 
@@ -39,7 +39,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     leaf.key = trie.key;
 
     trie[leafCharCode] = leaf;
-    trie.hasContinuation = true;
 
     if (trie.last === null) {
       leaf.prev = trie;
@@ -107,7 +106,6 @@ function trieFork<T>(trie: Trie<T>): void {
   }
 
   trie[leafCharCode] = leaf;
-  trie.hasContinuation = true;
   trie.next = leaf;
   trie.last = leaf;
   trie.key = null;

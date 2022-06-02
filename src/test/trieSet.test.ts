@@ -16,7 +16,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: false,
       left: null,
       prev: null,
       next: null,
@@ -38,7 +37,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: true,
       left: null,
       prev: null,
       next: null,
@@ -49,7 +47,6 @@ describe('trieSet', () => {
       leafCharCodes: null,
       [A]: {
         charCode: A,
-        hasContinuation: false,
         left: null,
         prev: null,
         next: null,
@@ -76,7 +73,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: false,
       left: null,
       prev: null,
       next: null,
@@ -98,7 +94,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: true,
       left: null,
       prev: null,
       next: null,
@@ -109,7 +104,6 @@ describe('trieSet', () => {
       leafCharCodes: null,
       [A]: {
         charCode: A,
-        hasContinuation: true,
         left: null,
         prev: null,
         next: null,
@@ -120,7 +114,6 @@ describe('trieSet', () => {
         leafCharCodes: null,
         [B]: {
           charCode: B,
-          hasContinuation: false,
           left: null,
           prev: null,
           next: null,
@@ -132,7 +125,6 @@ describe('trieSet', () => {
         },
         [D]: {
           charCode: D,
-          hasContinuation: false,
           left: null,
           prev: null,
           next: null,
@@ -171,7 +163,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: true,
       left: null,
       prev: null,
       next: null,
@@ -182,7 +173,6 @@ describe('trieSet', () => {
       leafCharCodes: null,
       [A]: {
         charCode: A,
-        hasContinuation: true,
         left: null,
         prev: null,
         next: null,
@@ -193,7 +183,6 @@ describe('trieSet', () => {
         leafCharCodes: null,
         [B]: {
           charCode: B,
-          hasContinuation: true,
           left: null,
           prev: null,
           next: null,
@@ -204,7 +193,6 @@ describe('trieSet', () => {
           leafCharCodes: null,
           [C]: {
             charCode: C,
-            hasContinuation: false,
             left: null,
             prev: null,
             next: null,
@@ -216,7 +204,6 @@ describe('trieSet', () => {
           },
           [F]: {
             charCode: F,
-            hasContinuation: false,
             left: null,
             prev: null,
             next: null,
@@ -229,7 +216,6 @@ describe('trieSet', () => {
         },
         [D]: {
           charCode: D,
-          hasContinuation: false,
           left: null,
           prev: null,
           next: null,
@@ -276,7 +262,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: true,
       left: null,
       prev: null,
       next: null,
@@ -287,7 +272,6 @@ describe('trieSet', () => {
       leafCharCodes: null,
       [A]: {
         charCode: A,
-        hasContinuation: true,
         left: null,
         prev: null,
         next: null,
@@ -298,7 +282,6 @@ describe('trieSet', () => {
         leafCharCodes: null,
         [B]: {
           charCode: B,
-          hasContinuation: true,
           left: null,
           prev: null,
           next: null,
@@ -309,7 +292,6 @@ describe('trieSet', () => {
           leafCharCodes: null,
           [C]: {
             charCode: C,
-            hasContinuation: true,
             left: null,
             prev: null,
             next: null,
@@ -320,7 +302,6 @@ describe('trieSet', () => {
             leafCharCodes: null,
             [D]: {
               charCode: D,
-              hasContinuation: false,
               left: null,
               prev: null,
               next: null,
@@ -367,7 +348,6 @@ describe('trieSet', () => {
 
     const result: Trie<number> = {
       charCode: -1,
-      hasContinuation: true,
       left: null,
       prev: null,
       next: null,
@@ -378,7 +358,6 @@ describe('trieSet', () => {
       leafCharCodes: null,
       [A]: {
         charCode: A,
-        hasContinuation: true,
         left: null,
         prev: null,
         next: null,
@@ -389,7 +368,6 @@ describe('trieSet', () => {
         leafCharCodes: null,
         [B]: {
           charCode: B,
-          hasContinuation: true,
           left: null,
           prev: null,
           next: null,
@@ -400,7 +378,6 @@ describe('trieSet', () => {
           leafCharCodes: null,
           [C]: {
             charCode: C,
-            hasContinuation: true,
             left: null,
             prev: null,
             next: null,
@@ -411,7 +388,6 @@ describe('trieSet', () => {
             leafCharCodes: null,
             [D]: {
               charCode: D,
-              hasContinuation: true,
               left: null,
               prev: null,
               next: null,
@@ -422,7 +398,6 @@ describe('trieSet', () => {
               leafCharCodes: null,
               [E]: {
                 charCode: E,
-                hasContinuation: true,
                 left: null,
                 prev: null,
                 next: null,
@@ -433,7 +408,6 @@ describe('trieSet', () => {
                 leafCharCodes: null,
                 [F]: {
                   charCode: F,
-                  hasContinuation: false,
                   left: null,
                   prev: null,
                   next: null,

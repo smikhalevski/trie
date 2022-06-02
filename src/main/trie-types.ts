@@ -15,11 +15,6 @@ export interface Trie<T> {
   charCode: number;
 
   /**
-   * `true` if this trie has subsequent trie nodes.
-   */
-  hasContinuation: boolean;
-
-  /**
    * The preceding trie or `null` if this trie is a root.
    */
   left: Trie<T> | null;
