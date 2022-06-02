@@ -59,7 +59,7 @@ describe('deleteTrie', () => {
   //   trieSet(trie, 'abd', 333);
   //   trieDelete(trie, 'ab');
   //
-  //   const expectedTrie: Trie<number> = {
+  //   const result: Trie<number> = {
   //     prev: null,
   //     key: null,
   //     value: undefined,
@@ -113,14 +113,14 @@ describe('deleteTrie', () => {
   //     ],
   //   };
   //
-  //   expectedTrie.next![0].prev = trie;
+  //   result.next![0].prev = trie;
   //
-  //   expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
+  //   result.next![0].next![0].prev = result.next![0];
   //
-  //   expectedTrie.next![0].next![0].next![0].prev = expectedTrie.next![0].next![0];
-  //   expectedTrie.next![0].next![0].next![1].prev = expectedTrie.next![0].next![0];
+  //   result.next![0].next![0].next![0].prev = result.next![0].next![0];
+  //   result.next![0].next![0].next![1].prev = result.next![0].next![0];
   //
-  //   expect(trie).toEqual(expectedTrie);
+  //   expect(trie).toEqual(result);
   // });
   //
   // test('deletes a leaf that has siblings', () => {
@@ -130,7 +130,7 @@ describe('deleteTrie', () => {
   //   trieSet(trie, 'abd', 333);
   //   trieDelete(trie, 'abd');
   //
-  //   const expectedTrie: Trie<number> = {
+  //   const result: Trie<number> = {
   //     prev: null,
   //     key: null,
   //     value: undefined,
@@ -175,12 +175,12 @@ describe('deleteTrie', () => {
   //     ],
   //   };
   //
-  //   expectedTrie.next![0].prev = trie;
+  //   result.next![0].prev = trie;
   //
-  //   expectedTrie.next![0].next![0].prev = expectedTrie.next![0];
+  //   result.next![0].next![0].prev = result.next![0];
   //
-  //   expectedTrie.next![0].next![0].next![0].prev = expectedTrie.next![0].next![0];
+  //   result.next![0].next![0].next![0].prev = result.next![0].next![0];
   //
-  //   expect(trie).toEqual(expectedTrie);
+  //   expect(trie).toEqual(result);
   });
 });

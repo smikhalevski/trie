@@ -8,9 +8,9 @@ import {Trie} from './trie-types';
  */
 export function trieCreate<T>(): Trie<T> {
   return {
-    left: null,
     charCode: -1,
     hasContinuation: false,
+    left: null,
     prev: null,
     next: null,
     last: null,
@@ -18,6 +18,5 @@ export function trieCreate<T>(): Trie<T> {
     value: undefined,
     isLeaf: false,
     leafCharCodes: null,
-    // length: 0,
   };
 }

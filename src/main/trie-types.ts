@@ -10,16 +10,6 @@
 export interface Trie<T> {
 
   /**
-   * Mapping from char code to the subsequent children.
-   */
-  [charCode: number]: Trie<T> | undefined;
-
-  /**
-   * The preceding trie or `null` if this trie is a root.
-   */
-  left: Trie<T> | null;
-
-  /**
    * The char code in {@link left} that is associated with this trie, or -1 if trie has no {@link left}.
    */
   charCode: number;
@@ -28,6 +18,16 @@ export interface Trie<T> {
    * `true` if this trie has subsequent trie nodes.
    */
   hasContinuation: boolean;
+
+  /**
+   * The preceding trie or `null` if this trie is a root.
+   */
+  left: Trie<T> | null;
+
+  /**
+   * Mapping from char code to the subsequent children.
+   */
+  [charCode: number]: Trie<T> | undefined;
 
   /**
    * The preceding trie in the linked list of all nodes in the trie.
@@ -64,9 +64,4 @@ export interface Trie<T> {
    * Remaining chars that the key at this trie contains. `null` if node isn't a leaf or if it has a continuation.
    */
   leafCharCodes: number[] | null;
-
-  // /**
-  //  * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
-  //  */
-  // length: number;
 }
