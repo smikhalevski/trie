@@ -25,44 +25,35 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       const keyCharCode = key.charCodeAt(i++);
       const trieLast = trie.last;
 
-      if (trieLast !== null) {
+      // The prev node if we would have to insert a new leaf now
+      let prev = trie;
 
-        // Try to proceed to the consequent child
+      if (trieLast !== null) {
+        prev = trieLast;
+
         const child = trie[keyCharCode];
         if (child !== undefined) {
           trie = child;
           continue;
         }
-
-        // Reached a trie that has children but doesn't have a required consequent child, the trie has children
-        const leaf = trieCreate<T>();
-        leaf.charCode = keyCharCode;
-        leaf.parent = trie;
-        leaf.prev = trieLast;
-        leaf.next = trieLast.next;
-
-        if (trieLast.next) {
-          trieLast.next.prev = leaf;
-        }
-
-        trie = trie[keyCharCode] = trie.last = trieLast.next = leaf;
-        break;
-
-      } else {
-        // Reached the leaf that cannot be forked, the trie has no children, so append a new leaf
-        const leaf = trieCreate<T>();
-        leaf.charCode = keyCharCode;
-        leaf.parent = leaf.prev = trie;
-        leaf.next = trie.next;
-
-        trie = trie[keyCharCode] = trie.next = trie.last = leaf;
-        break;
       }
+
+      const leaf = trieCreate<T>();
+      leaf.charCode = keyCharCode;
+      leaf.parent = trie;
+      leaf.prev = prev;
+      leaf.next = prev.next;
+
+      if (prev.next !== null) {
+        prev.next.prev = leaf;
+      }
+
+      trie = trie[keyCharCode] = trie.last = prev.next = leaf;
+      break;
     }
   }
 
   if (i === keyLength) {
-    // Found the trie that matches the key exactly, ensure the current trie.leafCharCodes aren't overwritten
     trieFork(trie);
   } else {
     trie.leafCharCodes = [];
@@ -106,7 +97,7 @@ function trieFork<T>(trie: Trie<T>): void {
   leaf.value = trie.value;
   leaf.isLeaf = true;
 
-  if (trieLeafCharCodes.length !== 0) {
+  if (trieLeafCharCodes.length > 0) {
     leaf.leafCharCodes = trieLeafCharCodes;
   }
 
