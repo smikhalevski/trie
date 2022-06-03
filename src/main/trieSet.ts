@@ -25,30 +25,36 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       const keyCharCode = key.charCodeAt(i++);
       const trieLast = trie.last;
 
-      // The prev node if we would have to insert a new leaf now
-      let prev = trie;
+      // Links are established between last → leaf → last.next if the leaf insertion would be required
+      let last = trie;
 
       if (trieLast !== null) {
-        prev = trieLast;
 
         const child = trie[keyCharCode];
         if (child !== undefined) {
           trie = child;
           continue;
         }
+
+        // Find the deepest last trie
+        last = trieLast;
+        while (last.last !== null) {
+          last = last.last;
+        }
       }
 
+      // Append leaf and restore links
       const leaf = trieCreate<T>();
       leaf.charCode = keyCharCode;
       leaf.parent = trie;
-      leaf.prev = prev;
-      leaf.next = prev.next;
+      leaf.prev = last;
 
-      if (prev.next !== null) {
-        prev.next.prev = leaf;
+      const lastNext = leaf.next = last.next;
+      if (lastNext !== null) {
+        lastNext.prev = leaf;
       }
 
-      trie = trie[keyCharCode] = trie.last = prev.next = leaf;
+      trie = trie[keyCharCode] = trie.last = last.next = leaf;
       break;
     }
   }

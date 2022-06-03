@@ -87,7 +87,7 @@ describe('trieSet', () => {
 
     expect(trieSet(trie, 'abc', 111)).toBe(trie);
 
-    const q = trieSet(trie, 'ade', 222)
+    const q = trieSet(trie, 'ade', 222);
 
     expect(q).toBe(trie![A]![D]);
 
@@ -431,6 +431,103 @@ describe('trieSet', () => {
 
     result[A]![B]![C]![D]![E]![F]!.parent = result[A]![B]![C]![D]![E]!;
     result[A]![B]![C]![D]![E]![F]!.prev = result[A]![B]![C]![D]![E]!;
+
+    expect(trie).toEqual(result);
+  });
+
+  test('correctly infers next for distant keys', () => {
+    const trie = trieCreate<number>();
+
+    trieSet(trie, 'abcd', 111);
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abef', 333);
+    trieSet(trie, 'a', 444);
+
+    const result: Trie<number> = {
+      charCode: -1,
+      parent: null,
+      prev: null,
+      next: null,
+      last: null,
+      value: undefined,
+      isLeaf: false,
+      leafCharCodes: null,
+      [A]: {
+        charCode: A,
+        parent: null,
+        prev: null,
+        next: null,
+        last: null,
+        value: 444,
+        isLeaf: true,
+        leafCharCodes: null,
+        [B]: {
+          charCode: B,
+          parent: null,
+          prev: null,
+          next: null,
+          last: null,
+          value: undefined,
+          isLeaf: false,
+          leafCharCodes: null,
+          [C]: {
+            charCode: C,
+            parent: null,
+            prev: null,
+            next: null,
+            last: null,
+            value: 222,
+            isLeaf: true,
+            leafCharCodes: null,
+            [D]: {
+              charCode: D,
+              parent: null,
+              prev: null,
+              next: null,
+              last: null,
+              value: 111,
+              isLeaf: true,
+              leafCharCodes: null,
+            },
+          },
+          [E]: {
+            charCode: E,
+            parent: null,
+            prev: null,
+            next: null,
+            last: null,
+            value: 333,
+            isLeaf: true,
+            leafCharCodes: [F],
+          }
+        },
+      },
+    };
+
+    result.next = result[A]!;
+    result.last = result[A]!;
+
+    result[A]!.parent = trie;
+    result[A]!.prev = trie;
+    result[A]!.next = result[A]![B]!;
+    result[A]!.last = result[A]![B]!;
+
+    result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
+    result[A]![B]!.next = result[A]![B]![C]!;
+    result[A]![B]!.last = result[A]![B]![E]!;
+
+    result[A]![B]![C]!.parent = result[A]![B]!;
+    result[A]![B]![C]!.prev = result[A]![B]!;
+    result[A]![B]![C]!.next = result[A]![B]![C]![D]!;
+    result[A]![B]![C]!.last = result[A]![B]![C]![D]!;
+
+    result[A]![B]![C]![D]!.parent = result[A]![B]![C]!;
+    result[A]![B]![C]![D]!.prev = result[A]![B]![C]!;
+    result[A]![B]![C]![D]!.next = result[A]![B]![E]!;
+
+    result[A]![B]![E]!.parent = result[A]![B]!;
+    result[A]![B]![E]!.prev = result[A]![B]![C]![D]!;
 
     expect(trie).toEqual(result);
   });

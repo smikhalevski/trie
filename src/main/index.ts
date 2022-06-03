@@ -5,5 +5,5 @@ export * from './__/trieGet';
 export * from './trieSearch';
 export * from './trieSet';
 export * from './__/trieSetEntries';
-export * from './__/trieSuggest';
+export * from './trieSuggest';
 export * from './trie-types';

@@ -179,13 +179,13 @@ describe('Suggest', () => {
 
   test('@smikhalevski/trie', (measure) => {
     measure(() => {
-      trieSuggest(trie, 'a', 0);
+      trieSuggest(trie, 'abbrev', 0);
     });
   });
 
   test('trie-search', (measure) => {
     measure(() => {
-      libTrieSearch.search('a');
+      libTrieSearch.search('abbrev');
     });
   });
 
