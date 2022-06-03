@@ -86,7 +86,10 @@ describe('trieSet', () => {
     const trie = trieCreate<number>();
 
     expect(trieSet(trie, 'abc', 111)).toBe(trie);
-    expect(trieSet(trie, 'ade', 222)).toBe(trie![A]![D]);
+
+    const q = trieSet(trie, 'ade', 222)
+
+    expect(q).toBe(trie![A]![D]);
 
     const result: Trie<number> = {
       charCode: -1,
