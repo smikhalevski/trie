@@ -35,7 +35,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       const leaf = trieCreate<T>();
       leaf.charCode = leafCharCode;
       leaf.parent = trie;
-      leaf.key = trie.key;
 
       const trieLast = trie.last;
 
@@ -66,7 +65,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     trieFork(trie);
   }
 
-  trie.key = key;
   trie.value = value;
   trie.isLeaf = true;
 
@@ -109,7 +107,6 @@ function trieFork<T>(trie: Trie<T>): void {
   leaf.parent = trie;
   leaf.prev = trie;
   leaf.next = trieNext;
-  leaf.key = trie.key;
   leaf.value = trie.value;
   leaf.isLeaf = true;
 
@@ -125,7 +122,6 @@ function trieFork<T>(trie: Trie<T>): void {
   trie[leafCharCode] = leaf;
   trie.next = leaf;
   trie.last = leaf;
-  trie.key = null;
   trie.value = undefined;
   trie.isLeaf = false;
   trie.leafCharCodes = null;

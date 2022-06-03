@@ -13,7 +13,6 @@ export function trieCreate<T>(): Trie<T> {
     prev: null,
     next: null,
     last: null,
-    key: null,
     value: undefined,
     isLeaf: false,
     leafCharCodes: null,
