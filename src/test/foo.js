@@ -27,7 +27,3 @@ dictionary.forEach((word) => {
   libMap.set(word, word);
 });
 console.log('Map', (process.memoryUsage().heapUsed - startHeapUsed3) / 1024 / 1024);
-
-
-// test('', () => {
-// })

@@ -1,5 +1,4 @@
 import {Trie} from './trie-types';
-import {trieCollect} from './__/trieCollect';
 
 /**
  * Returns the list of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.

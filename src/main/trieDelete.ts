@@ -1,5 +1,4 @@
-import {Trie} from '../trie-types';
-import {trieGet} from './trieGet';
+import {Trie} from './trie-types';
 
 /**
  * Deletes the key and its corresponding value from the trie.
