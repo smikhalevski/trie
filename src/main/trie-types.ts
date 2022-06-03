@@ -1,23 +1,20 @@
 /**
- * The compressed trie data structure.
- *
- * Left-to-right navigation (set, get, search) is used for key lookup.
- *
- * Top-to-bottom navigation (suggest, delete) is used for siblings traversal.
+ * The compressed trie data structure. It supports two traversal algorithms: parent-child (used for set, get, search)
+ * and linked list (used for suggest, delete).
  *
  * @template T The type of values stored in a trie.
  */
 export interface Trie<T> {
 
   /**
-   * The char code in {@link left} that is associated with this trie, or -1 if trie has no {@link left}.
+   * The char code in {@link parent} that is associated with this trie, or -1 if trie has no {@link parent}.
    */
   charCode: number;
 
   /**
    * The preceding trie or `null` if this trie is a root.
    */
-  left: Trie<T> | null;
+  parent: Trie<T> | null;
 
   /**
    * Mapping from char code to the subsequent children.

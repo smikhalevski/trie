@@ -61,6 +61,12 @@ describe('trieSearch', () => {
     expect(trieSearch(trie, 'abcde', 0)).toBe(trie[A]![B]![C]!);
   });
 
+  test('returns undefined when searching for an empty key in an empty trie', () => {
+    const trie = trieCreate();
+
+    expect(trieSearch(trie, '', 0)).toBe(undefined);
+  });
+
   test('returns undefined if no trie was found', () => {
     const trie = trieCreate();
     trieSet(trie, 'abc', 111);

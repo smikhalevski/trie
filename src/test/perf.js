@@ -2,7 +2,7 @@ const TrieSearch = require('trie-search');
 const dictionary = require('./dictionary.json');
 const {trieSet, trieCreate, trieDelete, trieSearch, trieGet, trieSuggest} = require('../../lib/index-cjs');
 
-const wordsByLengthMap = new Map();
+const wordsByLengthMap = [];
 
 const trie = trieCreate();
 const libMap = new Map();
@@ -13,9 +13,8 @@ dictionary.forEach((word) => {
   trieSet(trie, word, word);
   libTrieSearch.map(word, word);
 
-  if (word.length % 5 === 0) {
-    const words = wordsByLengthMap.get(word.length) || wordsByLengthMap.set(word.length, []).get(word.length);
-    words.push(word);
+  if (word.length !== 0 && word.length % 5 === 0 && (wordsByLengthMap[word.length] === undefined || wordsByLengthMap[word.length].length < 10)) {
+    (wordsByLengthMap[word.length] ||= []).push(word);
   }
 });
 
@@ -94,7 +93,7 @@ describe('Get', () => {
 }, {warmupIterationCount: 100, targetRme: 0.001});
 
 describe('Set', () => {
-  wordsByLengthMap.forEach(([word], length) => {
+  wordsByLengthMap.forEach((words, length) => {
 
     describe('Key length ' + length, () => {
 
@@ -107,7 +106,9 @@ describe('Set', () => {
         });
 
         measure(() => {
-          libMap.get(word);
+          for (let i = 0; i < words.length; ++i) {
+            libMap.set(words[i], words[i]);
+          }
         });
       });
 
@@ -120,7 +121,9 @@ describe('Set', () => {
         });
 
         measure(() => {
-          trieSet(trie, word, word);
+          for (let i = 0; i < words.length; ++i) {
+            trieSet(trie, words[i], words[i]);
+          }
         });
       });
 
@@ -133,12 +136,14 @@ describe('Set', () => {
         });
 
         measure(() => {
-          libTrieSearch.map(word, word);
+          for (let i = 0; i < words.length; ++i) {
+            libTrieSearch.map(words[i], words[i]);
+          }
         });
       });
     });
   });
-}, {warmupIterationCount: 10_000, targetRme: 0.002});
+}, {warmupIterationCount: 100, targetRme: 0.002});
 
 describe('Delete', () => {
   wordsByLengthMap.forEach(([word], length) => {
@@ -168,7 +173,7 @@ describe('Delete', () => {
       });
     });
   });
-}, {warmupIterationCount: 10_000, targetRme: 0.002});
+}, {warmupIterationCount: 100, targetRme: 0.002});
 
 describe('Suggest', () => {
 

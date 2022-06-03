@@ -9,7 +9,7 @@ import {Trie} from './trie-types';
 export function trieCreate<T>(): Trie<T> {
   return {
     charCode: -1,
-    left: null,
+    parent: null,
     prev: null,
     next: null,
     last: null,

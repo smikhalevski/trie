@@ -11,7 +11,7 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, endIndex = input.length): Trie<T> | undefined {
+export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | undefined {
 
   let leaf: Trie<T> | undefined;
   let i = startIndex;
@@ -24,32 +24,32 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex: number, 
         leaf = trie;
       }
 
-      const right = trie[input.charCodeAt(i)];
-      if (right === undefined) {
+      const child = trie[input.charCodeAt(i)];
+      if (child === undefined) {
         break;
       }
 
-      trie = right;
+      trie = child;
       ++i;
 
     } else {
 
-      const leafCharCodes = trie.leafCharCodes;
-      if (leafCharCodes === null) {
+      const trieLeafCharCodes = trie.leafCharCodes;
+      if (trieLeafCharCodes === null) {
         return trie;
       }
 
-      const leafCharCodesLength = leafCharCodes.length;
-      if (i + leafCharCodesLength > endIndex) {
+      const trieLeafCharCodesLength = trieLeafCharCodes.length;
+      if (i + trieLeafCharCodesLength > endIndex) {
         return leaf;
       }
 
       let j = 0;
-      while (j < leafCharCodesLength && input.charCodeAt(i) === leafCharCodes[j]) {
+      while (j < trieLeafCharCodesLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
         ++j;
         ++i;
       }
-      return j === leafCharCodesLength ? trie : leaf;
+      return j === trieLeafCharCodesLength ? trie : leaf;
     }
   }
 
