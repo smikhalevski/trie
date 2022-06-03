@@ -51,4 +51,9 @@ export interface Trie<T> {
    * Remaining chars of the leaf's key. `null` if node isn't a leaf or if it has a {@link last}.
    */
   leafCharCodes: number[] | null;
+
+  /**
+   * The list of all leafs of the trie.
+   */
+  suggestions: Trie<T>[] | null;
 }

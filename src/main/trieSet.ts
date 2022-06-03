@@ -22,6 +22,9 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
       trieFork(trie);
 
+      // Clear suggestions cache
+      trie.suggestions = null;
+
       const keyCharCode = key.charCodeAt(i++);
       const trieLast = trie.last;
 
@@ -71,6 +74,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
   trie.value = value;
   trie.isLeaf = true;
+  trie.suggestions = null;
 
   return trie;
 }

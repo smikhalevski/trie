@@ -8,17 +8,22 @@ import {trieCollect} from './__/trieCollect';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
- * @param leafs The mutable in-out array of leafs that is populated during `trie` traversal.
  * @returns The array of leafs.
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length, leafs: Trie<T>[] = []): Trie<T>[] {
+export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] {
+
+  let suggestions: Trie<T>[] | null = null;
+
   for (let i = startIndex; i < endIndex; ++i) {
 
     if (trie.last === null) {
       break;
     }
+
+    // If trie has only one child then we can reuse its suggestions
+    suggestions = trie.last !== trie.next ? trie.suggestions : null;
 
     const child = trie[input.charCodeAt(i)];
     if (child === undefined) {
@@ -28,17 +33,28 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     trie = child;
   }
 
+  if (suggestions !== null) {
+    return trie.suggestions = suggestions;
+  }
+
+  suggestions = [];
+
   if (trie.isLeaf) {
-    leafs.push(trie);
+    suggestions.push(trie);
   }
 
   const trieParent = trie.parent;
 
   for (let next = trie.next; next !== null && next.parent !== trieParent; next = next.next) {
     if (next.isLeaf) {
-      leafs.push(next);
+      suggestions.push(next);
     }
   }
 
-  return leafs;
+  // Populate ancestors that have only one child with computed suggestions
+  for (let parent = trieParent; parent !== null && parent.next === parent.last; parent = parent.parent) {
+    parent.suggestions = suggestions;
+  }
+
+  return trie.suggestions = suggestions;
 }
