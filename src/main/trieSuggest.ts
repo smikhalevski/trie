@@ -13,7 +13,7 @@ import {Trie} from './trie-types';
  */
 export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] {
 
-  let suggestions: Trie<T>[] | null = null;
+  let leafs: Trie<T>[] | null = null;
 
   for (let i = startIndex; i < endIndex; ++i) {
 
@@ -21,8 +21,8 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
       break;
     }
 
-    // If trie has only one child then we can reuse its suggestions
-    suggestions = trie.last !== trie.next ? trie.suggestions : null;
+    // If trie has only one child then we can reuse its leafs
+    leafs = trie.last !== trie.next ? trie.leafs : null;
 
     const child = trie[input.charCodeAt(i)];
     if (child === undefined) {
@@ -32,28 +32,28 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     trie = child;
   }
 
-  if (suggestions !== null) {
-    return trie.suggestions = suggestions;
+  if (leafs !== null) {
+    return trie.leafs = leafs;
   }
 
-  suggestions = [];
+  leafs = [];
 
   if (trie.isLeaf) {
-    suggestions.push(trie);
+    leafs.push(trie);
   }
 
   const trieParent = trie.parent;
 
   for (let next = trie.next; next !== null && next.parent !== trieParent; next = next.next) {
     if (next.isLeaf) {
-      suggestions.push(next);
+      leafs.push(next);
     }
   }
 
-  // Populate ancestors that have only one child with computed suggestions
+  // Populate ancestors that have only one child with computed leafs
   for (let parent = trieParent; parent !== null && parent.next === parent.last; parent = parent.parent) {
-    parent.suggestions = suggestions;
+    parent.leafs = leafs;
   }
 
-  return trie.suggestions = suggestions;
+  return trie.leafs = leafs;
 }

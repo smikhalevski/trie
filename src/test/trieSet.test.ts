@@ -23,7 +23,7 @@ describe('trieSet', () => {
       value: 111,
       isLeaf: true,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
     };
 
     expect(trie).toEqual(result);
@@ -44,7 +44,7 @@ describe('trieSet', () => {
       value: 111,
       isLeaf: true,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -54,7 +54,7 @@ describe('trieSet', () => {
         value: 222,
         isLeaf: true,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
       },
     };
 
@@ -80,7 +80,7 @@ describe('trieSet', () => {
       value: 111,
       isLeaf: true,
       leafCharCodes: [A, B, C],
-      suggestions: null,
+      leafs: null,
     };
 
     expect(trie).toEqual(result);
@@ -104,7 +104,7 @@ describe('trieSet', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -114,7 +114,7 @@ describe('trieSet', () => {
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -124,7 +124,7 @@ describe('trieSet', () => {
           value: 111,
           isLeaf: true,
           leafCharCodes: [C],
-          suggestions: null,
+          leafs: null,
         },
         [D]: {
           charCode: D,
@@ -135,7 +135,7 @@ describe('trieSet', () => {
           value: 222,
           isLeaf: true,
           leafCharCodes: [E],
-          suggestions: null,
+          leafs: null,
         }
       },
     };
@@ -173,7 +173,7 @@ describe('trieSet', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -183,7 +183,7 @@ describe('trieSet', () => {
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -193,7 +193,7 @@ describe('trieSet', () => {
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          suggestions: null,
+          leafs: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -203,7 +203,7 @@ describe('trieSet', () => {
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            suggestions: null,
+            leafs: null,
           },
           [F]: {
             charCode: F,
@@ -214,7 +214,7 @@ describe('trieSet', () => {
             value: 333,
             isLeaf: true,
             leafCharCodes: null,
-            suggestions: null,
+            leafs: null,
           }
         },
         [D]: {
@@ -226,7 +226,7 @@ describe('trieSet', () => {
           value: 222,
           isLeaf: true,
           leafCharCodes: [E],
-          suggestions: null,
+          leafs: null,
         },
       },
     };
@@ -272,7 +272,7 @@ describe('trieSet', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -282,7 +282,7 @@ describe('trieSet', () => {
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -292,7 +292,7 @@ describe('trieSet', () => {
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          suggestions: null,
+          leafs: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -302,7 +302,7 @@ describe('trieSet', () => {
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            suggestions: null,
+            leafs: null,
             [D]: {
               charCode: D,
               parent: null,
@@ -312,7 +312,7 @@ describe('trieSet', () => {
               value: 222,
               isLeaf: true,
               leafCharCodes: [E, F],
-              suggestions: null,
+              leafs: null,
             },
           },
         },
@@ -358,7 +358,7 @@ describe('trieSet', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -368,7 +368,7 @@ describe('trieSet', () => {
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -378,7 +378,7 @@ describe('trieSet', () => {
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          suggestions: null,
+          leafs: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -388,7 +388,7 @@ describe('trieSet', () => {
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            suggestions: null,
+            leafs: null,
             [D]: {
               charCode: D,
               parent: null,
@@ -398,7 +398,7 @@ describe('trieSet', () => {
               value: undefined,
               isLeaf: false,
               leafCharCodes: null,
-              suggestions: null,
+              leafs: null,
               [E]: {
                 charCode: E,
                 parent: null,
@@ -408,7 +408,7 @@ describe('trieSet', () => {
                 value: 333,
                 isLeaf: true,
                 leafCharCodes: null,
-                suggestions: null,
+                leafs: null,
                 [F]: {
                   charCode: F,
                   parent: null,
@@ -418,7 +418,7 @@ describe('trieSet', () => {
                   value: 222,
                   isLeaf: true,
                   leafCharCodes: null,
-                  suggestions: null,
+                  leafs: null,
                 },
               },
             },
@@ -478,7 +478,7 @@ describe('trieSet', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      suggestions: null,
+      leafs: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -488,7 +488,7 @@ describe('trieSet', () => {
         value: 444,
         isLeaf: true,
         leafCharCodes: null,
-        suggestions: null,
+        leafs: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -498,7 +498,7 @@ describe('trieSet', () => {
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          suggestions: null,
+          leafs: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -508,7 +508,7 @@ describe('trieSet', () => {
             value: 222,
             isLeaf: true,
             leafCharCodes: null,
-            suggestions: null,
+            leafs: null,
             [D]: {
               charCode: D,
               parent: null,
@@ -518,7 +518,7 @@ describe('trieSet', () => {
               value: 111,
               isLeaf: true,
               leafCharCodes: null,
-              suggestions: null,
+              leafs: null,
             },
           },
           [E]: {
@@ -530,7 +530,7 @@ describe('trieSet', () => {
             value: 333,
             isLeaf: true,
             leafCharCodes: [F],
-            suggestions: null,
+            leafs: null,
           }
         },
       },

@@ -55,5 +55,5 @@ export interface Trie<T> {
   /**
    * The list of all leafs of the trie.
    */
-  suggestions: Trie<T>[] | null;
+  leafs: Trie<T>[] | null;
 }

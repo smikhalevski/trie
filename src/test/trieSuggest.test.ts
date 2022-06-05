@@ -16,9 +16,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const suggestions = trieSuggest(trie, 'abc', 0);
+    const leafs = trieSuggest(trie, 'abc', 0);
 
-    expect(suggestions).toEqual([
+    expect(leafs).toEqual([
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
     ]);
@@ -32,9 +32,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const suggestions = trieSuggest(trie, '', 0);
+    const leafs = trieSuggest(trie, '', 0);
 
-    expect(suggestions).toEqual([
+    expect(leafs).toEqual([
       trie[A],
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
@@ -50,9 +50,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const suggestions = trieSuggest(trie, 'abcd', 0, 2);
+    const leafs = trieSuggest(trie, 'abcd', 0, 2);
 
-    expect(suggestions).toEqual([
+    expect(leafs).toEqual([
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
       trie[A]![B]![E],

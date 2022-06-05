@@ -16,6 +16,6 @@ export function trieCreate<T>(): Trie<T> {
     value: undefined,
     isLeaf: false,
     leafCharCodes: null,
-    suggestions: null,
+    leafs: null,
   };
 }
