@@ -1,6 +1,5 @@
 /**
- * The compressed trie data structure. It supports two traversal algorithms: parent-child (used for set, get, search)
- * and linked list (used for suggest, delete).
+ * The compressed trie data structure that supports list-like traversal.
  *
  * @template T The type of values stored in a trie.
  */
@@ -20,11 +19,6 @@ export interface Trie<T> {
    * The preceding trie or `null` if this trie is a root.
    */
   parent: Trie<T> | null;
-
-  /**
-   * The preceding trie in the linked list of all nodes in the trie.
-   */
-  prev: Trie<T> | null;
 
   /**
    * The next trie in the linked list of all nodes in the trie.
@@ -53,7 +47,7 @@ export interface Trie<T> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of the trie.
+   * The list of all leafs of this trie. Populated by {@link trieSearch}.
    */
   leafs: Trie<T>[] | null;
 }

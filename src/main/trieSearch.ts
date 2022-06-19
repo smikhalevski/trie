@@ -1,7 +1,8 @@
 import {Trie} from './trie-types';
 
 /**
- * Searches for a leaf with the key that matches the longest substring from `input` that starts at `startIndex`.
+ * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
+ * at `endIndex`.
  *
  * @param trie The trie to search in.
  * @param input The string to search for the key from the `trie`.
