@@ -8,13 +8,13 @@ import {Trie} from './trie-types';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
- * @returns A leaf in the trie or `undefined` if there's no matching key in the `trie`.
+ * @returns A leaf in the trie or `null` if there's no matching key.
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | undefined {
+export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | null {
 
-  let leaf: Trie<T> | undefined;
+  let leaf: Trie<T> | null = null;
   let i = startIndex;
 
   while (i < endIndex) {

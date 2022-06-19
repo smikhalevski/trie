@@ -61,24 +61,24 @@ describe('trieSearch', () => {
     expect(trieSearch(trie, 'abcde', 0)).toBe(trie[A]![B]![C]!);
   });
 
-  test('returns undefined when searching for an empty key in an empty trie', () => {
+  test('returns null when searching for an empty key in an empty trie', () => {
     const trie = trieCreate();
 
-    expect(trieSearch(trie, '', 0)).toBe(undefined);
+    expect(trieSearch(trie, '', 0)).toBe(null);
   });
 
-  test('returns undefined if no trie was found', () => {
+  test('returns null if no trie was found', () => {
     const trie = trieCreate();
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abdef', 222);
 
-    expect(trieSearch(trie, 'abe', 0)).toBe(undefined);
+    expect(trieSearch(trie, 'abe', 0)).toBe(null);
   });
 
-  test('returns undefined for a non-matching leaf root', () => {
+  test('returns null for a non-matching leaf root', () => {
     const trie = trieCreate();
     trieSet(trie, 'abcd', 111);
 
-    expect(trieSearch(trie, 'abc', 0)).toBe(undefined);
+    expect(trieSearch(trie, 'abc', 0)).toBe(null);
   });
 });
