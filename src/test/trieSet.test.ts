@@ -64,7 +64,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
 
     expect(trie).toEqual(result);
   });
@@ -150,7 +150,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![D]!;
 
@@ -244,7 +244,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![D]!;
 
@@ -332,7 +332,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
@@ -443,7 +443,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
@@ -552,7 +552,7 @@ describe('trieSet', () => {
     result.next = result[A]!;
     result.last = result[A]!;
 
-    result[A]!.parent = trie;
+    result[A]!.parent = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
