@@ -12,7 +12,6 @@ export function trieCreate<T>(): Trie<T> {
     parent: null,
     next: null,
     last: null,
-    size: 0,
     length: 0,
     value: undefined,
     isLeaf: false,

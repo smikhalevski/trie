@@ -31,11 +31,6 @@ export interface Trie<T> {
   last: Trie<T> | null;
 
   /**
-   * The number of children in the trie.
-   */
-  size: number;
-
-  /**
    * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
    */
   length: number;
