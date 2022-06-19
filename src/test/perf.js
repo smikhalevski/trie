@@ -1,6 +1,6 @@
 const TrieSearch = require('trie-search');
 const dictionary = require('./dictionary.json');
-const {trieSet, trieCreate, trieDelete, trieSearch, trieGet, trieSuggest} = require('../../lib/index-cjs');
+const {trieSet, trieCreate, trieDelete, trieSearch, trieSuggest} = require('../../lib/index-cjs');
 
 const wordsByLengthMap = [];
 
@@ -31,7 +31,7 @@ describe('Search', () => {
 
       test('@smikhalevski/trie', (measure) => {
         measure(() => {
-          trieSearch(trie, word, 0);
+          trieSearch(trie, word);
         });
       });
 
@@ -59,33 +59,13 @@ describe('Search (miss, shorter key)', () => {
 
       test('@smikhalevski/trie', (measure) => {
         measure(() => {
-          trieSearch(trie, word, 0);
+          trieSearch(trie, word);
         });
       });
 
       test('trie-search', (measure) => {
         measure(() => {
           libTrieSearch.search(word);
-        });
-      });
-    });
-  });
-}, {warmupIterationCount: 100, targetRme: 0.001});
-
-describe('Get', () => {
-  wordsByLengthMap.forEach(([word], length) => {
-
-    describe('Key length ' + length, () => {
-
-      test('Map', (measure) => {
-        measure(() => {
-          libMap.get(word);
-        });
-      });
-
-      test('@smikhalevski/trie', (measure) => {
-        measure(() => {
-          trieGet(trie, word);
         });
       });
     });
@@ -179,13 +159,13 @@ describe('Suggest', () => {
 
   test('@smikhalevski/trie', (measure) => {
     measure(() => {
-      trieSuggest(trie, 'abbrev', 0);
+      trieSuggest(trie, 'abb');
     });
   });
 
   test('trie-search', (measure) => {
     measure(() => {
-      libTrieSearch.search('abbrev');
+      libTrieSearch.search('abb');
     });
   });
 

@@ -7,22 +7,19 @@ import {Trie} from './trie-types';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
- * @returns The array of leafs.
+ * @returns The readonly array of leafs. Don't mutate this array since it is cached in {@link Trie.leafs}.
  *
  * @template T The type of values stored in a trie.
  */
 export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] {
 
-  let leafs: Trie<T>[] | null = null;
+  let i = startIndex;
 
-  for (let i = startIndex; i < endIndex; ++i) {
+  while (i < endIndex) {
 
     if (trie.last === null) {
       break;
     }
-
-    // If trie has only one child then we can reuse its leafs
-    leafs = trie.last !== trie.next ? trie.leafs : null;
 
     const child = trie[input.charCodeAt(i)];
     if (child === undefined) {
@@ -30,28 +27,55 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     }
 
     trie = child;
+    ++i;
   }
 
-  if (leafs !== null) {
-    return trie.leafs = leafs;
+  // Check that there's a sufficient number of characters to satisfy the requested prefix
+  if (i !== endIndex) {
+
+    const trieLeafCharCodes = trie.leafCharCodes;
+    if (trieLeafCharCodes === null) {
+      return [];
+    }
+
+    const trieLeafCharCodesLength = trieLeafCharCodes.length;
+    if (i + trieLeafCharCodesLength < endIndex) {
+      return [];
+    }
+
+    let j = 0;
+    while (j < trieLeafCharCodesLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
+      ++j;
+      ++i;
+    }
+    if (j < trieLeafCharCodesLength) {
+      return [];
+    }
   }
 
-  leafs = [];
+  const trieLeafs = trie.leafs;
+  if (trieLeafs !== null) {
+    return trieLeafs;
+  }
+
+  const leafs: Trie<T>[] = [];
 
   if (trie.isLeaf) {
     leafs.push(trie);
   }
 
-  const trieParent = trie.parent;
-
-  for (let next = trie.next; next !== null && next.parent !== trieParent; next = next.next) {
+  // Collect leafs
+  for (let next = trie.next, last = trie.last; next !== null && last !== null; next = next.next) {
     if (next.isLeaf) {
       leafs.push(next);
+    }
+    if (next === last) {
+      last = next.last;
     }
   }
 
   // Populate ancestors that have only one child with computed leafs
-  for (let parent = trieParent; parent !== null && parent.next === parent.last; parent = parent.parent) {
+  for (let parent = trie.parent; parent !== null && parent.next === parent.last; parent = parent.parent) {
     parent.leafs = leafs;
   }
 

@@ -47,7 +47,8 @@ export interface Trie<T> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. Populated by {@link trieSearch}.
+   * The list of all leafs of this trie. An optimization field, populated by {@link trieSearch} and cleaned up by
+   * {@link trieSet}.
    */
   leafs: Trie<T>[] | null;
 }
