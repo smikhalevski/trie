@@ -7,11 +7,11 @@ import {Trie} from './trie-types';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
- * @returns The readonly array of leafs. Don't mutate this array since it is cached in {@link Trie.leafs}.
+ * @returns The readonly array of leafs or `null` if no matching key was found.
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] {
+export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] | null {
 
   let i = startIndex;
 
@@ -35,12 +35,12 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
 
     const trieLeafCharCodes = trie.leafCharCodes;
     if (trieLeafCharCodes === null) {
-      return [];
+      return null;
     }
 
     const trieLeafCharCodesLength = trieLeafCharCodes.length;
     if (i + trieLeafCharCodesLength < endIndex) {
-      return [];
+      return null;
     }
 
     let j = 0;
@@ -49,7 +49,7 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
       ++i;
     }
     if (j < trieLeafCharCodesLength) {
-      return [];
+      return null;
     }
   }
 

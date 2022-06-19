@@ -67,7 +67,7 @@ describe('trieSuggest', () => {
 
     const leafs = trieSuggest(trie, 'abcd');
 
-    expect(leafs).toEqual([]);
+    expect(leafs).toBe(null);
   });
 
   test('suggests a leaf that has exact length', () => {
@@ -136,7 +136,7 @@ describe('trieSuggest', () => {
       trieSet(trie, word, word);
     });
 
-    expect(trieSuggest(trie, 'abbot').length).toBe(2);
-    expect(trieSuggest(trie, 'abb').length).toBe(12);
+    expect(trieSuggest(trie, 'abbot')?.length).toBe(2);
+    expect(trieSuggest(trie, 'abb')?.length).toBe(12);
   });
 });
