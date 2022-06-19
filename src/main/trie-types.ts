@@ -35,6 +35,11 @@ export interface Trie<T> {
    */
   length: number;
 
+
+
+
+  key: string | null;
+
   /**
    * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf and
    * non-leaf tries.

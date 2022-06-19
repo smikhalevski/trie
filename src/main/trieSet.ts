@@ -52,6 +52,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       leaf.parent = trie;
       leaf.next = last.next;
       leaf.length = trie.length + 1;
+      leaf.key = trie.key;
 
       trie = trie[keyCharCode] = trie.last = last.next = leaf;
       break;
@@ -69,6 +70,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   }
 
   trie.length = i;
+  trie.key = key;
   trie.value = value;
   trie.isLeaf = true;
   trie.leafs = null;
@@ -101,6 +103,7 @@ function trieFork<T>(trie: Trie<T>): void {
   leaf.parent = trie;
   leaf.next = trie.next;
   leaf.length = trie.length;
+  leaf.key = trie.key;
   leaf.value = trie.value;
   leaf.isLeaf = true;
 
@@ -113,5 +116,5 @@ function trieFork<T>(trie: Trie<T>): void {
   trie.length -= trieLeafCharCodes.length + 1;
   trie.value = undefined;
   trie.isLeaf = false;
-  trie.leafCharCodes = null;
+  trie.leafCharCodes = trie.key = null;
 }
