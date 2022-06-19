@@ -31,6 +31,11 @@ export interface Trie<T> {
   last: Trie<T> | null;
 
   /**
+   * The number of children in the trie.
+   */
+  size: number;
+
+  /**
    * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf and
    * non-leaf tries.
    */
