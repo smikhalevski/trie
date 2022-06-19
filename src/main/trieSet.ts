@@ -22,7 +22,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
       trieFork(trie);
 
-      // Clear leafs cache
+      // Clear suggestions
       trie.leafs = null;
 
       const keyCharCode = key.charCodeAt(i++);

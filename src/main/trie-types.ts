@@ -58,7 +58,7 @@ export interface Trie<T> {
 
   /**
    * The list of all leafs of this trie. An optimization field, populated by {@link trieSearch} and cleaned up by
-   * {@link trieSet}.
+   * {@link trieSet} and {@link trieDelete}.
    */
   leafs: Trie<T>[] | null;
 }

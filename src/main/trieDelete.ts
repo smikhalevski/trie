@@ -9,54 +9,82 @@ import {trieSearch} from './trieSearch';
  * @returns `true` if the key was deleted or `false` if the key wasn't found in the trie.
  */
 export function trieDelete(trie: Trie<any>, key: string): boolean {
-  let leaf = trieSearch(trie, key)!;
+  let leaf = trieSearch(trie, key);
 
-  // Not found or not an exact match
   if (leaf === null || leaf.length !== key.length) {
+    // Not found or not an exact match
     return false;
   }
 
-  const parent = leaf.parent;
+  // Clear suggestions
+  for (let parent = leaf.parent; parent !== null; parent = parent.parent) {
+    parent.leafs = null;
+  }
+
+  const {parent, last} = leaf;
 
   leaf.value = undefined;
   leaf.isLeaf = false;
   leaf.leafCharCodes = null;
 
-  // Leaf has children
-  if (leaf.last !== null) {
+  if (last !== null) {
 
-    // Multiple children cannot be compacted
-    if (leaf.size > 1) {
+    // If there's last then there's at least one child
+    if (leaf.size !== 1) {
+      // Multiple children cannot be compacted
       return true;
     }
 
     // Maybe a single child can be compacted
-    leaf = leaf.last;
-
+    leaf = last;
 
   } else if (parent !== null) {
-    // Leaf doesn't have children and has a parent
 
-    --parent.size;
     parent[leaf.charCode] = undefined;
+    parent.size--;
+
+    // Leaf is removed from the trie
+    leaf.charCode = -1;
     leaf.parent = null;
 
     // Parent with a single leaf is also a leaf, or a trie root, or it was already compacted
     if (parent.size === 0) {
-      parent.next = parent.last = null;
+      parent.next = leaf.next;
+      parent.last = leaf.next = null;
       return true;
     }
 
-    if (parent.isLeaf || parent.size > 1) {
-      // Parent cannot be compacted, since it's a leaf itself, or it has multiple children available after leaf deletion
+    if (parent.isLeaf || parent.size !== 1) {
+      // Parent cannot be compacted, since it's a leaf, or parent has multiple children remaining after leaf deletion
+
+      let last = parent.last;
+      for (let prev = parent, next = prev.next; next !== null; prev = next, next = prev.next) {
+        if (next === leaf) {
+          prev.next = leaf.next;
+          break;
+        }
+        if (next.parent === parent) {
+          last = next;
+        }
+      }
+
+      if (parent.next === leaf) {
+        parent.next = leaf.next;
+      }
+
+      parent.last = last;
+
+      leaf.next = null;
+
       return true;
     }
 
-    // Maybe a single remaining leaf sibling can be compacted
-    leaf = parent.next!;
+    // Maybe a single remaining sibling of leaf can be compacted
+    leaf = parent.next === leaf ? parent.next = parent.last! : parent.last = parent.next!;
 
   } else {
-    // Nothing to compact
+    // Leaf is a root, nothing to compact
+    leaf.length = 0;
     return true;
   }
 
@@ -66,26 +94,22 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
   }
 
   // Merge leaf into parent
-  while (leaf.parent !== null) {
-    const parent = leaf.parent;
-
-    if (parent.isLeaf || parent.next!.size > 1) {
-      // Cannot be compacted, since parent is a leaf itself, or parent has multiple leafs
-      break;
-    }
+  for (let parent = leaf.parent; parent !== null && !parent.isLeaf && parent.next!.size !== 1; leaf = parent, parent = parent.parent) {
 
     // Parent is a non-leaf node with a single child, so merge leaf into parent
     const leafCharCodes = leaf.leafCharCodes || [];
     leafCharCodes.unshift(leaf.charCode);
 
-    --parent.size;
     parent[leaf.charCode] = undefined;
+    parent.size--;
+    parent.length = leaf.length;
     parent.value = leaf.value;
-    parent.next = parent.last = leaf.parent = null;
+    parent.next = leaf.next;
+    parent.last = leaf.parent = leaf.next = leaf.last = null;
     parent.isLeaf = true;
     parent.leafCharCodes = leafCharCodes;
 
-    leaf = parent;
+    leaf.charCode = -1;
   }
   return true;
 }
