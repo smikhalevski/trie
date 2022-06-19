@@ -36,6 +36,11 @@ export interface Trie<T> {
   size: number;
 
   /**
+   * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
+   */
+  length: number;
+
+  /**
    * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf and
    * non-leaf tries.
    */
