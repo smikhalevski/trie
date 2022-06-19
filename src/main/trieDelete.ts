@@ -1,4 +1,5 @@
 import {Trie} from './trie-types';
+import {trieSearch} from './trieSearch';
 
 /**
  * Deletes the key and its corresponding value from the trie.
@@ -8,87 +9,83 @@ import {Trie} from './trie-types';
  * @returns `true` if the key was deleted or `false` if the key wasn't found in the trie.
  */
 export function trieDelete(trie: Trie<any>, key: string): boolean {
-  // let leaf = trieGet(trie, key);
-  //
-  // if (leaf == undefined) {
-  //   return false;
-  // }
-  //
-  // leaf.key = null;
-  // leaf.value = undefined;
-  // leaf.isLeaf = false;
-  // leaf.leafCharCodes = null;
-  //
-  // const {prev, next} = leaf;
-  //
-  // if (next !== null) {
-  //
-  //   // Multiple next branches cannot be compacted
-  //   if (next.length > 1) {
-  //     return true;
-  //   }
-  //
-  //   // Maybe a single next can be compacted
-  //   leaf = next[0];
-  // } else if (prev !== null) {
-  //
-  //   // Prev always includes leaf under next
-  //   const arr = prev.next!;
-  //   const arrLength = arr.length;
-  //
-  //   // Prev with a single leaf if also a leaf or a trie root, otherwise it was already compacted
-  //   if (arrLength === 1) {
-  //     prev.next = null;
-  //     prev.nextCharCodes = null;
-  //     return true;
-  //   }
-  //
-  //   const i = arr.indexOf(leaf);
-  //   arr.splice(i, 1);
-  //   prev.nextCharCodes!.splice(i, 1);
-  //
-  //   if (prev.isLeaf || arrLength > 2) {
-  //     // Prev cannot be compacted, since it's a leaf itself, or it has multiple nexts available after leaf deletion
-  //     return true;
-  //   }
-  //
-  //   // Maybe a single remaining leaf sibling can be compacted
-  //   leaf = arr[0];
-  //
-  // } else {
-  //   // Nothing to compact
-  //   return true;
-  // }
-  //
-  // if (leaf.next !== null) {
-  //   // Cannot be compacted since it is an intermediate node
-  //   return true;
-  // }
-  //
-  // // Merge leaf into prev
-  // while (leaf.prev !== null) {
-  //   const prev: Trie<any> = leaf.prev;
-  //
-  //   if (prev.isLeaf || prev.next!.length > 1) {
-  //     // Cannot be compacted, since prev is a leaf itself, or prev has multiple leafs
-  //     break;
-  //   }
-  //
-  //   // Prev is a non-leaf node with a single next, so merge leaf into prev
-  //   const leafCharCodes = leaf.leafCharCodes || [];
-  //
-  //   // Prev always includes leaf under next, so nextCharCodes is always available
-  //   leafCharCodes.unshift(prev.nextCharCodes![0]);
-  //
-  //   prev.key = leaf.key;
-  //   prev.value = leaf.value;
-  //   prev.length = leaf.length;
-  //   prev.next = null;
-  //   prev.nextCharCodes = null;
-  //   prev.isLeaf = true;
-  //   prev.leafCharCodes = leafCharCodes;
-  //
-  //   leaf = prev;
-  // }
+  let leaf = trieSearch(trie, key)!;
+
+  // Not found or not an exact match
+  if (leaf === null || leaf.length !== key.length) {
+    return false;
+  }
+
+  const parent = leaf.parent;
+
+  leaf.value = undefined;
+  leaf.isLeaf = false;
+  leaf.leafCharCodes = null;
+
+  // Leaf has children
+  if (leaf.last !== null) {
+
+    // Multiple children cannot be compacted
+    if (leaf.size > 1) {
+      return true;
+    }
+
+    // Maybe a single child can be compacted
+    leaf = leaf.last;
+
+
+  } else if (parent !== null) {
+    // Leaf doesn't have children and has a parent
+
+    --parent.size;
+    parent[leaf.charCode] = undefined;
+    leaf.parent = null;
+
+    // Parent with a single leaf is also a leaf, or a trie root, or it was already compacted
+    if (parent.size === 0) {
+      parent.next = parent.last = null;
+      return true;
+    }
+
+    if (parent.isLeaf || parent.size > 1) {
+      // Parent cannot be compacted, since it's a leaf itself, or it has multiple children available after leaf deletion
+      return true;
+    }
+
+    // Maybe a single remaining leaf sibling can be compacted
+    leaf = parent.next!;
+
+  } else {
+    // Nothing to compact
+    return true;
+  }
+
+  if (leaf.next !== null) {
+    // Cannot be compacted since it is an intermediate node
+    return true;
+  }
+
+  // Merge leaf into parent
+  while (leaf.parent !== null) {
+    const parent = leaf.parent;
+
+    if (parent.isLeaf || parent.next!.size > 1) {
+      // Cannot be compacted, since parent is a leaf itself, or parent has multiple leafs
+      break;
+    }
+
+    // Parent is a non-leaf node with a single child, so merge leaf into parent
+    const leafCharCodes = leaf.leafCharCodes || [];
+    leafCharCodes.unshift(leaf.charCode);
+
+    --parent.size;
+    parent[leaf.charCode] = undefined;
+    parent.value = leaf.value;
+    parent.next = parent.last = leaf.parent = null;
+    parent.isLeaf = true;
+    parent.leafCharCodes = leafCharCodes;
+
+    leaf = parent;
+  }
   return true;
 }
