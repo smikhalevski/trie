@@ -75,11 +75,6 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     leaf.next = null;
 
 
-
-
-
-
-
     if (parent.isLeaf || parent.last !== parent.next) {
       return true;
     }
@@ -97,7 +92,7 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     return true;
   }
 
-  // Merge the leaf into the parent, if the parent is a non-leaf node with a single child
+  // Recursively merge the leaf into the parent, if the parent is a non-leaf node with a single child
   for (let parent = leaf.parent; parent !== null && !parent.isLeaf && parent.next === parent.last; leaf = parent, parent = parent.parent) {
 
     const leafCharCodes = leaf.leafCharCodes || [];
@@ -107,11 +102,18 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     parent.key = leaf.key;
     parent.value = leaf.value;
     parent.next = leaf.next;
-    parent.last = leaf.parent = leaf.next = leaf.last = leaf.key = null;
+    parent.last = null;
     parent.isLeaf = true;
     parent.leafCharCodes = leafCharCodes;
 
-    leaf.charCode = -1;
+    resetTrie(leaf);
   }
   return true;
+}
+
+function resetTrie(trie: Trie<any>): void {
+  trie.charCode = -1;
+  trie.parent = trie.next = trie.last = trie.key = trie.leafCharCodes = trie.leafs = null;
+  trie.value = undefined;
+  trie.isLeaf = false;
 }
