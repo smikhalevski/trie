@@ -1,5 +1,5 @@
 import {Trie} from './trie-types';
-import {trieSearch} from './trieSearch';
+import {trieGet} from './trieGet';
 
 /**
  * Deletes the key and its corresponding value from the trie.
@@ -9,9 +9,8 @@ import {trieSearch} from './trieSearch';
  * @returns `true` if the key was deleted or `false` if the key wasn't found in the trie.
  */
 export function trieDelete(trie: Trie<any>, key: string): boolean {
-  let leaf = trieSearch(trie, key);
-
-  if (leaf === null || leaf.length !== key.length) {
+  let leaf = trieGet(trie, key);
+  if (leaf === null) {
     // Not found or not an exact match
     return false;
   }
