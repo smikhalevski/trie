@@ -24,7 +24,7 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
 
   leaf.value = undefined;
   leaf.isLeaf = false;
-  leaf.leafCharCodes = null;
+  leaf.leafCharCodes = leaf.key = null;
 
   if (last !== null) {
 
@@ -89,7 +89,6 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
 
   } else {
     // Leaf is a root, nothing to compact
-    leaf.length = 0;
     return true;
   }
 
@@ -105,10 +104,10 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     leafCharCodes.unshift(leaf.charCode);
 
     parent[leaf.charCode] = undefined;
-    parent.length = leaf.length;
+    parent.key = leaf.key;
     parent.value = leaf.value;
     parent.next = leaf.next;
-    parent.last = leaf.parent = leaf.next = leaf.last = null;
+    parent.last = leaf.parent = leaf.next = leaf.last = leaf.key = null;
     parent.isLeaf = true;
     parent.leafCharCodes = leafCharCodes;
 

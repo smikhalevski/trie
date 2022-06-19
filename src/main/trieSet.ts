@@ -51,7 +51,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
       leaf.charCode = keyCharCode;
       leaf.parent = trie;
       leaf.next = last.next;
-      leaf.length = trie.length + 1;
       leaf.key = trie.key;
 
       trie = trie[keyCharCode] = trie.last = last.next = leaf;
@@ -69,7 +68,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     }
   }
 
-  trie.length = i;
   trie.key = key;
   trie.value = value;
   trie.isLeaf = true;
@@ -94,7 +92,7 @@ function trieFork<T>(trie: Trie<T>): void {
     return;
   }
 
-  // leafCharCodes always contains at least one element
+  // Trie.leafCharCodes always contains at least one element
   const charCode = trieLeafCharCodes.shift()!;
 
   // Create a leaf and attach it to the trie
@@ -102,18 +100,13 @@ function trieFork<T>(trie: Trie<T>): void {
   leaf.charCode = charCode;
   leaf.parent = trie;
   leaf.next = trie.next;
-  leaf.length = trie.length;
   leaf.key = trie.key;
   leaf.value = trie.value;
   leaf.isLeaf = true;
-
-  if (trieLeafCharCodes.length > 0) {
-    leaf.leafCharCodes = trieLeafCharCodes;
-  }
+  leaf.leafCharCodes = trieLeafCharCodes.length !== 0 ? trieLeafCharCodes : null;
 
   // The trie is no longer a leaf
   trie[charCode] = trie.next = trie.last = leaf;
-  trie.length -= trieLeafCharCodes.length + 1;
   trie.value = undefined;
   trie.isLeaf = false;
   trie.leafCharCodes = trie.key = null;

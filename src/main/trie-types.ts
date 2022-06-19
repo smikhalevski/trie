@@ -6,7 +6,7 @@
 export interface Trie<T> {
 
   /**
-   * Mapping from char code to the trie children.
+   * Mapping from char code to a corresponding child.
    */
   [charCode: number]: Trie<T> | undefined;
 
@@ -31,13 +31,8 @@ export interface Trie<T> {
   last: Trie<T> | null;
 
   /**
-   * The length of the prefix described by the trie. Includes {@link leafCharCodes} for leaf tries.
+   * The key that the leaf trie represents or `null` for a non-leaf trie.
    */
-  length: number;
-
-
-
-
   key: string | null;
 
   /**
@@ -52,12 +47,13 @@ export interface Trie<T> {
   isLeaf: boolean;
 
   /**
-   * Remaining chars of the leaf's key. `null` if node isn't a leaf or if it has a {@link last}.
+   * The list of remaining chars of the leaf's key. `null` if node isn't a leaf or if it has the non-`null` {@link last}
+   * pointer.
    */
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. An optimization field, populated by {@link trieSearch} and cleaned up by
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSearch} and cleaned by
    * {@link trieSet} and {@link trieDelete}.
    */
   leafs: Trie<T>[] | null;
