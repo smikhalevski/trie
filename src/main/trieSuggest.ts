@@ -75,7 +75,7 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
   }
 
   // Populate ancestors that have only one child with computed leafs
-  for (let parent = trie.parent; parent !== null && parent.next === parent.last; parent = parent.parent) {
+  for (let parent = trie.parent; parent !== null && parent.size === 1; parent = parent.parent) {
     parent.leafs = leafs;
   }
 
