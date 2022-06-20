@@ -6,8 +6,8 @@ import {Trie} from './trie-types';
  *
  * @param trie The trie to search in.
  * @param input The string to search for the key from the `trie`.
- * @param startIndex The index in `input` to start reading substring from.
- * @param endIndex The index in `input` to stop reading.
+ * @param [startIndex = 0] The index in `input` to start reading substring from.
+ * @param [endIndex = input.length] The index in `input` to stop reading.
  * @returns A leaf in the trie or `null` if there's no matching key.
  *
  * @template T The type of values stored in a trie.

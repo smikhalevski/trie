@@ -1,12 +1,12 @@
 /**
- * The compressed trie data structure that supports list-like traversal.
+ * The compressed trie data structure that supports double linked list navigation.
  *
  * @template T The type of values stored in a trie.
  */
 export interface Trie<T> {
 
   /**
-   * Mapping from char code to a corresponding child.
+   * Mapping from char code to a corresponding child trie.
    */
   [charCode: number]: Trie<T> | undefined;
 
@@ -52,7 +52,7 @@ export interface Trie<T> {
   isLeaf: boolean;
 
   /**
-   * The list of remaining chars of the leaf's key. `null` if node isn't a leaf or if it has the non-`null` {@link last}
+   * The list of remaining chars of the leaf's key, or `null` if node isn't a leaf or if it has the {@link last}
    * pointer.
    */
   leafCharCodes: number[] | null;
