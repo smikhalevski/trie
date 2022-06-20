@@ -9,7 +9,7 @@ const F = 'f'.charCodeAt(0);
 
 describe('trieSet', () => {
 
-  test('sets an empty key to a trie', () => {
+  test('sets an empty key to an empty trie', () => {
     const trie = trieCreate();
 
     expect(trieSet(trie, '', 111)).toBe(trie);
@@ -17,13 +17,14 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: '',
       value: 111,
       isLeaf: true,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
     };
 
     expect(trie).toEqual(result);
@@ -38,23 +39,25 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: '',
       value: 111,
       isLeaf: true,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
         next: null,
         last: null,
         key: 'a',
         value: 222,
         isLeaf: true,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
       },
     };
 
@@ -62,79 +65,101 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
 
     expect(trie).toEqual(result);
   });
 
-  test('sets the value to an empty trie', () => {
+  test('sets the value with the non-empty key to an empty trie', () => {
     const trie = trieCreate();
-    trieSet(trie, 'abc', 111);
+
+    expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
 
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
-      next: null,
-      last: null,
-      key: 'abc',
-      value: 111,
-      isLeaf: true,
-      leafCharCodes: [A, B, C],
-      leafs: null,
-    };
-
-    expect(trie).toEqual(result);
-  });
-
-  test('sets the value to an non-empty trie', () => {
-    const trie = trieCreate<number>();
-
-    expect(trieSet(trie, 'abc', 111)).toBe(trie);
-
-    const q = trieSet(trie, 'ade', 222);
-
-    expect(q).toBe(trie![A]![D]);
-
-    const result: Trie<number> = {
-      charCode: -1,
-      parent: null,
+      prev: null,
       next: null,
       last: null,
       key: null,
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
+        next: null,
+        last: null,
+        key: 'abc',
+        value: 111,
+        isLeaf: true,
+        leafCharCodes: [B, C],
+        suggestions: null,
+      },
+    };
+
+    result.next = result[A]!;
+    result.last = result[A]!;
+
+    result[A]!.parent = result;
+    result[A]!.prev = result;
+
+    expect(trie).toEqual(result);
+  });
+
+  test('sets the value to a non-empty trie', () => {
+    const trie = trieCreate<number>();
+
+    expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
+    expect(trieSet(trie, 'ade', 222)).toBe(trie![A]![D]);
+
+    const result: Trie<number> = {
+      charCode: -1,
+      parent: null,
+      prev: null,
+      next: null,
+      last: null,
+      key: null,
+      value: undefined,
+      isLeaf: false,
+      leafCharCodes: null,
+      suggestions: null,
+      [A]: {
+        charCode: A,
+        parent: null,
+        prev: null,
         next: null,
         last: null,
         key: null,
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: 'abc',
           value: 111,
           isLeaf: true,
           leafCharCodes: [C],
-          leafs: null,
+          suggestions: null,
         },
         [D]: {
           charCode: D,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: 'ade',
           value: 222,
           isLeaf: true,
           leafCharCodes: [E],
-          leafs: null,
+          suggestions: null,
         }
       },
     };
@@ -143,13 +168,16 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![D]!;
 
     result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
     result[A]![B]!.next = result[A]![D]!;
 
     result[A]![D]!.parent = result[A]!;
+    result[A]![D]!.prev = result[A]![B]!;
 
     expect(trie).toEqual(result);
   });
@@ -163,66 +191,72 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: null,
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
         next: null,
         last: null,
         key: null,
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: null,
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abc',
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
           },
           [F]: {
             charCode: F,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abf',
             value: 333,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
           }
         },
         [D]: {
           charCode: D,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: 'ade',
           value: 222,
           isLeaf: true,
           leafCharCodes: [E],
-          leafs: null,
+          suggestions: null,
         },
       },
     };
@@ -231,20 +265,25 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![D]!;
 
     result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
     result[A]![B]!.next = result[A]![B]![C]!;
     result[A]![B]!.last = result[A]![B]![F]!;
 
     result[A]![B]![C]!.parent = result[A]![B]!;
+    result[A]![B]![C]!.prev = result[A]![B]!;
     result[A]![B]![C]!.next = result[A]![B]![F]!;
 
     result[A]![B]![F]!.parent = result[A]![B]!;
+    result[A]![B]![F]!.prev = result[A]![B]![C]!;
     result[A]![B]![F]!.next = result[A]![D]!;
 
     result[A]![D]!.parent = result[A]!;
+    result[A]![D]!.prev = result[A]![B]![F]!;
 
     expect(trie).toEqual(result);
   });
@@ -257,53 +296,58 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: null,
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
         next: null,
         last: null,
         key: null,
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: null,
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abc',
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
             [D]: {
               charCode: D,
               parent: null,
+              prev: null,
               next: null,
               last: null,
               key: 'abcdef',
               value: 222,
               isLeaf: true,
               leafCharCodes: [E, F],
-              leafs: null,
+              suggestions: null,
             },
           },
         },
@@ -314,18 +358,22 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
     result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
     result[A]![B]!.next = result[A]![B]![C]!;
     result[A]![B]!.last = result[A]![B]![C]!;
 
     result[A]![B]![C]!.parent = result[A]![B]!;
+    result[A]![B]![C]!.prev = result[A]![B]!;
     result[A]![B]![C]!.next = result[A]![B]![C]![D]!;
     result[A]![B]![C]!.last = result[A]![B]![C]![D]!;
 
     result[A]![B]![C]![D]!.parent = result[A]![B]![C]!;
+    result[A]![B]![C]![D]!.prev = result[A]![B]![C]!;
 
     expect(trie).toEqual(result);
   });
@@ -339,73 +387,80 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: null,
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
         next: null,
         last: null,
         key: null,
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: null,
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abc',
             value: 111,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
             [D]: {
               charCode: D,
               parent: null,
+              prev: null,
               next: null,
               last: null,
               key: null,
               value: undefined,
               isLeaf: false,
               leafCharCodes: null,
-              leafs: null,
+              suggestions: null,
               [E]: {
                 charCode: E,
                 parent: null,
+                prev: null,
                 next: null,
                 last: null,
                 key: 'abcde',
                 value: 333,
                 isLeaf: true,
                 leafCharCodes: null,
-                leafs: null,
+                suggestions: null,
                 [F]: {
                   charCode: F,
                   parent: null,
+                  prev: null,
                   next: null,
                   last: null,
                   key: 'abcdef',
                   value: 222,
                   isLeaf: true,
                   leafCharCodes: null,
-                  leafs: null,
+                  suggestions: null,
                 },
               },
             },
@@ -418,26 +473,32 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
     result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
     result[A]![B]!.next = result[A]![B]![C]!;
     result[A]![B]!.last = result[A]![B]![C]!;
 
     result[A]![B]![C]!.parent = result[A]![B]!;
+    result[A]![B]![C]!.prev = result[A]![B]!;
     result[A]![B]![C]!.next = result[A]![B]![C]![D]!;
     result[A]![B]![C]!.last = result[A]![B]![C]![D]!;
 
     result[A]![B]![C]![D]!.parent = result[A]![B]![C]!;
+    result[A]![B]![C]![D]!.prev = result[A]![B]![C]!;
     result[A]![B]![C]![D]!.next = result[A]![B]![C]![D]![E]!;
     result[A]![B]![C]![D]!.last = result[A]![B]![C]![D]![E]!;
 
     result[A]![B]![C]![D]![E]!.parent = result[A]![B]![C]![D]!;
+    result[A]![B]![C]![D]![E]!.prev = result[A]![B]![C]![D]!;
     result[A]![B]![C]![D]![E]!.next = result[A]![B]![C]![D]![E]![F]!;
     result[A]![B]![C]![D]![E]!.last = result[A]![B]![C]![D]![E]![F]!;
 
     result[A]![B]![C]![D]![E]![F]!.parent = result[A]![B]![C]![D]![E]!;
+    result[A]![B]![C]![D]![E]![F]!.prev = result[A]![B]![C]![D]![E]!;
 
     expect(trie).toEqual(result);
   });
@@ -453,65 +514,71 @@ describe('trieSet', () => {
     const result: Trie<number> = {
       charCode: -1,
       parent: null,
+      prev: null,
       next: null,
       last: null,
       key: null,
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
+        prev: null,
         next: null,
         last: null,
         key: 'a',
         value: 444,
         isLeaf: true,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
+          prev: null,
           next: null,
           last: null,
           key: null,
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abc',
             value: 222,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
             [D]: {
               charCode: D,
               parent: null,
+              prev: null,
               next: null,
               last: null,
               key: 'abcd',
               value: 111,
               isLeaf: true,
               leafCharCodes: null,
-              leafs: null,
+              suggestions: null,
             },
           },
           [E]: {
             charCode: E,
             parent: null,
+            prev: null,
             next: null,
             last: null,
             key: 'abef',
             value: 333,
             isLeaf: true,
             leafCharCodes: [F],
-            leafs: null,
+            suggestions: null,
           }
         },
       },
@@ -521,21 +588,26 @@ describe('trieSet', () => {
     result.last = result[A]!;
 
     result[A]!.parent = result;
+    result[A]!.prev = result;
     result[A]!.next = result[A]![B]!;
     result[A]!.last = result[A]![B]!;
 
     result[A]![B]!.parent = result[A]!;
+    result[A]![B]!.prev = result[A]!;
     result[A]![B]!.next = result[A]![B]![C]!;
     result[A]![B]!.last = result[A]![B]![E]!;
 
     result[A]![B]![C]!.parent = result[A]![B]!;
+    result[A]![B]![C]!.prev = result[A]![B]!;
     result[A]![B]![C]!.next = result[A]![B]![C]![D]!;
     result[A]![B]![C]!.last = result[A]![B]![C]![D]!;
 
     result[A]![B]![C]![D]!.parent = result[A]![B]![C]!;
+    result[A]![B]![C]![D]!.prev = result[A]![B]![C]!;
     result[A]![B]![C]![D]!.next = result[A]![B]![E]!;
 
     result[A]![B]![E]!.parent = result[A]![B]!;
+    result[A]![B]![E]!.prev = result[A]![B]![C]![D]!;
 
     expect(trie).toEqual(result);
   });

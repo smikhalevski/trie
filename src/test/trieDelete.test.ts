@@ -36,7 +36,7 @@ describe('deleteTrie', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
     };
 
     expect(trie).toEqual(result);
@@ -58,7 +58,7 @@ describe('deleteTrie', () => {
       value: 222,
       isLeaf: true,
       leafCharCodes: [A, B, C],
-      leafs: null,
+      suggestions: null,
     };
 
     expect(trie).toEqual(result);
@@ -80,7 +80,7 @@ describe('deleteTrie', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -90,7 +90,7 @@ describe('deleteTrie', () => {
         value: undefined,
         leafCharCodes: null,
         isLeaf: false,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -100,7 +100,7 @@ describe('deleteTrie', () => {
           value: undefined,
           isLeaf: false,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -110,7 +110,7 @@ describe('deleteTrie', () => {
             value: 222,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
           },
           [D]: {
             charCode: D,
@@ -121,7 +121,7 @@ describe('deleteTrie', () => {
             value: 333,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
           },
         },
       },
@@ -162,7 +162,7 @@ describe('deleteTrie', () => {
       value: undefined,
       isLeaf: false,
       leafCharCodes: null,
-      leafs: null,
+      suggestions: null,
       [A]: {
         charCode: A,
         parent: null,
@@ -172,7 +172,7 @@ describe('deleteTrie', () => {
         value: undefined,
         isLeaf: false,
         leafCharCodes: null,
-        leafs: null,
+        suggestions: null,
         [B]: {
           charCode: B,
           parent: null,
@@ -182,7 +182,7 @@ describe('deleteTrie', () => {
           value: 111,
           isLeaf: true,
           leafCharCodes: null,
-          leafs: null,
+          suggestions: null,
           [C]: {
             charCode: C,
             parent: null,
@@ -192,7 +192,7 @@ describe('deleteTrie', () => {
             value: 222,
             isLeaf: true,
             leafCharCodes: null,
-            leafs: null,
+            suggestions: null,
           },
           [D]: undefined,
         },

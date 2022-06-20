@@ -73,7 +73,7 @@ trieSearch(trie, '___foobar___', 3, 4);
 // → {key: 'foo', value: 123, length: 3, …}
 ```
 
-### `trieSuggest(trie, input, startIndex?, endIndex?, leafs?)`
+### `trieSuggest(trie, input, startIndex?, endIndex?)`
 
 Returns the list of trie leafs that have keys that start with `input.substring(startIndex, endIndex)`.
 

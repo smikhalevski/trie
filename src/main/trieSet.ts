@@ -12,102 +12,140 @@ import {trieCreate} from './trieCreate';
  * @template T The type of values stored in a trie.
  */
 export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
+
   const keyLength = key.length;
 
   let i = 0;
 
-  if (trie.last !== null || trie.isLeaf) {
+  if (keyLength > 0 && trie.parent === null && trie.last === null) {
+    // The root node may contain an empty key only
 
-    while (i < keyLength) {
+    const keyCharCode = key.charCodeAt(0);
 
-      trieFork(trie);
+    const leaf = trieCreate<T>();
+    leaf.charCode = keyCharCode;
+    leaf.parent = leaf.prev = trie;
 
-      // Clear suggestions
-      trie.leafs = null;
+    trie.suggestions = null;
+    trie = trie[keyCharCode] = trie.next = trie.last = leaf;
+    ++i;
+  }
 
-      const keyCharCode = key.charCodeAt(i++);
-      const trieLast = trie.last;
+  // Find the trie with the longest common prefix
+  while (i < keyLength) {
+    trie = trieFork(trie);
+    trie.suggestions = null;
 
-      // Links are established between last → leaf → last.next if the leaf insertion would be required
-      let last = trie;
+    const keyCharCode = key.charCodeAt(i);
 
-      if (trieLast !== null) {
-
-        const child = trie[keyCharCode];
-        if (child !== undefined) {
-          trie = child;
-          continue;
-        }
-
-        // Find the deepest last trie
-        last = trieLast;
-        while (last.last !== null) {
-          last = last.last;
-        }
-      }
-
-      // Append leaf and restore links
-      const leaf = trieCreate<T>();
-      leaf.charCode = keyCharCode;
-      leaf.parent = trie;
-      leaf.next = last.next;
-      leaf.key = trie.key;
-
-      trie = trie[keyCharCode] = trie.last = last.next = leaf;
+    const child = trie[keyCharCode];
+    if (child === undefined) {
       break;
     }
+    trie = child;
+    ++i;
   }
 
   if (i === keyLength) {
-    trieFork(trie);
-  } else {
-    trie.leafCharCodes = [];
+    trie = trieFork(trie);
+    trie.leafCharCodes = null;
 
-    while (i < keyLength) {
-      trie.leafCharCodes.push(key.charCodeAt(i++));
+  } else {
+    const trieLast = trie.last;
+
+    if (trieLast !== null || trie.isLeaf) {
+      const keyCharCode = key.charCodeAt(i);
+
+      const leaf = trieCreate<T>();
+      leaf.charCode = keyCharCode;
+      leaf.parent = trie;
+
+      if (trieLast !== null) {
+        let prev = trieLast;
+        while (prev.last !== null) {
+          prev = prev.last;
+        }
+        leaf.prev = prev;
+        leaf.next = prev.next;
+
+        if (prev.next !== null) {
+          prev.next.prev = leaf;
+        }
+        prev.next = leaf;
+      } else {
+        leaf.prev = trie;
+        leaf.next = trie.next;
+
+        if (trie.next !== null) {
+          trie.next.prev = leaf;
+        }
+        trie.next = leaf;
+      }
+
+      trie = trie[keyCharCode] = trie.last = leaf;
+      ++i;
+    }
+
+    if (i < keyLength) {
+      trie.leafCharCodes = [];
+
+      while (i < keyLength) {
+        trie.leafCharCodes.push(key.charCodeAt(i));
+        ++i;
+      }
     }
   }
 
   trie.key = key;
   trie.value = value;
   trie.isLeaf = true;
-  trie.leafs = null;
+  trie.suggestions = null;
 
   return trie;
 }
 
 /**
- * Forks a leaf from a trie (most trie properties are omitted for clarity):
+ * Inserts a parent for a trie (most trie properties are omitted for clarity):
+ *
  * ```
- * {leafCharCodes: [A, B]} → {A: {leafCharCodes: [B]}}
+ * {A: <trie>{leafCharCodes: [B, C]}}
+ * ↓
+ * {A: {B: <trie>{leafCharCodes: [C]}}}
  * ```
  *
  * @param trie The trie to fork.
  */
-function trieFork<T>(trie: Trie<T>): void {
+function trieFork<T>(trie: Trie<T>): Trie<T> {
 
   const trieLeafCharCodes = trie.leafCharCodes;
   if (trieLeafCharCodes === null) {
-    // Nothing to fork
-    return;
+    return trie;
   }
 
-  // Trie.leafCharCodes always contains at least one element
-  const charCode = trieLeafCharCodes.shift()!;
+  const trieCharCode = trie.charCode;
+  const trieParent = trie.parent!;
+  const triePrev = trie.prev!;
 
-  // Create a leaf and attach it to the trie
-  const leaf = trieCreate<T>();
-  leaf.charCode = charCode;
-  leaf.parent = trie;
-  leaf.next = trie.next;
-  leaf.key = trie.key;
-  leaf.value = trie.value;
-  leaf.isLeaf = true;
-  leaf.leafCharCodes = trieLeafCharCodes.length !== 0 ? trieLeafCharCodes : null;
+  const charCode = trieLeafCharCodes[0];
 
-  // The trie is no longer a leaf
-  trie[charCode] = trie.next = trie.last = leaf;
-  trie.value = undefined;
-  trie.isLeaf = false;
-  trie.leafCharCodes = trie.key = null;
+  const parent = trieCreate<T>();
+  parent[charCode] = parent.next = parent.last = trie;
+  parent.charCode = trieCharCode;
+  parent.parent = trieParent;
+  parent.prev = triePrev;
+
+  trie.charCode = charCode;
+  trieParent[trieCharCode] = triePrev.next = trie.parent = trie.prev = parent;
+
+  if (trieParent.last === trie) {
+    trieParent.last = parent;
+  }
+
+  if (trieLeafCharCodes.length === 1) {
+    trie.leafCharCodes = null;
+  } else {
+    trieLeafCharCodes.shift();
+  }
+
+  return parent;
 }

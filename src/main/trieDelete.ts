@@ -15,9 +15,8 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     return false;
   }
 
-  // Clear suggestions
   for (let parent = leaf.parent; parent !== null; parent = parent.parent) {
-    parent.leafs = null;
+    parent.suggestions = null;
   }
 
   const {parent, last} = leaf;
@@ -98,6 +97,10 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
     const leafCharCodes = leaf.leafCharCodes || [];
     leafCharCodes.unshift(leaf.charCode);
 
+
+    // PRESERVE leaf AS LEAF, DELETE AND RESET A PARENT
+
+
     parent[leaf.charCode] = undefined;
     parent.key = leaf.key;
     parent.value = leaf.value;
@@ -113,7 +116,7 @@ export function trieDelete(trie: Trie<any>, key: string): boolean {
 
 function resetTrie(trie: Trie<any>): void {
   trie.charCode = -1;
-  trie.parent = trie.next = trie.last = trie.key = trie.leafCharCodes = trie.leafs = null;
+  trie.parent = trie.next = trie.last = trie.key = trie.leafCharCodes = trie.suggestions = null;
   trie.value = undefined;
   trie.isLeaf = false;
 }

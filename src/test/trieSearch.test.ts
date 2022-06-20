@@ -18,7 +18,7 @@ describe('trieSearch', () => {
     const trie = trieCreate();
     trieSet(trie, 'abc', 111);
 
-    expect(trieSearch(trie, 'abc', 0)).toBe(trie);
+    expect(trieSearch(trie, 'abc', 0)).toBe(trie[A]);
   });
 
   test('finds a trie with two leaf entries', () => {

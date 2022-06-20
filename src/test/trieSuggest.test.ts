@@ -17,9 +17,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const leafs = trieSuggest(trie, 'abc', 0);
+    const suggestions = trieSuggest(trie, 'abc', 0);
 
-    expect(leafs).toEqual([
+    expect(suggestions).toEqual([
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
     ]);
@@ -33,9 +33,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const leafs = trieSuggest(trie, '', 0);
+    const suggestions = trieSuggest(trie, '', 0);
 
-    expect(leafs).toEqual([
+    expect(suggestions).toEqual([
       trie[A],
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
@@ -51,9 +51,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const leafs = trieSuggest(trie, 'abcd', 0, 2);
+    const suggestions = trieSuggest(trie, 'abcd', 0, 2);
 
-    expect(leafs).toEqual([
+    expect(suggestions).toEqual([
       trie[A]![B]![C],
       trie[A]![B]![C]![D],
       trie[A]![B]![E],
@@ -65,9 +65,9 @@ describe('trieSuggest', () => {
 
     trieSet(trie, 'abc', 111);
 
-    const leafs = trieSuggest(trie, 'abcd');
+    const suggestions = trieSuggest(trie, 'abcd');
 
-    expect(leafs).toBe(null);
+    expect(suggestions).toBe(null);
   });
 
   test('suggests a leaf that has exact length', () => {
@@ -75,10 +75,10 @@ describe('trieSuggest', () => {
 
     trieSet(trie, 'abc', 111);
 
-    const leafs = trieSuggest(trie, 'abc');
+    const suggestions = trieSuggest(trie, 'abc');
 
-    expect(leafs).toEqual([
-      trie,
+    expect(suggestions).toEqual([
+      trie[A],
     ]);
   });
 
@@ -96,11 +96,11 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcd', 222);
 
-    const leafs = trieSuggest(trie, 'abc');
+    const suggestions = trieSuggest(trie, 'abc');
 
-    expect(leafs).toBe(trieSuggest(trie, 'ab'));
-    expect(leafs).toBe(trieSuggest(trie, 'a'));
-    expect(leafs).toBe(trieSuggest(trie, ''));
+    expect(suggestions).toBe(trieSuggest(trie, 'ab'));
+    expect(suggestions).toBe(trieSuggest(trie, 'a'));
+    expect(suggestions).toBe(trieSuggest(trie, ''));
   });
 
   test('populates parent caches up to the closest fork', () => {
@@ -110,11 +110,11 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abcd', 222);
     trieSet(trie, 'e', 222);
 
-    const leafs = trieSuggest(trie, 'abc');
+    const suggestions = trieSuggest(trie, 'abc');
 
-    expect(leafs).toBe(trieSuggest(trie, 'ab'));
-    expect(leafs).toBe(trieSuggest(trie, 'a'));
-    expect(leafs).not.toBe(trieSuggest(trie, ''));
+    expect(suggestions).toBe(trieSuggest(trie, 'ab'));
+    expect(suggestions).toBe(trieSuggest(trie, 'a'));
+    expect(suggestions).not.toBe(trieSuggest(trie, ''));
   });
 
   test('cleans up cache during set', () => {
@@ -122,11 +122,11 @@ describe('trieSuggest', () => {
 
     trieSet(trie, 'abc', 111);
 
-    const leafs = trieSuggest(trie, 'abc');
+    const suggestions = trieSuggest(trie, 'abc');
 
     trieSet(trie, 'abcd', 222);
 
-    expect(leafs).not.toBe(trieSuggest(trie, 'abc'));
+    expect(suggestions).not.toBe(trieSuggest(trie, 'abc'));
   });
 
   test('perf', () => {

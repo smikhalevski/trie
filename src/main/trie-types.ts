@@ -21,6 +21,11 @@ export interface Trie<T> {
   parent: Trie<T> | null;
 
   /**
+   * The previous trie in the linked list of all nodes in the trie.
+   */
+  prev: Trie<T> | null;
+
+  /**
    * The next trie in the linked list of all nodes in the trie.
    */
   next: Trie<T> | null;
@@ -53,8 +58,8 @@ export interface Trie<T> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSearch} and cleaned by
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSuggest} and cleaned by
    * {@link trieSet} and {@link trieDelete}.
    */
-  leafs: Trie<T>[] | null;
+  suggestions: Trie<T>[] | null;
 }

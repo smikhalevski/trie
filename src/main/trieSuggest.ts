@@ -53,21 +53,21 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     }
   }
 
-  const trieLeafs = trie.leafs;
-  if (trieLeafs !== null) {
-    return trieLeafs;
+  const trieSuggestions = trie.suggestions;
+  if (trieSuggestions !== null) {
+    return trieSuggestions;
   }
 
-  const leafs: Trie<T>[] = [];
+  const suggestions: Trie<T>[] = [];
 
   if (trie.isLeaf) {
-    leafs.push(trie);
+    suggestions.push(trie);
   }
 
   // Collect leafs
   for (let next = trie.next, last = trie.last; next !== null && last !== null; next = next.next) {
     if (next.isLeaf) {
-      leafs.push(next);
+      suggestions.push(next);
     }
     if (next === last) {
       last = next.last;
@@ -76,8 +76,8 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
 
   // Populate leafs for ancestors that have only one child
   for (let parent = trie.parent; parent !== null && parent.next === parent.last; parent = parent.parent) {
-    parent.leafs = leafs;
+    parent.suggestions = suggestions;
   }
 
-  return trie.leafs = leafs;
+  return trie.suggestions = suggestions;
 }
