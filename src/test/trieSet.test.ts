@@ -622,7 +622,7 @@ describe('trieSet', () => {
     expect(leaf.value).toBe(333);
   });
 
-  test('works with huge dictionary', () => {
+  test('works with a huge dictionary', () => {
     dictionary.forEach((word) => {
       trieSet(trie, word, word);
     });

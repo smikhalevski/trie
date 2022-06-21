@@ -117,7 +117,7 @@ describe('trieSuggest', () => {
     expect(suggestions).not.toBe(trieSuggest(trie, 'abc'));
   });
 
-  test('works with huge dictionary', () => {
+  test('works with a huge dictionary', () => {
     dictionary.forEach((word) => {
       trieSet(trie, word, word);
     });

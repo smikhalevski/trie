@@ -61,10 +61,11 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     trie = trie[keyCharCode] = trie.last = prev.next = leaf;
 
     if (i < keyLength) {
-      trie.leafCharCodes = [];
+      // noinspection JSMismatchedCollectionQueryUpdate
+      const leafCharCodes: number[] = trie.leafCharCodes = [];
 
       while (i < keyLength) {
-        trie.leafCharCodes.push(key.charCodeAt(i++));
+        leafCharCodes.push(key.charCodeAt(i++));
       }
     }
     break;
