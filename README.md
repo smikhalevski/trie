@@ -2,9 +2,20 @@
 
 The [compressed trie data structure](https://en.wikipedia.org/wiki/Trie#Compressed_tries).
 
+- [Just 1 kB gzipped](https://bundlephobia.com/result?p=@smikhalevski/trie) and yet tree-shakeable;
+- [Extremely fast](#performance);
+- Supports [doubly linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) navigation.
+
 ```shell
 npm install --save-prod @smikhalevski/trie
 ```
+
+- [`trieCreate`](#triecreate)
+- [`trieSet`](#trieset)
+- [`trieGet`](#trieget)
+- [`trieDelete`](#triedelete)
+- [`trieSearch`](#triesearch)
+- [`trieSuggest`](#triesuggest)
 
 # Usage
 
@@ -13,24 +24,30 @@ npm install --save-prod @smikhalevski/trie
 [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) instance is a plain object that you pass as an
 argument to various functions that traverse and update the data structure.
 
+### `trieCreate()`<a name="triecreate"></a>
+
+Creates a blank `Trie` instance.
+
 ```ts
 const trie = trieCreate();
 // → {key: null, value: null, …}
 ```
 
-### `trieSet(trie, key, value)` and `trieSetEntries(key, entries)`
+### `trieSet(trie, key, value)`<a name="trieset"></a>
 
-Populates a trie by setting an individual key-value or by setting a bulk list of entries.
+Associates the `key` with the `value` in the `trie` and returns the leaf trie object that withholds the key-value pair.
+
+The returned leaf trie instance has stable identity: this object would represent the associated key up to the moment it
+is deleted. Setting new value, or adding other keys to the trie wouldn't change the object reference.
 
 ```ts
 trieSet(trie, 'foo', 123);
-
-trieSetEntries(trie, new Map([['bar', 456], ['baz', 789]]));
+// → {key: 'foo', value: 123, …}
 ```
 
-### `trieGet(trie, key)`
+### `trieGet(trie, key)`<a name="trieget"></a>
 
-Retrieve a trie leaf that was associated with a particular key.
+Returns a leaf `trie` associated with the `key`.
 
 ```ts
 trieGet(trie, 'foo'); // → {key: 'foo', value: 123, …}
@@ -38,22 +55,26 @@ trieGet(trie, 'foo'); // → {key: 'foo', value: 123, …}
 trieGet(trie, 'woopsie'); // → undefined
 ```
 
-### `trieDelete(trie, key)`
+### `trieDelete(leaf)`<a name="triedelete"></a>
 
-Deletes the key and its corresponding value from the trie. Returns `true` if the key was deleted and `false` if there's
-no such key in the trie.
+Deletes the `leaf` trie from its parent.
 
 ```ts
 trieSet('foo', 123);
 
-trieDelete(trie, 'foo'); // → true
-
-trieDelete(trie, 'foo'); // → false
+trieDelete(trieGet(trie, 'foo'));
 ```
 
-### `trieSearch(trie, input, startIndex?, endIndex?)`
+To delete all values with particular prefix:
 
-Finds a trie leaf with the key that matches the longest substring from `input` starting at `startIndex`.
+```ts
+trieSuggest(trie, 'foo')?.forEach(trieDelete);
+```
+
+### `trieSearch(trie, input, startIndex?, endIndex?)`<a name="triesearch"></a>
+
+Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends at
+`endIndex`.
 
 ```ts
 trieSet(trie, 'foo', 123);
@@ -73,19 +94,19 @@ trieSearch(trie, '___foobar___', 3, 4);
 // → {key: 'foo', value: 123, length: 3, …}
 ```
 
-### `trieSuggest(trie, input, startIndex?, endIndex?)`
+### `trieSuggest(trie, input, startIndex?, endIndex?)`<a name="triesuggest"></a>
 
-Returns the list of trie leafs that have keys that start with `input.substring(startIndex, endIndex)`.
+Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
 
 ```ts
 trieSet(trie, 'hotdog', 123);
 trieSet(trie, 'hotter', 456);
 trieSet(trie, 'hottest', 456);
 
-trieSuggest(trie, 'hot'); 
+trieSuggest(trie, 'hot');
 // → [{key: 'hotdog', …}, {key: 'hotter', …}, {key: 'hottest', …}]
 
-trieSuggest(trie, 'hott'); 
+trieSuggest(trie, 'hott');
 // → [{key: 'hotter', …}, {key: 'hottest', …}]
 ```
 

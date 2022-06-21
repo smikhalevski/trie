@@ -4,9 +4,6 @@ import {trieCreate} from './trieCreate';
 /**
  * Sets a new key-value pair to the trie.
  *
- * The returned leaf trie has stable identity: the returned object would represent the associated key up to the moment
- * it is deleted. Setting new value, or adding other keys to the trie would change this identity.
- *
  * @param trie The trie root.
  * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.

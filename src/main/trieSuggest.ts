@@ -1,7 +1,7 @@
 import {Trie} from './trie-types';
 
 /**
- * Returns the list of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
+ * Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
  *
  * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
