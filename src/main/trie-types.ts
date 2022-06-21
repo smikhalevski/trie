@@ -52,14 +52,13 @@ export interface Trie<T> {
   isLeaf: boolean;
 
   /**
-   * The list of remaining chars of the leaf's key, or `null` if node isn't a leaf or if it has the {@link last}
-   * pointer.
+   * The list of remaining chars of the leaf's key.
    */
   leafCharCodes: number[] | null;
 
   /**
    * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSuggest} and cleaned by
-   * {@link trieSet} and {@link trieDelete}.
+   * {@link trieSet}/{@link trieDelete}.
    */
   suggestions: Trie<T>[] | null;
 }
