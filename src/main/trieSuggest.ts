@@ -3,7 +3,7 @@ import {Trie} from './trie-types';
 /**
  * Returns the list of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
  *
- * @param trie The trie to search in.
+ * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
  * @param [startIndex = 0] The index in `input` to start reading substring from.
  * @param [endIndex = input.length] The index in `input` to stop reading.

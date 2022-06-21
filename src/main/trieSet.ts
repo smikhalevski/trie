@@ -4,8 +4,11 @@ import {trieCreate} from './trieCreate';
 /**
  * Sets a new key-value pair to the trie.
  *
- * @param trie The trie to update.
- * @param key The key of to add to the trie.
+ * The returned leaf trie has stable identity: the returned object would represent the associated key up to the moment
+ * it is deleted. Setting new value, or adding other keys to the trie would change this identity.
+ *
+ * @param trie The trie root.
+ * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.
  * @returns The leaf to which the value was set.
  *
@@ -19,7 +22,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   // Find the trie with the longest common prefix
   while (i < keyLength) {
 
-    trie = trieFork(trie);
     trie.suggestions = null;
 
     const keyCharCode = key.charCodeAt(i++);
@@ -32,11 +34,11 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
       const child = trie[keyCharCode];
       if (child !== undefined) {
-        trie = child;
+        trie = trieFork(child);
         continue;
       }
 
-      // Find the latest trie
+      // Find the latest trie child
       prev = trieLast;
       while (prev.last !== null) {
         prev = prev.last;
@@ -57,17 +59,15 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     }
 
     trie = trie[keyCharCode] = trie.last = prev.next = leaf;
-    break;
-  }
 
-  if (i === keyLength) {
-    trie = trieFork(trie);
-  } else {
-    trie.leafCharCodes = [];
+    if (i < keyLength) {
+      trie.leafCharCodes = [];
 
-    while (i < keyLength) {
-      trie.leafCharCodes.push(key.charCodeAt(i++));
+      while (i < keyLength) {
+        trie.leafCharCodes.push(key.charCodeAt(i++));
+      }
     }
+    break;
   }
 
   trie.key = key;

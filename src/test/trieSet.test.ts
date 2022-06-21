@@ -184,6 +184,7 @@ describe('trieSet', () => {
 
   test('sets the value to a deep trie trie', () => {
     const trie = trieCreate<number>();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'ade', 222);
     trieSet(trie, 'abf', 333);
@@ -290,6 +291,7 @@ describe('trieSet', () => {
 
   test('preserves overlapping keys', () => {
     const trie = trieCreate<number>();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
@@ -380,6 +382,7 @@ describe('trieSet', () => {
 
   test('sets the shorter key after longer key', () => {
     const trie = trieCreate<number>();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
     trieSet(trie, 'abcde', 333);
@@ -610,5 +613,27 @@ describe('trieSet', () => {
     result[A]![B]![E]!.prev = result[A]![B]![C]![D]!;
 
     expect(trie).toEqual(result);
+  });
+
+  test('preserves stable identity when a forked', () => {
+    const trie = trieCreate<number>();
+
+    const trie1 = trieSet(trie, 'abc', 111);
+    trieSet(trie, 'ab', 222);
+
+    trieSet(trie, 'abc', 333);
+
+    expect(trie1.value).toBe(333);
+  });
+
+  test('preserves stable identity when a child is added', () => {
+    const trie = trieCreate<number>();
+
+    const trie1 = trieSet(trie, 'abc', 111);
+    trieSet(trie, 'abcd', 222);
+
+    trieSet(trie, 'abc', 333);
+
+    expect(trie1.value).toBe(333);
   });
 });
