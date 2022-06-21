@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc && rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
-    "clean": "rm -rf ./lib ./docs",
+    "clean": "rm -rf ./lib ./docs ./coverage",
     "test": "jest --detectOpenHandles",
     "perf": "[ -d ./lib ] || npm run build && toofast ./src/test/perf.js",
     "docs": "typedoc ./src/main/index.ts",
