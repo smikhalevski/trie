@@ -1,10 +1,9 @@
 import {Trie} from './trie-types';
 
 /**
- * Deletes the key and the corresponding value from the trie.
+ * Deletes leaf of the trie.
  *
  * @param leaf The leaf to delete.
- * @returns `true` if the leaf was deleted or `false` if the key wasn't found in the trie.
  */
 export function trieDelete(leaf: Trie<any> | null): void {
   for (let parent = leaf; parent !== null; parent = parent.parent) {

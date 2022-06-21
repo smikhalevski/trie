@@ -1,4 +1,5 @@
-import {Trie, trieCreate, trieSet} from '../main';
+import {Trie, trieCreate, trieGet, trieSet} from '../main';
+import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -635,5 +636,17 @@ describe('trieSet', () => {
     trieSet(trie, 'abc', 333);
 
     expect(trie1.value).toBe(333);
+  });
+
+  test('perf', () => {
+    const trie = trieCreate();
+
+    dictionary.forEach((word) => {
+      trieSet(trie, word, word);
+    });
+
+    dictionary.forEach((word) => {
+      expect(trieGet(trie, word)!.key).toEqual(word);
+    });
   });
 });

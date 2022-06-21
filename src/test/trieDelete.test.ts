@@ -1,4 +1,5 @@
-import {trieCreate, trieDelete, trieSet, Trie, trieGet} from '../main';
+import {Trie, trieCreate, trieDelete, trieGet, trieSet} from '../main';
+import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -235,6 +236,33 @@ describe('trieDelete', () => {
 
     result[A]![B]![C]!.parent = result[A]![B]!;
     result[A]![B]![C]!.prev = result[A]![B]!;
+
+    expect(trie).toEqual(result);
+  });
+
+  test('perf', () => {
+    const trie = trieCreate();
+
+    dictionary.forEach((word) => {
+      trieSet(trie, word, word);
+    });
+
+    dictionary.forEach((word) => {
+      trieDelete(trieGet(trie, word));
+    });
+
+    const result: Trie<string> = {
+      charCode: -1,
+      parent: null,
+      prev: null,
+      next: null,
+      last: null,
+      key: null,
+      value: undefined,
+      isLeaf: false,
+      leafCharCodes: null,
+      suggestions: null,
+    };
 
     expect(trie).toEqual(result);
   });
