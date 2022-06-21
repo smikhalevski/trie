@@ -10,12 +10,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc && npm run rollup && npm run terser",
-    "rollup": "rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
-    "terser": "terser --compress --mangle toplevel --output ./lib/index-cjs.js -- ./lib/index-cjs.js",
-    "clean": "rm -rf ./lib ./docs",
+    "build": "tsc && rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
+    "clean": "rm -rf ./lib ./docs ./coverage",
     "test": "jest --detectOpenHandles",
-    "perf": "[ -d ./lib ] || npm run build && node --expose-gc ./src/test/perf.js",
+    "perf": "[ -d ./lib ] || npm run build && toofast ./src/test/perf.js",
     "docs": "typedoc ./src/main/index.ts",
     "publish-docs": "[ -d ./docs ] && [[ ! $(git status --porcelain) ]] && branch=$(git rev-parse --abbrev-ref HEAD) && sha=$(git rev-parse --short HEAD) && t=$(mktemp -d) && cp -R ./docs/ $t && git checkout ghpages && ls -A | grep -wv .git | xargs rm -rf && cp -R $t/ . && git add . && git commit -m \"Updated docs ($sha)\" && git push && git checkout $branch",
     "release-docs": "npm run clean && npm run docs && npm run publish-docs"
@@ -28,6 +26,7 @@
     "trie",
     "map",
     "search",
+    "suggest",
     "string"
   ],
   "author": "Savva Mikhalevski <smikhalevski@gmail.com>",
@@ -40,14 +39,14 @@
     "preset": "ts-jest"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "@smikhalevski/perf-test": "^1.0.0",
-    "@types/jest": "^26.0.23",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/jest": "^27.5.1",
     "jest": "^27.0.2",
-    "rollup": "^2.50.5",
-    "terser": "^5.7.0",
+    "rollup": "^2.75.3",
+    "toofast": "^1.3.0",
+    "trie-search": "^1.3.6",
     "ts-jest": "^27.0.2",
-    "typedoc": "^0.21.4",
-    "typescript": "4.2.4"
+    "typedoc": "^0.22.16",
+    "typescript": "4.7.2"
   }
 }
