@@ -9,6 +9,7 @@ describe('trieSearch', () => {
 
   test('finds a trie with zero-length key', () => {
     const trie = trieCreate();
+
     trieSet(trie, '', 111);
 
     expect(trieSearch(trie, '', 0)).toBe(trie);
@@ -16,6 +17,7 @@ describe('trieSearch', () => {
 
   test('finds a trie with one entry', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
 
     expect(trieSearch(trie, 'abc', 0)).toBe(trie[A]);
@@ -23,6 +25,7 @@ describe('trieSearch', () => {
 
   test('finds a trie with two leaf entries', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abd', 222);
 
@@ -31,6 +34,7 @@ describe('trieSearch', () => {
 
   test('finds the trie with the longest key', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
@@ -39,6 +43,7 @@ describe('trieSearch', () => {
 
   test('finds a trie at startIndex', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abdef', 222);
 
@@ -47,6 +52,7 @@ describe('trieSearch', () => {
 
   test('finds the trie with the shortest matched key', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
@@ -55,6 +61,7 @@ describe('trieSearch', () => {
 
   test('finds the trie with the shortest key on string end', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
@@ -77,6 +84,7 @@ describe('trieSearch', () => {
 
   test('returns null for a non-matching leaf root', () => {
     const trie = trieCreate();
+
     trieSet(trie, 'abcd', 111);
 
     expect(trieSearch(trie, 'abc', 0)).toBe(null);
