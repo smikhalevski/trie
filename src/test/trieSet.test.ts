@@ -10,12 +10,16 @@ const F = 'f'.charCodeAt(0);
 
 describe('trieSet', () => {
 
-  test('sets an empty key to an empty trie', () => {
-    const trie = trieCreate();
+  let trie: Trie<any>;
 
+  beforeEach(() => {
+    trie = trieCreate();
+  });
+
+  test('sets an empty key to an empty trie', () => {
     expect(trieSet(trie, '', 111)).toBe(trie);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -32,12 +36,10 @@ describe('trieSet', () => {
   });
 
   test('sets an empty key and a non-empty key to a trie', () => {
-    const trie = trieCreate<number>();
-
     expect(trieSet(trie, '', 111)).toBe(trie);
     expect(trieSet(trie, 'a', 222)).toBe(trie[A]);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -72,11 +74,9 @@ describe('trieSet', () => {
   });
 
   test('sets the value with the non-empty key to an empty trie', () => {
-    const trie = trieCreate();
-
     expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -111,12 +111,10 @@ describe('trieSet', () => {
   });
 
   test('sets the value to a non-empty trie', () => {
-    const trie = trieCreate<number>();
-
     expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
     expect(trieSet(trie, 'ade', 222)).toBe(trie![A]![D]);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -184,13 +182,11 @@ describe('trieSet', () => {
   });
 
   test('sets the value to a deep trie trie', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'ade', 222);
     trieSet(trie, 'abf', 333);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -291,12 +287,10 @@ describe('trieSet', () => {
   });
 
   test('preserves overlapping keys', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -382,13 +376,11 @@ describe('trieSet', () => {
   });
 
   test('sets the shorter key after longer key', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcdef', 222);
     trieSet(trie, 'abcde', 333);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -508,14 +500,12 @@ describe('trieSet', () => {
   });
 
   test('correctly infers next for distant keys', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'abcd', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abef', 333);
     trieSet(trie, 'a', 444);
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -617,30 +607,22 @@ describe('trieSet', () => {
   });
 
   test('preserves stable identity when a forked', () => {
-    const trie = trieCreate<number>();
-
-    const trie1 = trieSet(trie, 'abc', 111);
+    const leaf = trieSet(trie, 'abc', 111);
     trieSet(trie, 'ab', 222);
-
     trieSet(trie, 'abc', 333);
 
-    expect(trie1.value).toBe(333);
+    expect(leaf.value).toBe(333);
   });
 
   test('preserves stable identity when a child is added', () => {
-    const trie = trieCreate<number>();
-
-    const trie1 = trieSet(trie, 'abc', 111);
+    const leaf = trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcd', 222);
-
     trieSet(trie, 'abc', 333);
 
-    expect(trie1.value).toBe(333);
+    expect(leaf.value).toBe(333);
   });
 
-  test('perf', () => {
-    const trie = trieCreate();
-
+  test('works with huge dictionary', () => {
     dictionary.forEach((word) => {
       trieSet(trie, word, word);
     });

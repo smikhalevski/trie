@@ -1,4 +1,4 @@
-import {trieCreate, trieSet, trieSuggest} from '../main';
+import {Trie, trieCreate, trieSet, trieSuggest} from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -9,9 +9,13 @@ const E = 'e'.charCodeAt(0);
 
 describe('trieSuggest', () => {
 
-  test('suggests leaf tries', () => {
-    const trie = trieCreate();
+  let trie: Trie<any>;
 
+  beforeEach(() => {
+    trie = trieCreate();
+  });
+
+  test('suggests leaf tries', () => {
     trieSet(trie, 'abcd', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abef', 333);
@@ -26,8 +30,6 @@ describe('trieSuggest', () => {
   });
 
   test('suggests leaf tries for an empty key', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abcd', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abef', 333);
@@ -44,8 +46,6 @@ describe('trieSuggest', () => {
   });
 
   test('suggests leaf tries with endIndex', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abcd', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abef', 333);
@@ -61,8 +61,6 @@ describe('trieSuggest', () => {
   });
 
   test('does not suggest leafs that are too short', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
 
     const suggestions = trieSuggest(trie, 'abcd');
@@ -71,8 +69,6 @@ describe('trieSuggest', () => {
   });
 
   test('suggests a leaf that has exact length', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
 
     const suggestions = trieSuggest(trie, 'abc');
@@ -83,16 +79,12 @@ describe('trieSuggest', () => {
   });
 
   test('returns the same array on each call', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
 
     expect(trieSuggest(trie, 'abc')).toBe(trieSuggest(trie, 'abc'));
   });
 
   test('populates parent caches', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcd', 222);
 
@@ -104,8 +96,6 @@ describe('trieSuggest', () => {
   });
 
   test('populates parent caches up to the closest fork', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
     trieSet(trie, 'abcd', 222);
     trieSet(trie, 'e', 222);
@@ -118,8 +108,6 @@ describe('trieSuggest', () => {
   });
 
   test('cleans up cache during set', () => {
-    const trie = trieCreate();
-
     trieSet(trie, 'abc', 111);
 
     const suggestions = trieSuggest(trie, 'abc');
@@ -129,9 +117,7 @@ describe('trieSuggest', () => {
     expect(suggestions).not.toBe(trieSuggest(trie, 'abc'));
   });
 
-  test('perf', () => {
-    const trie = trieCreate();
-
+  test('works with huge dictionary', () => {
     dictionary.forEach((word) => {
       trieSet(trie, word, word);
     });

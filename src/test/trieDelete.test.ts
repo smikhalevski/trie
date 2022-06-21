@@ -8,13 +8,17 @@ const D = 'd'.charCodeAt(0);
 
 describe('trieDelete', () => {
 
-  test('deletes by an empty key', () => {
-    const trie = trieCreate();
+  let trie: Trie<any>;
 
+  beforeEach(() => {
+    trie = trieCreate();
+  });
+
+  test('deletes by an empty key', () => {
     trieSet(trie, '', 111);
     trieDelete(trieGet(trie, ''));
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -31,13 +35,11 @@ describe('trieDelete', () => {
   });
 
   test('deletes an intermediate leaf with merging', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'ab', 111);
     trieSet(trie, 'abc', 222);
     trieDelete(trieGet(trie, 'ab'));
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -72,14 +74,12 @@ describe('trieDelete', () => {
   });
 
   test('deletes an intermediate leaf without merging', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'ab', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abd', 333);
     trieDelete(trieGet(trie, 'ab'));
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -164,14 +164,12 @@ describe('trieDelete', () => {
   });
 
   test('deletes a leaf that has siblings', () => {
-    const trie = trieCreate<number>();
-
     trieSet(trie, 'ab', 111);
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abd', 333);
     trieDelete(trieGet(trie, 'abd'));
 
-    const result: Trie<number> = {
+    const result: Trie<any> = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -240,9 +238,7 @@ describe('trieDelete', () => {
     expect(trie).toEqual(result);
   });
 
-  test('perf', () => {
-    const trie = trieCreate();
-
+  test.skip('works with huge dictionary', () => {
     dictionary.forEach((word) => {
       trieSet(trie, word, word);
     });
