@@ -18,7 +18,7 @@ export function trieIterator<T>(trie: Trie<T>): IterableIterator<Trie<T>> {
             return {value, done: false};
           }
         }
-        return {value: undefined!, done: true};
+        return {value: undefined, done: true};
       },
     };
   })();
