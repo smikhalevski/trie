@@ -1,5 +1,5 @@
 /**
- * The compressed trie data structure that supports double linked list navigation.
+ * The compressed trie data structure.
  *
  * @template T The type of values stored in a trie.
  */
