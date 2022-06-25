@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc && rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
-    "prettier": "prettier --write './src/**/*.{ts,tsx}'",
+    "prettier": "prettier --write './src/**/*.{js,ts,tsx}'",
     "clean": "rimraf './lib' './docs' './coverage'",
     "test": "jest",
     "perf": "[ -d ./lib ] || npm run build && toofast './src/test/perf.js'",
@@ -39,6 +39,7 @@
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/jest": "^27.5.1",
     "jest": "^27.0.2",
+    "mnemonist": "^0.39.2",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.75.3",

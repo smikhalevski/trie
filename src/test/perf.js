@@ -1,172 +1,186 @@
 const TrieSearch = require('trie-search');
+const TrieMap = require('mnemonist/trie-map');
 const dictionary = require('./dictionary.json');
-const {trieSet, trieCreate, trieDelete, trieSearch, trieSuggest} = require('../../lib/index-cjs');
+const { trieSet, trieCreate, trieDelete, trieSearch, trieSuggest } = require('../../lib/index-cjs');
 
 const wordsByLengthMap = [];
 
 const trie = trieCreate();
 const libMap = new Map();
 const libTrieSearch = new TrieSearch();
+const libTrieMap = new TrieMap();
 
-dictionary.forEach((word) => {
-  libMap.set(word, word);
+dictionary.forEach(word => {
   trieSet(trie, word, word);
+  libMap.set(word, word);
   libTrieSearch.map(word, word);
+  libTrieMap.set(word, word);
 
-  if (word.length !== 0 && word.length % 5 === 0 && (wordsByLengthMap[word.length] === undefined || wordsByLengthMap[word.length].length < 10)) {
+  if (wordsByLengthMap[word.length] === undefined || wordsByLengthMap[word.length].length < 10) {
     (wordsByLengthMap[word.length] ||= []).push(word);
   }
 });
 
-describe('Search', () => {
-  wordsByLengthMap.forEach(([word], length) => {
-
-    describe('Key length ' + length, () => {
-
-      test('Map', (measure) => {
-        measure(() => {
-          libMap.get(word);
+describe(
+  'Search',
+  () => {
+    wordsByLengthMap.forEach(([word], length) => {
+      describe('Key length ' + length, () => {
+        test('@smikhalevski/trie', measure => {
+          measure(() => {
+            trieSearch(trie, word);
+          });
         });
-      });
 
-      test('@smikhalevski/trie', (measure) => {
-        measure(() => {
-          trieSearch(trie, word);
+        test('Map', measure => {
+          measure(() => {
+            libMap.get(word);
+          });
         });
-      });
 
-      test('trie-search', (measure) => {
-        measure(() => {
-          libTrieSearch.search(word);
+        test('trie-search', measure => {
+          measure(() => {
+            libTrieSearch.search(word);
+          });
         });
-      });
-    });
-  });
-}, {warmupIterationCount: 100, targetRme: 0.001});
 
-describe('Search (miss, shorter key)', () => {
-  wordsByLengthMap.forEach(([word], length) => {
-
-    word = word.substring(0, word.length - 2);
-
-    describe('Key length ' + length, () => {
-
-      test('Map', (measure) => {
-        measure(() => {
-          libMap.get(word);
-        });
-      });
-
-      test('@smikhalevski/trie', (measure) => {
-        measure(() => {
-          trieSearch(trie, word);
-        });
-      });
-
-      test('trie-search', (measure) => {
-        measure(() => {
-          libTrieSearch.search(word);
+        test('mnemonist/trie', measure => {
+          measure(() => {
+            libTrieMap.get(word);
+          });
         });
       });
     });
-  });
-}, {warmupIterationCount: 100, targetRme: 0.001});
+  },
+  { warmupIterationCount: 100, targetRme: 0.001 }
+);
 
-describe('Set', () => {
-  wordsByLengthMap.forEach((words, length) => {
+describe(
+  'Set',
+  () => {
+    wordsByLengthMap.forEach((words, length) => {
+      describe('Key length ' + length, () => {
+        test('@smikhalevski/trie', measure => {
+          let trie;
 
-    describe('Key length ' + length, () => {
+          beforeIteration(() => {
+            trie = trieCreate();
+          });
 
-      test('Map', (measure) => {
-
-        let libMap;
-
-        beforeIteration(() => {
-          libMap = new Map();
+          measure(() => {
+            for (let i = 0; i < words.length; ++i) {
+              trieSet(trie, words[i], words[i]);
+            }
+          });
         });
 
-        measure(() => {
-          for (let i = 0; i < words.length; ++i) {
-            libMap.set(words[i], words[i]);
-          }
-        });
-      });
+        test('Map', measure => {
+          let libMap;
 
-      test('@smikhalevski/trie', (measure) => {
+          beforeIteration(() => {
+            libMap = new Map();
+          });
 
-        let trie;
-
-        beforeIteration(() => {
-          trie = trieCreate();
-        });
-
-        measure(() => {
-          for (let i = 0; i < words.length; ++i) {
-            trieSet(trie, words[i], words[i]);
-          }
-        });
-      });
-
-      test('trie-search', (measure) => {
-
-        let libTrieSearch;
-
-        beforeIteration(() => {
-          libTrieSearch = new TrieSearch();
+          measure(() => {
+            for (let i = 0; i < words.length; ++i) {
+              libMap.set(words[i], words[i]);
+            }
+          });
         });
 
-        measure(() => {
-          for (let i = 0; i < words.length; ++i) {
-            libTrieSearch.map(words[i], words[i]);
-          }
-        });
-      });
-    });
-  });
-}, {warmupIterationCount: 100, targetRme: 0.002});
+        test('trie-search', measure => {
+          let libTrieSearch;
 
-describe('Delete', () => {
-  wordsByLengthMap.forEach(([word], length) => {
+          beforeIteration(() => {
+            libTrieSearch = new TrieSearch();
+          });
 
-    describe('Key length ' + length, () => {
-
-      test('Map', (measure) => {
-
-        afterIteration(() => {
-          libMap.set(word, word);
+          measure(() => {
+            for (let i = 0; i < words.length; ++i) {
+              libTrieSearch.map(words[i], words[i]);
+            }
+          });
         });
 
-        measure(() => {
-          libMap.delete(word);
-        });
-      });
+        test('mnemonist/trie', measure => {
+          let libTrieMap;
 
-      test('@smikhalevski/trie', (measure) => {
+          beforeIteration(() => {
+            libTrieMap = new TrieMap();
+          });
 
-        afterIteration(() => {
-          trieSet(trie, word, word);
-        });
-
-        measure(() => {
-          trieDelete(trie, word, word);
+          measure(() => {
+            for (let i = 0; i < words.length; ++i) {
+              libTrieMap.set(words[i], words[i]);
+            }
+          });
         });
       });
     });
-  });
-}, {warmupIterationCount: 100, targetRme: 0.002});
+  },
+  { warmupIterationCount: 100, targetRme: 0.002 }
+);
 
-describe('Suggest', () => {
+describe(
+  'Delete',
+  () => {
+    wordsByLengthMap.forEach(([word], length) => {
+      describe('Key length ' + length, () => {
+        test('@smikhalevski/trie', measure => {
+          afterIteration(() => {
+            trieSet(trie, word, word);
+          });
 
-  test('@smikhalevski/trie', (measure) => {
-    measure(() => {
-      trieSuggest(trie, 'abb');
+          measure(() => {
+            trieDelete(trie, word, word);
+          });
+        });
+
+        test('Map', measure => {
+          afterIteration(() => {
+            libMap.set(word, word);
+          });
+
+          measure(() => {
+            libMap.delete(word);
+          });
+        });
+
+        test('mnemonist/trie', measure => {
+          afterIteration(() => {
+            libTrieMap.set(word, word);
+          });
+
+          measure(() => {
+            libTrieMap.delete(word);
+          });
+        });
+      });
     });
-  });
+  },
+  { warmupIterationCount: 100, targetRme: 0.002 }
+);
 
-  test('trie-search', (measure) => {
-    measure(() => {
-      libTrieSearch.search('abb');
+describe(
+  'Suggest',
+  () => {
+    test('@smikhalevski/trie', measure => {
+      measure(() => {
+        trieSuggest(trie, 'abb');
+      });
     });
-  });
 
-}, {warmupIterationCount: 100, targetRme: 0.002});
+    test('trie-search', measure => {
+      measure(() => {
+        libTrieSearch.search('abb');
+      });
+    });
+
+    test('mnemonist/trie', measure => {
+      measure(() => {
+        libTrieMap.find('abb');
+      });
+    });
+  },
+  { warmupIterationCount: 100, targetRme: 0.002 }
+);
