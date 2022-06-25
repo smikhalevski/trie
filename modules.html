@@ -1,293 +1,48 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@smikhalevski/trie</title>
-	<meta name="description" content="Documentation for @smikhalevski/trie">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">@smikhalevski/trie</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>@smikhalevski/trie</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<section class="tsd-panel-group tsd-index-group">
-				<h2>Index</h2>
-				<section class="tsd-panel tsd-index-panel">
-					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Classes</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/TrieMap.html" class="tsd-kind-icon">Trie<wbr>Map</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/ITrieNode.html" class="tsd-kind-icon">ITrie<wbr>Node</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Functions</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#createTrieNode" class="tsd-kind-icon">create<wbr>Trie<wbr>Node</a></li>
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#searchTrie" class="tsd-kind-icon">search<wbr>Trie</a></li>
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#setTrie" class="tsd-kind-icon">set<wbr>Trie</a></li>
-							</ul>
-						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
-					<a name="createTrieNode" class="tsd-anchor"></a>
-					<h3>create<wbr>Trie<wbr>Node</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Trie<wbr>Node&lt;T&gt;<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/smikhalevski/trie/blob/52585d0/src/main/trie-utils.ts#L39">trie-utils.ts:39</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a compressed trie node.</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>see</dt>
-									<dd><p><a href="https://en.wikipedia.org/wiki/Trie" class="external">Trie on Wikipedia</a></p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
-					<a name="searchTrie" class="tsd-anchor"></a>
-					<h3>search<wbr>Trie</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">search<wbr>Trie&lt;T&gt;<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, charCodeAt<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/smikhalevski/trie/blob/52585d0/src/main/trie-utils.ts#L136">trie-utils.ts:136</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Searches for a leaf trie node that describes the longest substring from <code>input</code> starting from <code>offset</code>.</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The trie with searched keys.</p>
-									</div>
-								</li>
-								<li>
-									<h5>input: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The string to search for the key from the <code>trie</code>.</p>
-									</div>
-								</li>
-								<li>
-									<h5>offset: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The offset in <code>str</code> to start reading substring from.</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> charCodeAt: <span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The callback that returns the char code at given position.</p>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-signature">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>input: <span class="tsd-signature-type">string</span></h5>
-														</li>
-														<li>
-															<h5>offset: <span class="tsd-signature-type">number</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h4>
-							<p>A node or <code>undefined</code> if there&#39;s no matching key in the <code>trie</code>.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
-					<a name="setTrie" class="tsd-anchor"></a>
-					<h3>set<wbr>Trie</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Trie&lt;T&gt;<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/smikhalevski/trie/blob/52585d0/src/main/trie-utils.ts#L80">trie-utils.ts:80</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets a new key-value pair to the trie node.</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>node: <a href="interfaces/ITrieNode.html" class="tsd-signature-type" data-tsd-kind="Interface">ITrieNode</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>value: <span class="tsd-signature-type">T</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class="current ">
-						<a href="modules.html">Exports</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/TrieMap.html" class="tsd-kind-icon">Trie<wbr>Map</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/ITrieNode.html" class="tsd-kind-icon">ITrie<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#createTrieNode" class="tsd-kind-icon">create<wbr>Trie<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#searchTrie" class="tsd-kind-icon">search<wbr>Trie</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#setTrie" class="tsd-kind-icon">set<wbr>Trie</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@smikhalevski/trie</title><meta name="description" content="Documentation for @smikhalevski/trie"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@smikhalevski/trie</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@smikhalevski/trie </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><section class="tsd-panel-group tsd-index-group"><h2>Index</h2><section class="tsd-panel tsd-index-panel"><div class="tsd-index-content"><section class="tsd-index-section "><h3>Interfaces</h3><ul class="tsd-index-list"><li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/Trie.html" class="tsd-kind-icon">Trie</a></li></ul></section><section class="tsd-index-section "><h3>Functions</h3><ul class="tsd-index-list"><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieCreate" class="tsd-kind-icon">trie<wbr/>Create</a></li><li class="tsd-kind-function"><a href="modules.html#trieDelete" class="tsd-kind-icon">trie<wbr/>Delete</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieGet" class="tsd-kind-icon">trie<wbr/>Get</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSearch" class="tsd-kind-icon">trie<wbr/>Search</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSet" class="tsd-kind-icon">trie<wbr/>Set</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSuggest" class="tsd-kind-icon">trie<wbr/>Suggest</a></li></ul></section></div></section></section><section class="tsd-panel-group tsd-member-group "><h2>Functions</h2><section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter"><a id="trieCreate" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Create<a href="#trieCreate" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Create<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieCreate.ts#L8">trieCreate.ts:8</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Creates a compressed trie data structure.</p>
+</div></div><h4 class="tsd-type-parameters-title">Type Parameters</h4><ul class="tsd-type-parameters"><li><h4>T</h4><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The type of values stored in a trie.</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></section><section class="tsd-panel tsd-member tsd-kind-function"><a id="trieDelete" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Delete<a href="#trieDelete" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Delete<span class="tsd-signature-symbol">(</span>leaf<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieDelete.ts#L8">trieDelete.ts:8</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Deletes the leaf from its trie.</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>leaf: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The leaf to delete.</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></section><section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter"><a id="trieGet" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Get<a href="#trieGet" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Get<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>trie<span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieGet.ts#L13">trieGet.ts:13</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Returns a leaf associated with the key, or <code>null</code> if there&#39;s no such key.</p>
+</div></div><h4 class="tsd-type-parameters-title">Type Parameters</h4><ul class="tsd-type-parameters"><li><h4>T</h4><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The type of values stored in a trie.</p>
+</div></div></li></ul><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>trie: <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The trie to search in.</p>
+</div></div></li><li><h5>key: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The key to retrieve.</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4><div><p>A leaf in the <code>trie</code>, or <code>null</code> if there&#39;s no such key.</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter"><a id="trieSearch" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Search<a href="#trieSearch" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Search<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>trie<span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, startIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, endIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieSearch.ts#L15">trieSearch.ts:15</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Searches for a leaf with the key that matches the longest substring in <code>input</code> that starts at <code>startIndex</code> and ends
+at <code>endIndex</code>.</p>
+</div></div><h4 class="tsd-type-parameters-title">Type Parameters</h4><ul class="tsd-type-parameters"><li><h4>T</h4><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The type of values stored in a trie.</p>
+</div></div></li></ul><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>trie: <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The trie root.</p>
+</div></div></li><li><h5>input: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The string to search for the key from the <code>trie</code>.</p>
+</div></div></li><li><h5>startIndex: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5></li><li><h5>endIndex: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = input.length</span></h5></li></ul><h4 class="tsd-returns-title">Returns <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4><div><p>A leaf in the trie or <code>null</code> if there&#39;s no matching key.</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter"><a id="trieSet" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Set<a href="#trieSet" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Set<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>trie<span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span>, key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieSet.ts#L14">trieSet.ts:14</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Sets a new key-value pair to the trie.</p>
+</div></div><h4 class="tsd-type-parameters-title">Type Parameters</h4><ul class="tsd-type-parameters"><li><h4>T</h4><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The type of values stored in a trie.</p>
+</div></div></li></ul><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>trie: <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The trie root.</p>
+</div></div></li><li><h5>key: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The key of to add to the <code>trie</code>.</p>
+</div></div></li><li><h5>value: <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The value to associate with the key.</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4><div><p>The leaf to which the value was set.</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter"><a id="trieSuggest" class="tsd-anchor"></a><h3 class="tsd-anchor-link">trie<wbr/>Suggest<a href="#trieSuggest" aria-label="Permalink" class="tsd-anchor-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></svg></a></h3><ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter"><li class="tsd-signature tsd-kind-icon">trie<wbr/>Suggest<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>trie<span class="tsd-signature-symbol">: </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span>, input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, startIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, endIndex<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in <a href="https://github.com/smikhalevski/trie/blob/85c94fa/src/main/trieSuggest.ts#L14">trieSuggest.ts:14</a></li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Returns the cached readonly array of trie leafs that have keys starting with <code>input.substring(startIndex, endIndex)</code>.</p>
+</div></div><h4 class="tsd-type-parameters-title">Type Parameters</h4><ul class="tsd-type-parameters"><li><h4>T</h4><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The type of values stored in a trie.</p>
+</div></div></li></ul><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>trie: <a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The trie root.</p>
+</div></div></li><li><h5>input: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The string to search for the key from the <code>trie</code>.</p>
+</div></div></li><li><h5>startIndex: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5></li><li><h5>endIndex: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = input.length</span></h5></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">readonly </span><a href="interfaces/Trie.html" class="tsd-signature-type" data-tsd-kind="Interface">Trie</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h4><div><p>The cached readonly array of leafs or <code>null</code> if there&#39;s no matching key.</p>
+</div></li></ul></section></section></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/Trie.html" class="tsd-kind-icon">Trie</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieCreate" class="tsd-kind-icon">trie<wbr/>Create</a></li><li class="tsd-kind-function"><a href="modules.html#trieDelete" class="tsd-kind-icon">trie<wbr/>Delete</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieGet" class="tsd-kind-icon">trie<wbr/>Get</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSearch" class="tsd-kind-icon">trie<wbr/>Search</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSet" class="tsd-kind-icon">trie<wbr/>Set</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#trieSuggest" class="tsd-kind-icon">trie<wbr/>Suggest</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
