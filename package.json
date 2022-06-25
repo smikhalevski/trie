@@ -11,12 +11,12 @@
   ],
   "scripts": {
     "build": "tsc && rollup --input ./lib/index.js --file ./lib/index-cjs.js --format cjs --plugin @rollup/plugin-node-resolve",
-    "clean": "rm -rf ./lib ./docs ./coverage",
-    "test": "jest --detectOpenHandles",
-    "perf": "[ -d ./lib ] || npm run build && toofast ./src/test/perf.js",
-    "docs": "typedoc ./src/main/index.ts",
-    "publish-docs": "[ -d ./docs ] && [[ ! $(git status --porcelain) ]] && branch=$(git rev-parse --abbrev-ref HEAD) && sha=$(git rev-parse --short HEAD) && t=$(mktemp -d) && cp -R ./docs/ $t && git checkout ghpages && ls -A | grep -wv .git | xargs rm -rf && cp -R $t/ . && git add . && git commit -m \"Updated docs ($sha)\" && git push && git checkout $branch",
-    "release-docs": "npm run clean && npm run docs && npm run publish-docs"
+    "prettier": "prettier --write './src/**/*.{ts,tsx}'",
+    "clean": "rimraf './lib' './docs' './coverage'",
+    "test": "jest",
+    "perf": "[ -d ./lib ] || npm run build && toofast './src/test/perf.js'",
+    "docs:build": "typedoc './src/main/index.ts'",
+    "docs:release": "npm run docs:build && SHA=$(git rev-parse --short HEAD) && ORIGIN=$(git config --get remote.origin.url) && TEMP=$(mktemp -d) && git clone -b ghpages --single-branch $ORIGIN $TEMP && ls -A $TEMP | grep -wv .git | xargs rm -rf && cp -R ./docs/ $TEMP && cd $TEMP && git add . && git commit -m \"Updated docs ($SHA)\" && git push && rm -rf $TEMP"
   },
   "repository": {
     "type": "git",
@@ -35,13 +35,12 @@
     "url": "https://github.com/smikhalevski/trie/issues"
   },
   "homepage": "https://github.com/smikhalevski/trie#readme",
-  "jest": {
-    "preset": "ts-jest"
-  },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@types/jest": "^27.5.1",
     "jest": "^27.0.2",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.75.3",
     "toofast": "^1.3.0",
     "trie-search": "^1.3.6",

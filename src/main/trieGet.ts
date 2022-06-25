@@ -1,5 +1,5 @@
-import {Trie} from './trie-types';
-import {trieSearch} from './trieSearch';
+import { Trie } from './trie-types';
+import { trieSearch } from './trieSearch';
 
 /**
  * Returns a leaf associated with the key.

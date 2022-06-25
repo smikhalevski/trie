@@ -1,5 +1,5 @@
-import {Trie} from './trie-types';
-import {trieGet} from './trieGet';
+import { Trie } from './trie-types';
+import { trieGet } from './trieGet';
 
 /**
  * Updates a new key-value pair only if the key already exists in the trie.

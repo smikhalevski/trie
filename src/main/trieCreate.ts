@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import { Trie } from './trie-types';
 
 /**
  * Creates a compressed trie data structure that supports doubly linked list navigation.

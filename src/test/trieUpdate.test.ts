@@ -1,7 +1,6 @@
-import {Trie, trieCreate, trieSet, trieUpdate} from '../main';
+import { Trie, trieCreate, trieSet, trieUpdate } from '../main';
 
 describe('trieUpdate', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {

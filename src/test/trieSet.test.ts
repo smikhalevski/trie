@@ -1,4 +1,4 @@
-import {Trie, trieCreate, trieGet, trieSet} from '../main';
+import { Trie, trieCreate, trieGet, trieSet } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -9,7 +9,6 @@ const E = 'e'.charCodeAt(0);
 const F = 'f'.charCodeAt(0);
 
 describe('trieSet', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {
@@ -159,7 +158,7 @@ describe('trieSet', () => {
           isLeaf: true,
           leafCharCodes: [E],
           suggestions: null,
-        }
+        },
       },
     };
 
@@ -242,7 +241,7 @@ describe('trieSet', () => {
             isLeaf: true,
             leafCharCodes: null,
             suggestions: null,
-          }
+          },
         },
         [D]: {
           charCode: D,
@@ -573,7 +572,7 @@ describe('trieSet', () => {
             isLeaf: true,
             leafCharCodes: [F],
             suggestions: null,
-          }
+          },
         },
       },
     };
@@ -623,11 +622,11 @@ describe('trieSet', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach((word) => {
+    dictionary.forEach(word => {
       trieSet(trie, word, word);
     });
 
-    dictionary.forEach((word) => {
+    dictionary.forEach(word => {
       expect(trieGet(trie, word)!.key).toEqual(word);
     });
   });

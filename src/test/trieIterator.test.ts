@@ -1,8 +1,7 @@
-import {Trie, trieCreate, trieSet} from '../main';
-import {trieIterator} from '../main/trieIterator';
+import { Trie, trieCreate, trieSet } from '../main';
+import { trieIterator } from '../main/trieIterator';
 
 describe('trieIterator', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {

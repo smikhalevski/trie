@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import { Trie } from './trie-types';
 
 /**
  * Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
@@ -11,12 +11,15 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] | null {
-
+export function trieSuggest<T>(
+  trie: Trie<T>,
+  input: string,
+  startIndex = 0,
+  endIndex = input.length
+): readonly Trie<T>[] | null {
   let i = startIndex;
 
   while (i < endIndex) {
-
     if (trie.last === null) {
       break;
     }
@@ -32,7 +35,6 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
 
   // Check that there's a sufficient number of characters to satisfy the requested prefix
   if (i !== endIndex) {
-
     const trieLeafCharCodes = trie.leafCharCodes;
     if (trieLeafCharCodes === null) {
       return null;
@@ -79,5 +81,7 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     parent.suggestions = suggestions;
   }
 
-  return trie.suggestions = suggestions;
+  trie.suggestions = suggestions;
+
+  return suggestions;
 }

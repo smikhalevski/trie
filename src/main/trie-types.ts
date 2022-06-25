@@ -4,7 +4,6 @@
  * @template T The type of values stored in a trie.
  */
 export interface Trie<T> {
-
   /**
    * Mapping from char code to a corresponding child trie.
    */

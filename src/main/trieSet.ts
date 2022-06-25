@@ -1,5 +1,5 @@
-import {Trie} from './trie-types';
-import {trieCreate} from './trieCreate';
+import { Trie } from './trie-types';
+import { trieCreate } from './trieCreate';
 
 /**
  * Sets a new key-value pair to the trie.
@@ -18,7 +18,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
   // Find the trie with the longest common prefix
   while (i < keyLength) {
-
     trie.suggestions = null;
 
     const keyCharCode = key.charCodeAt(i++);
@@ -28,7 +27,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     let prev = trie;
 
     if (trieLast !== null) {
-
       const child = trie[keyCharCode];
       if (child !== undefined) {
         trie = trieFork(child);
@@ -59,7 +57,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
     if (i < keyLength) {
       // noinspection JSMismatchedCollectionQueryUpdate
-      const leafCharCodes: number[] = trie.leafCharCodes = [];
+      const leafCharCodes: number[] = (trie.leafCharCodes = []);
 
       while (i < keyLength) {
         leafCharCodes.push(key.charCodeAt(i++));
@@ -88,7 +86,6 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
  * @param trie The trie to fork.
  */
 function trieFork<T>(trie: Trie<T>): Trie<T> {
-
   const trieLeafCharCodes = trie.leafCharCodes;
   if (trieLeafCharCodes === null) {
     return trie;
