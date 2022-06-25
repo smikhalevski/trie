@@ -1,10 +1,7 @@
 # trie 🌲&ensp;[![build](https://github.com/smikhalevski/trie/actions/workflows/master.yml/badge.svg?branch=master&event=push)](https://github.com/smikhalevski/trie/actions/workflows/master.yml)
 
-The [compressed trie data structure](https://en.wikipedia.org/wiki/Trie#Compressed_tries).
-
-- [Just 1 kB gzipped](https://bundlephobia.com/result?p=@smikhalevski/trie) and yet tree-shakeable;
-- [Extremely fast](#performance);
-- Supports [doubly linked list](https://en.wikipedia.org/wiki/Doubly_linked_list) navigation.
+The [extremely fast](#performance)[compressed trie](https://en.wikipedia.org/wiki/Trie#Compressed_tries) implementation
+in [1 kB gzipped](https://bundlephobia.com/result?p=@smikhalevski/trie).
 
 ```shell
 npm install --save-prod @smikhalevski/trie
