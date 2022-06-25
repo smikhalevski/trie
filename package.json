@@ -1,7 +1,7 @@
 {
   "name": "@smikhalevski/trie",
   "version": "1.0.1",
-  "description": "The compact trie data structure.",
+  "description": "The extremely fast compressed trie implementation.",
   "main": "./lib/index-cjs.js",
   "module": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -27,7 +27,7 @@
     "map",
     "search",
     "suggest",
-    "string"
+    "autocomplete"
   ],
   "author": "Savva Mikhalevski <smikhalevski@gmail.com>",
   "license": "MIT",
