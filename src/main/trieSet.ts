@@ -29,7 +29,62 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     if (trieLast !== null) {
       const child = trie[keyCharCode];
       if (child !== undefined) {
-        trie = trieFork(child);
+        const childLeafCharCodes = child.leafCharCodes;
+        if (childLeafCharCodes === null) {
+          trie = child;
+          continue;
+        }
+
+        // Check that the child is the one that must be updated
+        const childLeafCharCodesLength = childLeafCharCodes.length;
+        if (i + childLeafCharCodesLength === keyLength) {
+          let j = 0;
+          let k = i;
+          while (j < childLeafCharCodesLength && key.charCodeAt(k) === childLeafCharCodes[j]) {
+            ++j;
+            ++k;
+          }
+          // Child exactly matches the key
+          if (j === childLeafCharCodesLength) {
+            trie = child;
+            break;
+          }
+        }
+
+        // Child must be forked, so a new parent must be inserted, preserving the child identity.
+        //
+        // The insertion would result in (most properties are omitted for clarity):
+        //
+        // {A: <child>{leafCharCodes: [B, C]}}
+        // ↓
+        // {A: {B: <child>{leafCharCodes: [C]}}}
+
+        // Child always has a prev since it has a parent
+        const childPrev = child.prev!;
+        const childCharCode = child.charCode;
+
+        const charCode = childLeafCharCodes[0];
+
+        const parent = trieCreate<T>();
+        parent[charCode] = parent.next = parent.last = child;
+        parent.charCode = childCharCode;
+        parent.parent = trie;
+        parent.prev = childPrev;
+
+        child.charCode = charCode;
+        trie[childCharCode] = childPrev.next = child.parent = child.prev = parent;
+
+        if (trie.last === child) {
+          trie.last = parent;
+        }
+
+        if (childLeafCharCodes.length === 1) {
+          child.leafCharCodes = null;
+        } else {
+          childLeafCharCodes.shift();
+        }
+
+        trie = parent;
         continue;
       }
 
@@ -72,50 +127,4 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   trie.suggestions = null;
 
   return trie;
-}
-
-/**
- * Inserts a parent for a trie (most trie properties are omitted for clarity):
- *
- * ```
- * {A: <trie>{leafCharCodes: [B, C]}}
- * ↓
- * {A: {B: <trie>{leafCharCodes: [C]}}}
- * ```
- *
- * @param trie The trie to fork.
- */
-function trieFork<T>(trie: Trie<T>): Trie<T> {
-  const trieLeafCharCodes = trie.leafCharCodes;
-  if (trieLeafCharCodes === null) {
-    return trie;
-  }
-
-  // Trie always has a parent when fork is requested
-  const trieCharCode = trie.charCode;
-  const trieParent = trie.parent!;
-  const triePrev = trie.prev!;
-
-  const charCode = trieLeafCharCodes[0];
-
-  const parent = trieCreate<T>();
-  parent[charCode] = parent.next = parent.last = trie;
-  parent.charCode = trieCharCode;
-  parent.parent = trieParent;
-  parent.prev = triePrev;
-
-  trie.charCode = charCode;
-  trieParent[trieCharCode] = triePrev.next = trie.parent = trie.prev = parent;
-
-  if (trieParent.last === trie) {
-    trieParent.last = parent;
-  }
-
-  if (trieLeafCharCodes.length === 1) {
-    trie.leafCharCodes = null;
-  } else {
-    trieLeafCharCodes.shift();
-  }
-
-  return parent;
 }

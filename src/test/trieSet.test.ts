@@ -72,6 +72,44 @@ describe('trieSet', () => {
     expect(trie).toEqual(result);
   });
 
+  test('updated the existing key', () => {
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abc', 222);
+
+    const result: Trie<any> = {
+      charCode: -1,
+      parent: null,
+      prev: null,
+      next: null,
+      last: null,
+      key: null,
+      value: undefined,
+      isLeaf: false,
+      leafCharCodes: null,
+      suggestions: null,
+      [A]: {
+        charCode: A,
+        parent: null,
+        prev: null,
+        next: null,
+        last: null,
+        key: 'abc',
+        value: 222,
+        isLeaf: true,
+        leafCharCodes: [B, C],
+        suggestions: null,
+      },
+    };
+
+    result.next = result[A]!;
+    result.last = result[A]!;
+
+    result[A]!.parent = result;
+    result[A]!.prev = result;
+
+    expect(trie).toEqual(result);
+  });
+
   test('sets the value with the non-empty key to an empty trie', () => {
     expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
 
