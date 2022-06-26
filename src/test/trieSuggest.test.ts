@@ -63,6 +63,12 @@ describe('trieSuggest', () => {
     expect(suggestions).toEqual([trie[A]]);
   });
 
+  test('returns longer key for short input', () => {
+    trieSet(trie, 'abcd', 111);
+
+    expect(trieSuggest(trie, 'ab')).toEqual([trie[A]]);
+  });
+
   test('returns the same array on each call', () => {
     trieSet(trie, 'abc', 111);
 
@@ -107,6 +113,7 @@ describe('trieSuggest', () => {
       trieSet(trie, word, word);
     });
 
+    expect(trieSuggest(trie, 'abalo')?.length).toBe(1);
     expect(trieSuggest(trie, 'abbot')?.length).toBe(2);
     expect(trieSuggest(trie, 'abb')?.length).toBe(12);
   });

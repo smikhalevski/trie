@@ -40,17 +40,19 @@ export function trieSuggest<T>(
       return null;
     }
 
+    const restLength = endIndex - i;
+
     const trieLeafCharCodesLength = trieLeafCharCodes.length;
-    if (i + trieLeafCharCodesLength < endIndex) {
+    if (trieLeafCharCodesLength < restLength) {
       return null;
     }
 
     let j = 0;
-    while (j < trieLeafCharCodesLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
+    while (j < restLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
       ++j;
       ++i;
     }
-    if (j < trieLeafCharCodesLength) {
+    if (j < restLength) {
       return null;
     }
   }
