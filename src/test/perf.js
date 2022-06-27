@@ -23,6 +23,20 @@ for (const key of dictionary) {
 
 keys.length = DATA_POINT_COUNT;
 
+// // Monotonous data
+// for (let i = 0; i < DATA_POINT_COUNT; ++i) {
+//   for (let charCode = 97; charCode < 123; ++charCode) {
+//     const key = String.fromCharCode(charCode).repeat(i);
+//
+//     trieSet(trie, key, key);
+//     libMap.set(key, key);
+//     libTrieSearch.map(key, key);
+//     libTrieMap.set(key, key);
+//
+//     keys[i] = key;
+//   }
+// }
+
 describe(
   'Get',
   () => {
