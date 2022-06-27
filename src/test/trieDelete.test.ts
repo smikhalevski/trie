@@ -815,12 +815,12 @@ describe('trieDelete', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach(word => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
-    dictionary.forEach(word => {
-      trieDelete(trieGet(trie, word));
+    dictionary.forEach(key => {
+      trieDelete(trieGet(trie, key));
     });
 
     const result: Trie<any> = {

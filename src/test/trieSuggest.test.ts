@@ -109,8 +109,8 @@ describe('trieSuggest', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach(word => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
     expect(trieSuggest(trie, 'abalo')?.length).toBe(1);

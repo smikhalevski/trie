@@ -660,12 +660,12 @@ describe('trieSet', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach(word => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
-    dictionary.forEach(word => {
-      expect(trieGet(trie, word)!.key).toEqual(word);
+    dictionary.forEach(key => {
+      expect(trieGet(trie, key)!.key).toEqual(key);
     });
   });
 });
