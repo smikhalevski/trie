@@ -109,6 +109,14 @@ trieSuggest(trie, 'hott');
 
 Clone this repo and use `npm ci && npm run perf` to run the performance testsuite.
 
-## Search performance
+`trieSearch` has similar performance with `trieGet`.
 
-![Search performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-search.svg)
+![Get operation performance chart](./images/perf-get.svg)
+
+![Add operation performance chart](./images/perf-add.svg)
+
+![Update operation performance chart](./images/perf-update.svg)
+
+![Delete operation performance chart](./images/perf-delete.svg)
+
+![Suggest operation performance chart](./images/perf-suggest.svg)
