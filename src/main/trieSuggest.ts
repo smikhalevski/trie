@@ -1,7 +1,7 @@
-import {Trie} from './trie-types';
+import { Trie } from './trie-types';
 
 /**
- * Returns the list of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
+ * Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
  *
  * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
@@ -11,12 +11,15 @@ import {Trie} from './trie-types';
  *
  * @template T The type of values stored in a trie.
  */
-export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): readonly Trie<T>[] | null {
-
+export function trieSuggest<T>(
+  trie: Trie<T>,
+  input: string,
+  startIndex = 0,
+  endIndex = input.length
+): readonly Trie<T>[] | null {
   let i = startIndex;
 
   while (i < endIndex) {
-
     if (trie.last === null) {
       break;
     }
@@ -32,23 +35,24 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
 
   // Check that there's a sufficient number of characters to satisfy the requested prefix
   if (i !== endIndex) {
-
     const trieLeafCharCodes = trie.leafCharCodes;
     if (trieLeafCharCodes === null) {
       return null;
     }
 
+    const restLength = endIndex - i;
+
     const trieLeafCharCodesLength = trieLeafCharCodes.length;
-    if (i + trieLeafCharCodesLength < endIndex) {
+    if (trieLeafCharCodesLength < restLength) {
       return null;
     }
 
     let j = 0;
-    while (j < trieLeafCharCodesLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
+    while (j < restLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
       ++j;
       ++i;
     }
-    if (j < trieLeafCharCodesLength) {
+    if (j < restLength) {
       return null;
     }
   }
@@ -79,5 +83,7 @@ export function trieSuggest<T>(trie: Trie<T>, input: string, startIndex = 0, end
     parent.suggestions = suggestions;
   }
 
-  return trie.suggestions = suggestions;
+  trie.suggestions = suggestions;
+
+  return suggestions;
 }

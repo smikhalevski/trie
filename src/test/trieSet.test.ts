@@ -1,4 +1,4 @@
-import {Trie, trieCreate, trieGet, trieSet} from '../main';
+import { Trie, trieCreate, trieGet, trieSet } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -9,7 +9,6 @@ const E = 'e'.charCodeAt(0);
 const F = 'f'.charCodeAt(0);
 
 describe('trieSet', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {
@@ -60,6 +59,44 @@ describe('trieSet', () => {
         value: 222,
         isLeaf: true,
         leafCharCodes: null,
+        suggestions: null,
+      },
+    };
+
+    result.next = result[A]!;
+    result.last = result[A]!;
+
+    result[A]!.parent = result;
+    result[A]!.prev = result;
+
+    expect(trie).toEqual(result);
+  });
+
+  test('updated the existing key', () => {
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abc', 222);
+
+    const result: Trie<any> = {
+      charCode: -1,
+      parent: null,
+      prev: null,
+      next: null,
+      last: null,
+      key: null,
+      value: undefined,
+      isLeaf: false,
+      leafCharCodes: null,
+      suggestions: null,
+      [A]: {
+        charCode: A,
+        parent: null,
+        prev: null,
+        next: null,
+        last: null,
+        key: 'abc',
+        value: 222,
+        isLeaf: true,
+        leafCharCodes: [B, C],
         suggestions: null,
       },
     };
@@ -159,7 +196,7 @@ describe('trieSet', () => {
           isLeaf: true,
           leafCharCodes: [E],
           suggestions: null,
-        }
+        },
       },
     };
 
@@ -242,7 +279,7 @@ describe('trieSet', () => {
             isLeaf: true,
             leafCharCodes: null,
             suggestions: null,
-          }
+          },
         },
         [D]: {
           charCode: D,
@@ -573,7 +610,7 @@ describe('trieSet', () => {
             isLeaf: true,
             leafCharCodes: [F],
             suggestions: null,
-          }
+          },
         },
       },
     };
@@ -623,12 +660,12 @@ describe('trieSet', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach((word) => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
-    dictionary.forEach((word) => {
-      expect(trieGet(trie, word)!.key).toEqual(word);
+    dictionary.forEach(key => {
+      expect(trieGet(trie, key)!.key).toEqual(key);
     });
   });
 });

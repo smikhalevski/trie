@@ -1,4 +1,4 @@
-import {Trie, trieCreate, trieSet, trieSuggest} from '../main';
+import { Trie, trieCreate, trieSet, trieSuggest } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -8,7 +8,6 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
 describe('trieSuggest', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {
@@ -23,10 +22,7 @@ describe('trieSuggest', () => {
 
     const suggestions = trieSuggest(trie, 'abc', 0);
 
-    expect(suggestions).toEqual([
-      trie[A]![B]![C],
-      trie[A]![B]![C]![D],
-    ]);
+    expect(suggestions).toEqual([trie[A]![B]![C], trie[A]![B]![C]![D]]);
   });
 
   test('suggests leaf tries for an empty key', () => {
@@ -37,12 +33,7 @@ describe('trieSuggest', () => {
 
     const suggestions = trieSuggest(trie, '', 0);
 
-    expect(suggestions).toEqual([
-      trie[A],
-      trie[A]![B]![C],
-      trie[A]![B]![C]![D],
-      trie[A]![B]![E],
-    ]);
+    expect(suggestions).toEqual([trie[A], trie[A]![B]![C], trie[A]![B]![C]![D], trie[A]![B]![E]]);
   });
 
   test('suggests leaf tries with endIndex', () => {
@@ -53,11 +44,7 @@ describe('trieSuggest', () => {
 
     const suggestions = trieSuggest(trie, 'abcd', 0, 2);
 
-    expect(suggestions).toEqual([
-      trie[A]![B]![C],
-      trie[A]![B]![C]![D],
-      trie[A]![B]![E],
-    ]);
+    expect(suggestions).toEqual([trie[A]![B]![C], trie[A]![B]![C]![D], trie[A]![B]![E]]);
   });
 
   test('does not suggest leafs that are too short', () => {
@@ -73,9 +60,13 @@ describe('trieSuggest', () => {
 
     const suggestions = trieSuggest(trie, 'abc');
 
-    expect(suggestions).toEqual([
-      trie[A],
-    ]);
+    expect(suggestions).toEqual([trie[A]]);
+  });
+
+  test('returns longer key for short input', () => {
+    trieSet(trie, 'abcd', 111);
+
+    expect(trieSuggest(trie, 'ab')).toEqual([trie[A]]);
   });
 
   test('returns the same array on each call', () => {
@@ -118,10 +109,11 @@ describe('trieSuggest', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach((word) => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
+    expect(trieSuggest(trie, 'abalo')?.length).toBe(1);
     expect(trieSuggest(trie, 'abbot')?.length).toBe(2);
     expect(trieSuggest(trie, 'abb')?.length).toBe(12);
   });

@@ -1,10 +1,9 @@
 /**
- * The compressed trie data structure that supports double linked list navigation.
+ * The compressed trie data structure.
  *
  * @template T The type of values stored in a trie.
  */
 export interface Trie<T> {
-
   /**
    * Mapping from char code to a corresponding child trie.
    */

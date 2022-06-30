@@ -1,4 +1,4 @@
-import {Trie} from './trie-types';
+import { Trie } from './trie-types';
 
 /**
  * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
@@ -13,14 +13,11 @@ import {Trie} from './trie-types';
  * @template T The type of values stored in a trie.
  */
 export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | null {
-
   let leaf: Trie<T> | null = null;
   let i = startIndex;
 
   while (i < endIndex) {
-
     if (trie.last !== null) {
-
       if (trie.isLeaf) {
         leaf = trie;
       }
@@ -32,9 +29,7 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endI
 
       trie = child;
       ++i;
-
     } else {
-
       const trieLeafCharCodes = trie.leafCharCodes;
       if (trieLeafCharCodes === null) {
         return trie;

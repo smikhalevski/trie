@@ -1,12 +1,11 @@
-import {Trie} from './trie-types';
+import { Trie } from './trie-types';
 
 /**
- * Deletes leaf of the trie.
+ * Deletes the leaf from its trie.
  *
  * @param leaf The leaf to delete.
  */
 export function trieDelete(leaf: Trie<any> | null): void {
-
   if (leaf === null || !leaf.isLeaf) {
     return;
   }
@@ -33,7 +32,6 @@ export function trieDelete(leaf: Trie<any> | null): void {
 
     // Maybe a single child can be compacted (1.2)
     leaf = last;
-
   } else if (parent !== null) {
     // There are no children but parent exists (2)
 
@@ -52,7 +50,6 @@ export function trieDelete(leaf: Trie<any> | null): void {
       if (parent.next === leaf) {
         parentLast = parent.last = null;
       } else {
-
         // Lookup the closest prev that is also a child of parent
         parentLast = prev;
         while (parentLast.parent !== parent) {
@@ -79,7 +76,6 @@ export function trieDelete(leaf: Trie<any> | null): void {
       // Parent has multiple children remaining (2.4)
       return;
     }
-
   } else {
     // Leaf is a root (3)
     return;
@@ -91,8 +87,11 @@ export function trieDelete(leaf: Trie<any> | null): void {
   }
 
   // Recursively merge the leaf with the parent, if the parent is a non-leaf node with a single child
-  for (let nextParent = leaf.parent, parent = nextParent; parent !== null && !parent.isLeaf && parent.next === parent.last; parent = nextParent) {
-
+  for (
+    let nextParent = leaf.parent, parent = nextParent;
+    parent !== null && !parent.isLeaf && parent.next === parent.last;
+    parent = nextParent
+  ) {
     nextParent = parent.parent;
     if (nextParent === null) {
       break;
@@ -115,7 +114,7 @@ export function trieDelete(leaf: Trie<any> | null): void {
     leaf.parent = nextParent;
     leaf.prev = parentPrev;
 
-    const leafCharCodes = leaf.leafCharCodes ||= [];
+    const leafCharCodes = (leaf.leafCharCodes ||= []);
     leafCharCodes.unshift(leafCharCode);
 
     parent[leafCharCode] = undefined;
