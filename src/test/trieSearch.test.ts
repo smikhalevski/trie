@@ -1,4 +1,4 @@
-import {Trie, trieCreate, trieSearch, trieSet} from '../main';
+import { Trie, trieCreate, trieSearch, trieSet } from '../main';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -6,7 +6,6 @@ const C = 'c'.charCodeAt(0);
 const D = 'd'.charCodeAt(0);
 
 describe('trieSearch', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {

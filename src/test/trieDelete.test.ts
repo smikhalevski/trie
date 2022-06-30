@@ -1,4 +1,4 @@
-import {Trie, trieCreate, trieDelete, trieGet, trieSet} from '../main';
+import { Trie, trieCreate, trieDelete, trieGet, trieSet } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -8,7 +8,6 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
 describe('trieDelete', () => {
-
   let trie: Trie<any>;
 
   beforeEach(() => {
@@ -784,7 +783,7 @@ describe('trieDelete', () => {
               isLeaf: true,
               leafCharCodes: null,
               suggestions: null,
-            }
+            },
           },
           [E]: undefined,
         },
@@ -816,12 +815,12 @@ describe('trieDelete', () => {
   });
 
   test('works with a huge dictionary', () => {
-    dictionary.forEach((word) => {
-      trieSet(trie, word, word);
+    dictionary.forEach(key => {
+      trieSet(trie, key, key);
     });
 
-    dictionary.forEach((word) => {
-      trieDelete(trieGet(trie, word));
+    dictionary.forEach(key => {
+      trieDelete(trieGet(trie, key));
     });
 
     const result: Trie<any> = {
