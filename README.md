@@ -63,7 +63,7 @@ trieGet(trie, 'foo');
 // → {key: 'foo', value: 111, …}
 
 trieGet(trie, 'woopsie');
-// → undefined
+// → null
 ```
 
 ### `trieSearch(trie, input, startIndex?, endIndex?)`<a name="search"></a>
@@ -141,10 +141,10 @@ trieSuggest(trie, 'foo')?.forEach(trieDelete);
 Clone this repo and use `npm ci && npm run perf` to run the performance testsuite.
 
 ### Search / Get
-![Get performance chart](./images/perf-get.svg)
+![Get performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-get.svg)
 
 ### Add a new key
-![Add a new key performance chart](./images/perf-add.svg)
+![Add a new key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-add.svg)
 
 ### Update an existing key
-![Update an existing key performance chart](./images/perf-update.svg)
+![Update an existing key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-update.svg)
