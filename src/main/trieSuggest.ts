@@ -8,8 +8,7 @@ import { Trie } from './trie-types';
  * @param [startIndex = 0] The index in `input` to start reading substring from.
  * @param [endIndex = input.length] The index in `input` to stop reading.
  * @returns The cached readonly array of leafs or `null` if there's no matching key.
- *
- * @template T The type of values stored in a trie.
+ * @template T The value stored in a trie.
  */
 export function trieSuggest<T>(
   trie: Trie<T>,

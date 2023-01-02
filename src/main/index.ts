@@ -1,9 +1,9 @@
-export { Trie, EncodedTrie } from './trie-types';
+export { Trie, ArrayTrie } from './trie-types';
 export { trieCreate } from './trieCreate';
 export { trieDelete } from './trieDelete';
-export { trieEncode } from './trieEncode';
+export { arrayTrieCreate } from './arrayTrieCreate';
 export { trieGet } from './trieGet';
-export { trieSearchEncoded } from './trieSearchEncoded';
+export { arrayTrieSearch } from './arrayTrieSearch';
 export { trieSearch } from './trieSearch';
 export { trieSet } from './trieSet';
 export { trieSuggest } from './trieSuggest';

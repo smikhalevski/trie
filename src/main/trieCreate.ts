@@ -3,7 +3,7 @@ import { Trie } from './trie-types';
 /**
  * Creates a compressed trie data structure.
  *
- * @template T The type of values stored in a trie.
+ * @template T The value stored in a trie.
  */
 export function trieCreate<T>(): Trie<T> {
   return {

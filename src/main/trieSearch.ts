@@ -9,8 +9,7 @@ import { Trie } from './trie-types';
  * @param [startIndex = 0] The index in `input` to start reading substring from.
  * @param [endIndex = input.length] The index in `input` to stop reading.
  * @returns A leaf in the trie or `null` if there's no matching key.
- *
- * @template T The type of values stored in a trie.
+ * @template T The value stored in a trie.
  */
 export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | null {
   let leaf: Trie<T> | null = null;

@@ -1,4 +1,4 @@
-import { EncodedTrie, NodeType, Trie } from './trie-types';
+import { ArrayTrie, NodeType, Trie } from './trie-types';
 
 /**
  * Encodes a trie into an array of offsets.
@@ -6,13 +6,13 @@ import { EncodedTrie, NodeType, Trie } from './trie-types';
  * @param trie The trie to encode.
  * @returns The encoded trie.
  */
-export function trieEncode<T>(trie: Trie<T>): EncodedTrie<T> {
+export function arrayTrieCreate<T>(trie: Trie<T>): ArrayTrie<T> {
   const arr: number[] = [];
   const values: T[] = [];
 
   addTrie(trie, 0, arr, values);
 
-  return { arr, values };
+  return { nodes: arr, values };
 }
 
 function addTrie(trie: Trie<unknown>, offset: number, arr: number[], values: unknown[]): number {
@@ -22,16 +22,13 @@ function addTrie(trie: Trie<unknown>, offset: number, arr: number[], values: unk
   if (childCharCodesLength === 0) {
     const leafCharCodes = trie.leafCharCodes;
 
-    if (leafCharCodes === null) {
-      arr[offset++] = createNode(NodeType.LEAF, 0);
-      return offset;
-    }
-
-    arr[offset++] = createNode(NodeType.LEAF, leafCharCodes.length);
+    arr[offset++] = createNode(NodeType.LEAF, leafCharCodes !== null ? leafCharCodes.length : 0);
     arr[offset++] = addValue(values, trie.value);
 
-    for (const charCode of leafCharCodes) {
-      arr[offset++] = charCode;
+    if (leafCharCodes !== null) {
+      for (const charCode of leafCharCodes) {
+        arr[offset++] = charCode;
+      }
     }
 
     return offset;
@@ -63,10 +60,10 @@ function addTrie(trie: Trie<unknown>, offset: number, arr: number[], values: unk
     arr.push(0, 0);
   }
   for (const charCode of childCharCodes) {
-    childOffset = addTrie(trie[charCode]!, childOffset, arr, values);
-
     arr[offset++] = charCode;
     arr[offset++] = childOffset;
+
+    childOffset = addTrie(trie[charCode]!, childOffset, arr, values);
   }
   return childOffset;
 }
@@ -77,8 +74,8 @@ function addValue(values: unknown[], value: unknown): number {
   return index !== -1 ? index : values.push(value) - 1;
 }
 
-function createNode(nodeType: NodeType, data: number): number {
-  return (data << 3) + nodeType;
+function createNode(nodeType: NodeType, payload: number): number {
+  return (payload << 3) + nodeType;
 }
 
 function getCharCodes(trie: Trie<unknown>): number[] {

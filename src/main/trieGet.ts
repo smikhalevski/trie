@@ -7,8 +7,7 @@ import { trieSearch } from './trieSearch';
  * @param trie The trie to search in.
  * @param key The key to retrieve.
  * @returns A leaf in the `trie`, or `null` if there's no such key.
- *
- * @template T The type of values stored in a trie.
+ * @template T The value stored in a trie.
  */
 export function trieGet<T>(trie: Trie<T>, key: string): Trie<T> | null {
   const leaf = trieSearch(trie, key);
