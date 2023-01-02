@@ -13,5 +13,8 @@ import { trieSearch } from './trieSearch';
 export function trieGet<T>(trie: Trie<T>, key: string): Trie<T> | null {
   const leaf = trieSearch(trie, key);
 
-  return leaf !== null && leaf.key === key ? leaf : null;
+  if (leaf !== null && leaf.key === key) {
+    return leaf;
+  }
+  return null;
 }

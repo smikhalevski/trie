@@ -10,7 +10,7 @@ export function trieDelete(leaf: Trie<any> | null): void {
     return;
   }
 
-  for (let parent: Trie<any> | null = leaf; parent !== null; parent = parent.parent) {
+  for (let parent: Trie<unknown> | null = leaf; parent !== null; parent = parent.parent) {
     parent.suggestions = null;
   }
 
@@ -114,8 +114,13 @@ export function trieDelete(leaf: Trie<any> | null): void {
     leaf.parent = nextParent;
     leaf.prev = parentPrev;
 
-    const leafCharCodes = (leaf.leafCharCodes ||= []);
-    leafCharCodes.unshift(leafCharCode);
+    let leafCharCodes = leaf.leafCharCodes;
+
+    if (leafCharCodes !== null) {
+      leafCharCodes.unshift(leafCharCode);
+    } else {
+      leafCharCodes = leaf.leafCharCodes = [leafCharCode];
+    }
 
     parent[leafCharCode] = undefined;
     parent.charCode = -1;

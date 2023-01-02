@@ -10,7 +10,7 @@ export interface Trie<T> {
   [charCode: number]: Trie<T> | undefined;
 
   /**
-   * The char code in {@link parent} that is associated with this trie, or -1 if trie has no {@link parent}.
+   * The char code in {@linkcode parent} that is associated with this trie, or -1 if trie has no {@linkcode parent}.
    */
   charCode: number;
 
@@ -40,13 +40,13 @@ export interface Trie<T> {
   key: string | null;
 
   /**
-   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf and
-   * non-leaf tries.
+   * The value set to the trie or `undefined` for a non-leaf trie. Use {@linkcode isLeaf} to distinguish between leaf
+   * and non-leaf tries.
    */
   value: T | undefined;
 
   /**
-   * `true` if the trie is a leaf and has a {@link value}.
+   * `true` if the trie is a leaf and has a {@linkcode value}.
    */
   isLeaf: boolean;
 
@@ -56,8 +56,35 @@ export interface Trie<T> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSuggest} and cleaned by
-   * {@link trieSet}/{@link trieDelete}.
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@linkcode trieSuggest} and cleaned by
+   * {@linkcode trieSet} and {@linkcode trieDelete}.
    */
   suggestions: Trie<T>[] | null;
+}
+
+export interface EncodedTrie<T> {
+  arr: number[];
+  values: T[];
+}
+
+/**
+ * EncodedTrie.offsets array contains encoded trie nodes.
+ * Square brackets below denote a single array element.
+ *
+ * ```
+ * LEAF               [leafCharCodesLength, 0]  → [valueIndex], [charCode] * leafCharCodesLength
+ * SINGLE_BRANCH      [charCode, 1]             → [node]
+ * SINGLE_BRANCH_LEAF [charCode, 2]             → [valueIndex], [node]
+ * MULTI_BRANCH       [childCharCodesLength, 3] → ([charCode], [offset]) * childCharCodesLength
+ * MULTI_BRANCH_LEAF  [childCharCodesLength, 4] → [valueIndex], ([charCode], [offset]) * childCharCodesLength
+ * ```
+ *
+ * @internal
+ */
+export const enum NodeType {
+  LEAF,
+  SINGLE_BRANCH,
+  SINGLE_BRANCH_LEAF,
+  MULTI_BRANCH,
+  MULTI_BRANCH_LEAF,
 }

@@ -45,9 +45,15 @@ export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endI
         ++j;
         ++i;
       }
-      return j === trieLeafCharCodesLength ? trie : leaf;
+      if (j === trieLeafCharCodesLength) {
+        return trie;
+      }
+      return leaf;
     }
   }
 
-  return i === endIndex && trie.isLeaf && trie.leafCharCodes === null ? trie : leaf;
+  if (i === endIndex && trie.isLeaf && trie.leafCharCodes === null) {
+    return trie;
+  }
+  return leaf;
 }
