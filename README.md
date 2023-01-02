@@ -25,7 +25,7 @@ that you pass as an argument to various functions that traverse and update the d
 
 ```ts
 const trie = trieCreate();
-// → {key: null, value: undefined, …}
+// → { key: null, value: undefined, … }
 ```
 
 ### `trieSet(trie, key, value)`<a name="set"></a>
@@ -36,7 +36,7 @@ Associates the `key` with the `value` in the `trie` and returns the leaf trie ob
 const trie = trieCreate();
 
 trieSet(trie, 'foo', 111);
-// → {key: 'foo', value: 111, …}
+// → { key: 'foo', value: 111, … }
 ```
 
 The returned leaf trie instance has stable identity: this object would represent the associated key up to the moment
@@ -60,7 +60,7 @@ const trie = trieCreate();
 trieSet(trie, 'foo', 111);
 
 trieGet(trie, 'foo');
-// → {key: 'foo', value: 111, …}
+// → { key: 'foo', value: 111, … }
 
 trieGet(trie, 'woopsie');
 // → null
@@ -78,17 +78,17 @@ trieSet(trie, 'foo', 111);
 trieSet(trie, 'foobar', 222);
 
 trieSearch(trie, '___foobar___', 3);
-// → {key: 'foobar', value: 222, length: 6, …}
+// → { key: 'foobar', value: 222, length: 6, … }
 
 trieSearch(trie, '___fooba___', 3);
-// → {key: 'foo', value: 111, length: 3, …}
+// → { key: 'foo', value: 111, length: 3, … }
 ```
 
 You can provide the `endIndex` to limit the searched key length:
 
 ```ts
 trieSearch(trie, '___foobar___', 3, 7);
-// → {key: 'foo', value: 111, length: 3, …}
+// → { key: 'foo', value: 111, length: 3, … }
 ```
 
 ### `trieSuggest(trie, input, startIndex?, endIndex?)`<a name="suggest"></a>
@@ -103,10 +103,10 @@ trieSet(trie, 'hotter', 222);
 trieSet(trie, 'hottest', 333);
 
 trieSuggest(trie, 'hot');
-// → [{key: 'hotdog', …}, {key: 'hotter', …}, {key: 'hottest', …}]
+// → [{ key: 'hotdog', … }, { key: 'hotter', … }, { key: 'hottest', … }]
 
 trieSuggest(trie, 'hott');
-// → [{key: 'hotter', …}, {key: 'hottest', …}]
+// → [{ key: 'hotter', … }, { key: 'hottest', … }]
 
 trieSuggest(trie, 'wow');
 // → null
@@ -141,10 +141,13 @@ trieSuggest(trie, 'foo')?.forEach(trieDelete);
 Clone this repo and use `npm ci && npm run perf` to run the performance testsuite.
 
 ### Search / Get
+
 ![Get performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-get.svg)
 
 ### Add a new key
+
 ![Add a new key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-add.svg)
 
 ### Update an existing key
+
 ![Update an existing key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-update.svg)
