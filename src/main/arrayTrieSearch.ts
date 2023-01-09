@@ -1,4 +1,5 @@
-import { ArrayTrie, NodeType } from './trie-types';
+import { ArrayTrie } from './trie-types';
+import { Mask } from './arrayTrieEncode';
 
 export interface ArrayTrieSearchResult<T> {
   /**
@@ -39,45 +40,35 @@ export function arrayTrieSearch<T>(
   let valueIndex = -1;
   let cursor = 0;
   let i = startIndex;
+  let node;
+  let data;
 
   nextChar: while (i < endIndex) {
-    const node = nodes[cursor];
-    const type = node & 0b111;
-    const data = node >> 3;
+    node = nodes[cursor];
+    data = node >> 3;
 
-    if (type === NodeType.LEAF) {
+    if ((node & Mask.MASK) === Mask.LEAF) {
       // data = leafCharCodesLength
-      if (i + data > endIndex) {
-        // No match, overflow
-        cursor = -1;
-        break;
-      }
+      const valueCursor = ++cursor;
 
+      if (data !== 0 && i + data <= endIndex) {
+        while (data !== 0 && input.charCodeAt(i) === nodes[++cursor]) {
+          --data;
+          ++i;
+        }
+      }
       if (data === 0) {
-        // Match, no remaining characters
-        valueIndex = nodes[cursor + 1];
-        cursor = -1;
-        break;
-      }
-
-      let j = 0;
-      while (j < data && input.charCodeAt(i) === nodes[cursor + j + 2]) {
-        ++j;
-        ++i;
-      }
-      if (j === data) {
-        // Match, remaining characters matched
-        valueIndex = nodes[cursor + 1];
+        valueIndex = nodes[valueCursor];
       }
       cursor = -1;
       break;
     }
 
-    if (type === NodeType.SINGLE_BRANCH_LEAF || type === NodeType.MULTI_BRANCH_LEAF) {
+    if ((node & Mask.LEAF) === Mask.LEAF) {
       valueIndex = nodes[++cursor];
     }
 
-    if (type === NodeType.SINGLE_BRANCH || type === NodeType.SINGLE_BRANCH_LEAF) {
+    if ((node & Mask.BRANCH_1) === Mask.BRANCH_1) {
       // data = charCode
       if (input.charCodeAt(i) !== data) {
         cursor = -1;
@@ -89,31 +80,37 @@ export function arrayTrieSearch<T>(
     }
 
     // data = childCharCodesLength
-    const charCode = input.charCodeAt(i);
+    const inputCharCode = input.charCodeAt(i);
 
-    for (let j = 0; j < data; ++j) {
-      if (charCode === nodes[cursor + j * 2 + 1]) {
-        // Match
-        cursor = nodes[cursor + j * 2 + 2];
+    ++cursor;
+
+    // Binary search
+    let a = 0;
+    let b = data - 1;
+
+    while (a <= b) {
+      const k = (b + a) >> 1;
+      const charCode = nodes[cursor + k * 2];
+
+      if (charCode < inputCharCode) {
+        a = k + 1;
+      } else if (charCode > inputCharCode) {
+        b = k - 1;
+      } else {
+        cursor = nodes[++cursor + k * 2];
         ++i;
         continue nextChar;
       }
     }
 
-    // No match, unexpected char
     cursor = -1;
     break;
   }
 
   if (i === endIndex && cursor !== -1) {
-    const node = nodes[cursor];
-    const type = node & 0b111;
+    node = nodes[cursor];
 
-    if (
-      (type === NodeType.LEAF && node >> 3 === 0) ||
-      type === NodeType.SINGLE_BRANCH_LEAF ||
-      type === NodeType.MULTI_BRANCH_LEAF
-    ) {
+    if (node === Mask.LEAF || (node & Mask.MASK) === Mask.BRANCH_1_LEAF || (node & Mask.MASK) === Mask.BRANCH_N_LEAF) {
       valueIndex = nodes[cursor + 1];
     }
   }

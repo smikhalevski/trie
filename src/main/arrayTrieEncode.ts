@@ -1,4 +1,4 @@
-import { ArrayTrie, NodeType, Trie } from './trie-types';
+import { ArrayTrie, Trie } from './trie-types';
 
 /**
  * Encodes a trie as an {@linkcode ArrayTrie}.
@@ -16,6 +16,36 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
   return { nodes, values };
 }
 
+/**
+ * {@linkcode ArrayTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node
+ * constrains the consequent array elements as described in the snippet below. Square brackets denote a single array
+ * element.
+ *
+ * ```
+ * Node                                    Consequent array elements
+ *
+ * [leafCharCodesLength,  LEAF          ], [valueIndex], [charCode] * leafCharCodesLength
+ * [charCode,             BRANCH_1      ], [nextNode]
+ * [charCode,             BRANCH_1_LEAF ], [valueIndex], [nextNode]
+ * [childCharCodesLength, BRANCH_N      ], ([charCode], [nextCursor]) * childCharCodesLength
+ * [childCharCodesLength, BRANCH_N_LEAF ], [valueIndex], ([charCode], [nextCursor]) * childCharCodesLength
+ * ```
+ *
+ * - `leafCharCodesLength` is the length of {@linkcode Trie.leafCharCodes}.
+ * - `childCharCodesLength` is the number of sub-tries in a trie.
+ * - `valueIndex` is an index in {@linkcode ArrayTrie.values} that corresponds to a leaf node.
+ * - `nextNode` is the next node that the search algorithm must process.
+ * - `nextCursor` is an index in {@linkcode ArrayTrie.nodes} at which the search must proceed.
+ */
+export const enum Mask {
+  MASK = 0b111,
+  LEAF = 0b001,
+  BRANCH_1 = 0b010,
+  BRANCH_N = 0b100,
+  BRANCH_1_LEAF = BRANCH_1 | LEAF,
+  BRANCH_N_LEAF = BRANCH_N | LEAF,
+}
+
 function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
   const { value } = trie;
 
@@ -26,11 +56,11 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
       return;
     }
     if (leafCharCodes === null) {
-      nodes.push(createNode(NodeType.LEAF, 0), addValue(values, value));
+      nodes.push(createNode(Mask.LEAF, 0), addValue(values, value));
       return;
     }
 
-    nodes.push(createNode(NodeType.LEAF, leafCharCodes.length), addValue(values, value));
+    nodes.push(createNode(Mask.LEAF, leafCharCodes.length), addValue(values, value));
     nodes.push(...leafCharCodes);
     return;
   }
@@ -42,18 +72,18 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
     const charCode = charCodes[0];
 
     if (trie.isLeaf) {
-      nodes.push(createNode(NodeType.SINGLE_BRANCH_LEAF, charCode), addValue(values, value));
+      nodes.push(createNode(Mask.BRANCH_1_LEAF, charCode), addValue(values, value));
     } else {
-      nodes.push(createNode(NodeType.SINGLE_BRANCH, charCode));
+      nodes.push(createNode(Mask.BRANCH_1, charCode));
     }
     addNode(trie[charCode]!, nodes, values);
     return;
   }
 
   if (trie.isLeaf) {
-    nodes.push(createNode(NodeType.MULTI_BRANCH_LEAF, charCodesLength), addValue(values, value));
+    nodes.push(createNode(Mask.BRANCH_N_LEAF, charCodesLength), addValue(values, value));
   } else {
-    nodes.push(createNode(NodeType.MULTI_BRANCH, charCodesLength));
+    nodes.push(createNode(Mask.BRANCH_N, charCodesLength));
   }
 
   let offset = nodes.length;
@@ -77,7 +107,7 @@ function addValue(values: unknown[], value: unknown): number {
   return index !== -1 ? index : values.push(value) - 1;
 }
 
-function createNode(type: NodeType, data: number): number {
+function createNode(type: Mask, data: number): number {
   return type + (data << 3);
 }
 

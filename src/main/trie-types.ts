@@ -76,34 +76,3 @@ export interface ArrayTrie<T> {
    */
   values: ArrayLike<T>;
 }
-
-/**
- * {@linkcode ArrayTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node
- * constrains the consequent array elements as described in the snippet below. Square brackets denote a single array
- * element.
- *
- * ```
- * Node                                        Consequent array elements
- *
- * [leafCharCodesLength,  LEAF              ], [valueIndex], [charCode] * leafCharCodesLength
- * [charCode,             SINGLE_BRANCH     ], [nextNode]
- * [charCode,             SINGLE_BRANCH_LEAF], [valueIndex], [nextNode]
- * [childCharCodesLength, MULTI_BRANCH      ], ([charCode], [nextCursor]) * childCharCodesLength
- * [childCharCodesLength, MULTI_BRANCH_LEAF ], [valueIndex], ([charCode], [nextCursor]) * childCharCodesLength
- * ```
- *
- * - `leafCharCodesLength` is the length of {@linkcode Trie.leafCharCodes}.
- * - `childCharCodesLength` is the number of sub-tries in a trie.
- * - `valueIndex` is an index in {@linkcode ArrayTrie.values} that corresponds to a leaf node.
- * - `nextNode` is the next node that the search algorithm must process.
- * - `nextCursor` is an index in {@linkcode ArrayTrie.nodes} at which the search must proceed.
- *
- * @internal
- */
-export const enum NodeType {
-  LEAF,
-  SINGLE_BRANCH,
-  SINGLE_BRANCH_LEAF,
-  MULTI_BRANCH,
-  MULTI_BRANCH_LEAF,
-}
