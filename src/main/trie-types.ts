@@ -63,11 +63,17 @@ export interface Trie<T> {
 }
 
 /**
- * The array trie that is an objectless trie representation. It stores trie structure in an array where elements
- * represent nodes in a trie.
+ * The array trie stores all trie branches in a flat array.
  */
 export interface ArrayTrie<T> {
+  /**
+   * The nodes of a trie.
+   */
   nodes: ArrayLike<number>;
+
+  /**
+   * Values associated with trie nodes.
+   */
   values: ArrayLike<T>;
 }
 
