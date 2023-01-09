@@ -1,5 +1,5 @@
 import { ArrayTrie } from './trie-types';
-import { Mask } from './arrayTrieEncode';
+import { NodeType } from './arrayTrieEncode';
 
 export interface ArrayTrieSearchResult<T> {
   /**
@@ -34,7 +34,7 @@ export function arrayTrieSearch<T>(
   input: string,
   startIndex = 0,
   endIndex = input.length
-): ArrayTrieSearchResult<T> | null {
+): Readonly<ArrayTrieSearchResult<T>> | null {
   const { nodes, values } = trie;
 
   let valueIndex = -1;
@@ -47,28 +47,30 @@ export function arrayTrieSearch<T>(
     node = nodes[cursor];
     data = node >> 3;
 
-    if ((node & Mask.MASK) === Mask.LEAF) {
-      // data = leafCharCodesLength
-      const valueCursor = ++cursor;
+    if ((node & NodeType.LEAF) === NodeType.LEAF) {
+      if ((node & (NodeType.BRANCH_1 | NodeType.BRANCH_N)) === 0) {
+        // A leaf that has no children
+        // data = leafCharCodesLength
+        const valueCursor = ++cursor;
 
-      if (data !== 0 && i + data <= endIndex) {
-        while (data !== 0 && input.charCodeAt(i) === nodes[++cursor]) {
-          --data;
-          ++i;
+        if (data !== 0 && i + data <= endIndex) {
+          while (data !== 0 && input.charCodeAt(i) === nodes[++cursor]) {
+            --data;
+            ++i;
+          }
         }
+        if (data === 0) {
+          valueIndex = nodes[valueCursor];
+        }
+        cursor = -1;
+        break;
       }
-      if (data === 0) {
-        valueIndex = nodes[valueCursor];
-      }
-      cursor = -1;
-      break;
-    }
 
-    if ((node & Mask.LEAF) === Mask.LEAF) {
       valueIndex = nodes[++cursor];
     }
 
-    if ((node & Mask.BRANCH_1) === Mask.BRANCH_1) {
+    if ((node & NodeType.BRANCH_1) === NodeType.BRANCH_1) {
+      // A branch with a single child
       // data = charCode
       if (input.charCodeAt(i) !== data) {
         cursor = -1;
@@ -79,6 +81,7 @@ export function arrayTrieSearch<T>(
       continue;
     }
 
+    // A branch with multiple children
     // data = childCharCodesLength
     const inputCharCode = input.charCodeAt(i);
 
@@ -110,7 +113,11 @@ export function arrayTrieSearch<T>(
   if (i === endIndex && cursor !== -1) {
     node = nodes[cursor];
 
-    if (node === Mask.LEAF || (node & Mask.MASK) === Mask.BRANCH_1_LEAF || (node & Mask.MASK) === Mask.BRANCH_N_LEAF) {
+    if (
+      node === NodeType.LEAF ||
+      (node & NodeType.BRANCH_1_LEAF) === NodeType.BRANCH_1_LEAF ||
+      (node & NodeType.BRANCH_N_LEAF) === NodeType.BRANCH_N_LEAF
+    ) {
       valueIndex = nodes[cursor + 1];
     }
   }

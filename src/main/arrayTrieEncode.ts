@@ -37,8 +37,7 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
  * - `nextNode` is the next node that the search algorithm must process.
  * - `nextCursor` is an index in {@linkcode ArrayTrie.nodes} at which the search must proceed.
  */
-export const enum Mask {
-  MASK = 0b111,
+export const enum NodeType {
   LEAF = 0b001,
   BRANCH_1 = 0b010,
   BRANCH_N = 0b100,
@@ -56,11 +55,11 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
       return;
     }
     if (leafCharCodes === null) {
-      nodes.push(createNode(Mask.LEAF, 0), addValue(values, value));
+      nodes.push(createNode(NodeType.LEAF, 0), addValue(values, value));
       return;
     }
 
-    nodes.push(createNode(Mask.LEAF, leafCharCodes.length), addValue(values, value));
+    nodes.push(createNode(NodeType.LEAF, leafCharCodes.length), addValue(values, value));
     nodes.push(...leafCharCodes);
     return;
   }
@@ -72,18 +71,18 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
     const charCode = charCodes[0];
 
     if (trie.isLeaf) {
-      nodes.push(createNode(Mask.BRANCH_1_LEAF, charCode), addValue(values, value));
+      nodes.push(createNode(NodeType.BRANCH_1_LEAF, charCode), addValue(values, value));
     } else {
-      nodes.push(createNode(Mask.BRANCH_1, charCode));
+      nodes.push(createNode(NodeType.BRANCH_1, charCode));
     }
     addNode(trie[charCode]!, nodes, values);
     return;
   }
 
   if (trie.isLeaf) {
-    nodes.push(createNode(Mask.BRANCH_N_LEAF, charCodesLength), addValue(values, value));
+    nodes.push(createNode(NodeType.BRANCH_N_LEAF, charCodesLength), addValue(values, value));
   } else {
-    nodes.push(createNode(Mask.BRANCH_N, charCodesLength));
+    nodes.push(createNode(NodeType.BRANCH_N, charCodesLength));
   }
 
   let offset = nodes.length;
@@ -107,7 +106,7 @@ function addValue(values: unknown[], value: unknown): number {
   return index !== -1 ? index : values.push(value) - 1;
 }
 
-function createNode(type: Mask, data: number): number {
+function createNode(type: NodeType, data: number): number {
   return type + (data << 3);
 }
 
