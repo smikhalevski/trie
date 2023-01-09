@@ -73,7 +73,11 @@ export function arrayTrieSearch<T>(
       break;
     }
 
-    if (type === NodeType.SINGLE_BRANCH) {
+    if (type === NodeType.SINGLE_BRANCH_LEAF || type === NodeType.MULTI_BRANCH_LEAF) {
+      valueIndex = nodes[++cursor];
+    }
+
+    if (type === NodeType.SINGLE_BRANCH || type === NodeType.SINGLE_BRANCH_LEAF) {
       // data = charCode
       if (input.charCodeAt(i) !== data) {
         cursor = -1;
@@ -84,56 +88,21 @@ export function arrayTrieSearch<T>(
       continue;
     }
 
-    if (type === NodeType.SINGLE_BRANCH_LEAF) {
-      // data = charCode
-      valueIndex = nodes[cursor + 1];
+    // data = childCharCodesLength
+    const charCode = input.charCodeAt(i);
 
-      if (input.charCodeAt(i) !== data) {
-        cursor = -1;
-        break;
+    for (let j = 0; j < data; ++j) {
+      if (charCode === nodes[cursor + j * 2 + 1]) {
+        // Match
+        cursor = nodes[cursor + j * 2 + 2];
+        ++i;
+        continue nextChar;
       }
-      cursor += 2;
-      ++i;
-      continue;
     }
 
-    if (type === NodeType.MULTI_BRANCH) {
-      // data = childCharCodesLength
-      const charCode = input.charCodeAt(i);
-
-      for (let j = 0; j < data; ++j) {
-        if (charCode === nodes[cursor + j * 2 + 1]) {
-          // Match
-          cursor = nodes[cursor + j * 2 + 2];
-          ++i;
-          continue nextChar;
-        }
-      }
-
-      // No match, unexpected char
-      cursor = -1;
-      break;
-    }
-
-    if (type === NodeType.MULTI_BRANCH_LEAF) {
-      // data = childCharCodesLength
-      valueIndex = nodes[cursor + 1];
-
-      const charCode = input.charCodeAt(i);
-
-      for (let k = 0; k < data; ++k) {
-        if (charCode === nodes[cursor + k * 2 + 2]) {
-          // Match
-          cursor = nodes[cursor + k * 2 + 3];
-          ++i;
-          continue nextChar;
-        }
-      }
-
-      // No match, unexpected char
-      cursor = -1;
-      break;
-    }
+    // No match, unexpected char
+    cursor = -1;
+    break;
   }
 
   if (i === endIndex && cursor !== -1) {
