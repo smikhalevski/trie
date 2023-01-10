@@ -35,9 +35,6 @@ describe(
   'Get',
   () => {
     for (const key of keys) {
-      if (key.length < 3) {
-        continue;
-      }
       describe('Key length ' + key.length, () => {
         test('trieSearch', measure => {
           measure(() => {
