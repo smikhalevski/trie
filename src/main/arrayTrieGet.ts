@@ -1,5 +1,7 @@
 import { ArrayTrie } from './trie-types';
-import { arrayTrieSearch } from './arrayTrieSearch';
+import { arrayTrieSearch, ArrayTrieSearchResult } from './arrayTrieSearch';
+
+const result: ArrayTrieSearchResult<any> = { value: null, lastIndex: -1 };
 
 /**
  * Returns a value associated with the key, or `null` if there's no such key.
@@ -10,10 +12,10 @@ import { arrayTrieSearch } from './arrayTrieSearch';
  * @template T The value stored in a trie.
  */
 export function arrayTrieGet<T>(trie: ArrayTrie<T>, key: string): T | null {
-  const result = arrayTrieSearch(trie, key);
-
-  if (result !== null && result.lastIndex === key.length) {
-    return result.value;
+  if (arrayTrieSearch(trie, key, 0, key.length, result) !== null && result.lastIndex === key.length) {
+    const { value } = result;
+    result.value = null;
+    return value;
   }
   return null;
 }

@@ -13,11 +13,6 @@ export interface ArrayTrieSearchResult<T> {
   lastIndex: number;
 }
 
-const result: ArrayTrieSearchResult<any> = {
-  value: null,
-  lastIndex: -1,
-};
-
 /**
  * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
  * at `endIndex`.
@@ -26,15 +21,17 @@ const result: ArrayTrieSearchResult<any> = {
  * @param input The string to search for the key from the `trie`.
  * @param [startIndex = 0] The index in `input` to start reading substring from.
  * @param [endIndex = input.length] The index in `input` to stop reading.
- * @returns The search result or `null` if there's no matching key. The returned object is reused between invocations.
+ * @param [result] The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
+ * @returns The `result` object or `null` if there's no matching key.
  * @template T The value stored in a trie.
  */
 export function arrayTrieSearch<T>(
   trie: ArrayTrie<T>,
   input: string,
   startIndex = 0,
-  endIndex = input.length
-): Readonly<ArrayTrieSearchResult<T>> | null {
+  endIndex = input.length,
+  result?: ArrayTrieSearchResult<T>
+): ArrayTrieSearchResult<T> | null {
   const { nodes, values } = trie;
 
   let valueIndex = -1;
@@ -48,6 +45,8 @@ export function arrayTrieSearch<T>(
     data = node >> 3;
 
     if ((node & NodeType.LEAF) === NodeType.LEAF) {
+      // A leaf node
+
       if ((node & (NodeType.BRANCH_1 | NodeType.BRANCH_N)) === 0) {
         // A leaf that has no children
         // data = leafCharCodesLength
@@ -126,8 +125,14 @@ export function arrayTrieSearch<T>(
     return null;
   }
 
-  result.value = values[valueIndex];
-  result.lastIndex = i;
+  if (result !== undefined) {
+    result.value = values[valueIndex];
+    result.lastIndex = i;
+    return result;
+  }
 
-  return result;
+  return {
+    value: values[valueIndex],
+    lastIndex: i,
+  };
 }

@@ -64,6 +64,8 @@ export interface Trie<T> {
 
 /**
  * The array trie stores all trie branches in a flat array.
+ *
+ * @template T The value stored in a trie.
  */
 export interface ArrayTrie<T> {
   /**

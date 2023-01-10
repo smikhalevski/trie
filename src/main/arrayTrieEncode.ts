@@ -1,7 +1,7 @@
 import { ArrayTrie, Trie } from './trie-types';
 
 /**
- * Encodes a trie as an {@linkcode ArrayTrie}.
+ * Encodes a {@linkcode Trie} instance as an {@linkcode ArrayTrie}.
  *
  * @param trie The trie to encode.
  * @returns The array trie that contains all nodes from the `trie`.
@@ -11,7 +11,7 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
   const nodes: number[] = [];
   const values: T[] = [];
 
-  addNode(trie, nodes, values);
+  appendNode(trie, nodes, values);
 
   return { nodes, values };
 }
@@ -45,7 +45,7 @@ export const enum NodeType {
   BRANCH_N_LEAF = BRANCH_N | LEAF,
 }
 
-function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
+function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
   const { value } = trie;
 
   if (trie.last === null) {
@@ -75,7 +75,7 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
     } else {
       nodes.push(createNode(NodeType.BRANCH_1, charCode));
     }
-    addNode(trie[charCode]!, nodes, values);
+    appendNode(trie[charCode]!, nodes, values);
     return;
   }
 
@@ -96,7 +96,7 @@ function addNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void 
     nodes[offset++] = charCode;
     nodes[offset++] = nodes.length;
 
-    addNode(trie[charCode]!, nodes, values);
+    appendNode(trie[charCode]!, nodes, values);
   }
 }
 
