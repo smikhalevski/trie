@@ -8,8 +8,7 @@ import { trieCreate } from './trieCreate';
  * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.
  * @returns The leaf to which the value was set.
- *
- * @template T The type of values stored in a trie.
+ * @template T The value stored in a trie.
  */
 export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
   const keyLength = key.length;

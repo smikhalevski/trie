@@ -1,7 +1,10 @@
-export * from './trie-types';
-export * from './trieCreate';
-export * from './trieDelete';
-export * from './trieGet';
-export * from './trieSearch';
-export * from './trieSet';
-export * from './trieSuggest';
+export { Trie, ArrayTrie } from './trie-types';
+export { arrayTrieEncode } from './arrayTrieEncode';
+export { arrayTrieGet } from './arrayTrieGet';
+export { arrayTrieSearch, ArrayTrieSearchResult } from './arrayTrieSearch';
+export { trieCreate } from './trieCreate';
+export { trieDelete } from './trieDelete';
+export { trieGet } from './trieGet';
+export { trieSearch } from './trieSearch';
+export { trieSet } from './trieSet';
+export { trieSuggest } from './trieSuggest';

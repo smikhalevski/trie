@@ -1,6 +1,14 @@
 const TrieSearch = require('trie-search');
 const TrieMap = require('mnemonist/trie-map');
-const { trieSet, trieCreate, trieGet } = require('../../lib/index-cjs');
+const {
+  arrayTrieEncode,
+  arrayTrieGet,
+  arrayTrieSearch,
+  trieSet,
+  trieCreate,
+  trieGet,
+  trieSearch,
+} = require('../../lib/index-cjs');
 const dictionary = require('./dictionary.json');
 
 const keys = [];
@@ -19,6 +27,8 @@ for (const key of dictionary) {
   keys[key.length] = key;
 }
 
+const arrayTrie = arrayTrieEncode(trie);
+
 keys.length = 20;
 
 describe(
@@ -26,9 +36,15 @@ describe(
   () => {
     for (const key of keys) {
       describe('Key length ' + key.length, () => {
-        test('@smikhalevski/trie', measure => {
+        test('trieSearch', measure => {
           measure(() => {
-            trieGet(trie, key);
+            trieSearch(trie, key);
+          });
+        });
+
+        test('arrayTrieSearch', measure => {
+          measure(() => {
+            arrayTrieSearch(arrayTrie, key);
           });
         });
 
@@ -44,7 +60,7 @@ describe(
           });
         });
 
-        test('mnemonist/trie', measure => {
+        test('mnemonist/trie-map', measure => {
           measure(() => {
             libTrieMap.get(key);
           });
@@ -60,7 +76,7 @@ describe(
   () => {
     for (const key of keys) {
       describe('Key length ' + key.length, () => {
-        test('@smikhalevski/trie', measure => {
+        test('trieSet', measure => {
           let trie;
 
           beforeIteration(() => {
@@ -96,7 +112,7 @@ describe(
           });
         });
 
-        test('mnemonist/trie', measure => {
+        test('mnemonist/trie-map', measure => {
           let libTrieMap;
 
           beforeIteration(() => {
@@ -118,7 +134,7 @@ describe(
   () => {
     for (const key of keys) {
       describe('Key length ' + key.length, () => {
-        test('@smikhalevski/trie', measure => {
+        test('trieSet', measure => {
           measure(() => {
             trieSet(trie, key, key);
           });
@@ -136,7 +152,7 @@ describe(
           });
         });
 
-        test('mnemonist/trie', measure => {
+        test('mnemonist/trie-map', measure => {
           measure(() => {
             libTrieMap.set(key, key);
           });
