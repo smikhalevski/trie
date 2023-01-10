@@ -46,7 +46,7 @@ trieSet(trie, 'foo', 111);
 ```
 
 The returned leaf trie instance has stable identity: this object would represent the associated key up to the moment
-[the key is deleted](#delete). So, if you set a new value for the key, or add/delete other keys in the trie, the
+[the key is deleted](#triedelete). So, if you set a new value for the key, or add/delete other keys in the trie, the
 returned leaf object would still correspond to the original key.
 
 ```ts
@@ -183,7 +183,7 @@ arrayTrieGet(arrayTrie, 'wow');
 // ⮕ null
 ```
 
-### `arrayTrieSearch(trie, input, startIndex?, endIndex?)`<a name="arraytriesearch"></a>
+### `arrayTrieSearch(arrayTrie, input, startIndex?, endIndex?)`<a name="arraytriesearch"></a>
 
 Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at `endIndex`, and
 returns the corresponding value.
@@ -216,12 +216,12 @@ Clone this repo and use `npm ci && npm run perf` to run the performance testsuit
 
 ### Search / Get
 
-![Get performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-get.svg)
+![Get performance chart](./images/perf-get.svg)
 
 ### Add a new key
 
-![Add a new key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-add.svg)
+![Add a new key performance chart](./images/perf-add.svg)
 
 ### Update an existing key
 
-![Update an existing key performance chart](https://github.com/smikhalevski/trie/raw/master/images/perf-update.svg)
+![Update an existing key performance chart](./images/perf-update.svg)
