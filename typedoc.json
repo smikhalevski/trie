@@ -1,5 +1,5 @@
 {
-  "out": "./docs",
   "includeVersion": true,
-  "cleanOutputDir": true
+  "disableSources": true,
+  "out": "./docs"
 }
