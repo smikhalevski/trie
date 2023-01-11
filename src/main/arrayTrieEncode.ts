@@ -27,15 +27,16 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
  * [leafCharCodesLength,  LEAF          ], [valueIndex], [charCode] * leafCharCodesLength
  * [charCode,             BRANCH_1      ], [nextNode]
  * [charCode,             BRANCH_1_LEAF ], [valueIndex], [nextNode]
- * [childCharCodesLength, BRANCH_N      ], ([charCode], [nextCursor]) * childCharCodesLength
- * [childCharCodesLength, BRANCH_N_LEAF ], [valueIndex], ([charCode], [nextCursor]) * childCharCodesLength
+ * [childCharCodesLength, BRANCH_N      ], ([charCode], [offset]) * childCharCodesLength
+ * [childCharCodesLength, BRANCH_N_LEAF ], [valueIndex], ([charCode], [offset]) * childCharCodesLength
  * ```
  *
  * - `leafCharCodesLength` is the length of {@linkcode Trie.leafCharCodes}.
  * - `childCharCodesLength` is the number of sub-tries in a trie.
  * - `valueIndex` is an index in {@linkcode ArrayTrie.values} that corresponds to a leaf node.
  * - `nextNode` is the next node that the search algorithm must process.
- * - `nextCursor` is an index in {@linkcode ArrayTrie.nodes} at which the search must proceed.
+ * - `offset` is a relative index in {@linkcode ArrayTrie.nodes} at which the next node of the trie is stored.
+ * It is relative to the index at which it is written.
  */
 export const enum NodeType {
   LEAF = 0b001,
@@ -43,6 +44,7 @@ export const enum NodeType {
   BRANCH_N = 0b100,
   BRANCH_1_LEAF = BRANCH_1 | LEAF,
   BRANCH_N_LEAF = BRANCH_N | LEAF,
+  BRANCH = BRANCH_1 | BRANCH_N,
 }
 
 function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
@@ -94,7 +96,7 @@ function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): vo
     const charCode = charCodes[i];
 
     nodes[offset++] = charCode;
-    nodes[offset++] = nodes.length;
+    nodes[offset++] = nodes.length - offset;
 
     appendNode(trie[charCode]!, nodes, values);
   }
@@ -120,5 +122,9 @@ function getCharCodes(trie: Trie<unknown>): number[] {
       charCodes.push(charCode);
     }
   }
-  return charCodes;
+  return charCodes.sort(sortAsc);
+}
+
+function sortAsc(a: number, b: number): number {
+  return a - b;
 }

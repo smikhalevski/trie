@@ -45,21 +45,18 @@ export function arrayTrieSearch<T>(
     data = node >> 3;
 
     if ((node & NodeType.LEAF) === NodeType.LEAF) {
-      // A leaf node
+      // The node has a value
 
-      if ((node & (NodeType.BRANCH_1 | NodeType.BRANCH_N)) === 0) {
-        // A leaf that has no children
+      if ((node & NodeType.BRANCH) === 0) {
+        // The node doesn't have children
         // data = leafCharCodesLength
-        const valueCursor = ++cursor;
-
-        if (data !== 0 && i + data <= endIndex) {
-          while (data !== 0 && input.charCodeAt(i) === nodes[++cursor]) {
-            --data;
-            ++i;
-          }
+        let j = 0;
+        while (j < data && input.charCodeAt(i) === nodes[cursor + j + 2]) {
+          ++j;
+          ++i;
         }
-        if (data === 0) {
-          valueIndex = nodes[valueCursor];
+        if (j === data) {
+          valueIndex = nodes[cursor + 1];
         }
         cursor = -1;
         break;
@@ -69,7 +66,7 @@ export function arrayTrieSearch<T>(
     }
 
     if ((node & NodeType.BRANCH_1) === NodeType.BRANCH_1) {
-      // A branch with a single child
+      // The node has a single child
       // data = charCode
       if (input.charCodeAt(i) !== data) {
         cursor = -1;
@@ -80,29 +77,27 @@ export function arrayTrieSearch<T>(
       continue;
     }
 
-    // A branch with multiple children
+    // The node has multiple children
     // data = childCharCodesLength
-    const inputCharCode = input.charCodeAt(i);
-
     ++cursor;
 
     // Binary search
-    let a = 0;
-    let b = data - 1;
-
-    while (a <= b) {
-      const k = (b + a) >> 1;
-      const charCode = nodes[cursor + k * 2];
+    for (let a = 0, b = data - 1, inputCharCode = input.charCodeAt(i); a <= b; ) {
+      const j = (b + a) >> 1;
+      const k = cursor + (j << 1);
+      const charCode = nodes[k];
 
       if (charCode < inputCharCode) {
-        a = k + 1;
-      } else if (charCode > inputCharCode) {
-        b = k - 1;
-      } else {
-        cursor = nodes[++cursor + k * 2];
-        ++i;
-        continue nextChar;
+        a = j + 1;
+        continue;
       }
+      if (charCode > inputCharCode) {
+        b = j - 1;
+        continue;
+      }
+      cursor = nodes[k + 1] + k + 2;
+      ++i;
+      continue nextChar;
     }
 
     cursor = -1;
