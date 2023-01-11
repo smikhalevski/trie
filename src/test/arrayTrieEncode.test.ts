@@ -55,7 +55,7 @@ describe('arrayTrieEncode', () => {
     trieSet(trie, 'b', 222);
 
     expect(arrayTrieEncode(trie)).toEqual({
-      nodes: [20, 97, 5, 98, 7, 1, 0, 1, 1],
+      nodes: [20, 97, 2, 98, 2, 1, 0, 1, 1],
       values: [111, 222],
     });
   });
@@ -65,7 +65,7 @@ describe('arrayTrieEncode', () => {
     trieSet(trie, 'b', 111);
 
     expect(arrayTrieEncode(trie)).toEqual({
-      nodes: [20, 97, 5, 98, 7, 1, 0, 1, 0],
+      nodes: [20, 97, 2, 98, 2, 1, 0, 1, 0],
       values: [111],
     });
   });
@@ -75,7 +75,7 @@ describe('arrayTrieEncode', () => {
     trieSet(trie, 'b', NaN);
 
     expect(arrayTrieEncode(trie)).toEqual({
-      nodes: [20, 97, 5, 98, 7, 1, 0, 1, 0],
+      nodes: [20, 97, 2, 98, 2, 1, 0, 1, 0],
       values: [NaN],
     });
   });
@@ -85,7 +85,7 @@ describe('arrayTrieEncode', () => {
     trieSet(trie, 'ab', 222);
 
     expect(arrayTrieEncode(trie)).toEqual({
-      nodes: [778, 20, 97, 6, 98, 8, 1, 0, 1, 1],
+      nodes: [778, 20, 97, 2, 98, 2, 1, 0, 1, 1],
       values: [111, 222],
     });
   });

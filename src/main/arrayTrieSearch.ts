@@ -34,75 +34,68 @@ export function arrayTrieSearch<T>(
 ): ArrayTrieSearchResult<T> | null {
   const { nodes, values } = trie;
 
+  let i = startIndex;
   let valueIndex = -1;
   let cursor = 0;
-  let i = startIndex;
-  let node;
-  let data;
 
   nextChar: while (i < endIndex) {
-    node = nodes[cursor];
-    data = node >> 3;
+    const node = nodes[cursor];
+    const data = node >> 3;
 
     if ((node & NodeType.LEAF) === NodeType.LEAF) {
-      // A leaf node
+      // The node has a value
 
-      if ((node & (NodeType.BRANCH_1 | NodeType.BRANCH_N)) === 0) {
-        // A leaf that has no children
+      if ((node & NodeType.BRANCH) === 0) {
+        // The node doesn't have children
         // data = leafCharCodesLength
-        const valueCursor = ++cursor;
-
-        if (data !== 0 && i + data <= endIndex) {
-          while (data !== 0 && input.charCodeAt(i) === nodes[++cursor]) {
-            --data;
-            ++i;
-          }
+        let j = 0;
+        while (j < data && input.charCodeAt(i) === nodes[cursor + j + 2]) {
+          ++j;
+          ++i;
         }
-        if (data === 0) {
-          valueIndex = nodes[valueCursor];
+        if (j === data) {
+          valueIndex = cursor + 1;
         }
         cursor = -1;
         break;
       }
 
-      valueIndex = nodes[++cursor];
+      valueIndex = ++cursor;
     }
-
-    if ((node & NodeType.BRANCH_1) === NodeType.BRANCH_1) {
-      // A branch with a single child
-      // data = charCode
-      if (input.charCodeAt(i) !== data) {
-        cursor = -1;
-        break;
-      }
-      ++cursor;
-      ++i;
-      continue;
-    }
-
-    // A branch with multiple children
-    // data = childCharCodesLength
-    const inputCharCode = input.charCodeAt(i);
 
     ++cursor;
 
-    // Binary search
-    let a = 0;
-    let b = data - 1;
+    if ((node & NodeType.BRANCH_1) === NodeType.BRANCH_1) {
+      // The node has a single child
+      // data = charCode
+      if (input.charCodeAt(i) === data) {
+        ++i;
+        continue;
+      }
+      cursor = -1;
+      break;
+    }
 
-    while (a <= b) {
-      const k = (b + a) >> 1;
-      const charCode = nodes[cursor + k * 2];
+    // The node has multiple children
+    // data = childCharCodesLength
+
+    // Binary search
+    for (let left = 0, right = data - 1, inputCharCode = input.charCodeAt(i); left <= right; ) {
+      const index = (right + left) >> 1;
+      const charCodeIndex = cursor + (index << 1);
+      const charCode = nodes[charCodeIndex];
 
       if (charCode < inputCharCode) {
-        a = k + 1;
-      } else if (charCode > inputCharCode) {
-        b = k - 1;
-      } else {
-        cursor = nodes[++cursor + k * 2];
-        ++i;
-        continue nextChar;
+        left = index + 1;
+        continue;
       }
+      if (charCode > inputCharCode) {
+        right = index - 1;
+        continue;
+      }
+      cursor = nodes[charCodeIndex + 1] + charCodeIndex + 2;
+      ++i;
+      continue nextChar;
     }
 
     cursor = -1;
@@ -110,14 +103,10 @@ export function arrayTrieSearch<T>(
   }
 
   if (i === endIndex && cursor !== -1) {
-    node = nodes[cursor];
+    const node = nodes[cursor];
 
-    if (
-      node === NodeType.LEAF ||
-      (node & NodeType.BRANCH_1_LEAF) === NodeType.BRANCH_1_LEAF ||
-      (node & NodeType.BRANCH_N_LEAF) === NodeType.BRANCH_N_LEAF
-    ) {
-      valueIndex = nodes[cursor + 1];
+    if (node === NodeType.LEAF || ((node & NodeType.BRANCH) !== 0 && (node & NodeType.LEAF) === NodeType.LEAF)) {
+      valueIndex = cursor + 1;
     }
   }
 
@@ -126,13 +115,13 @@ export function arrayTrieSearch<T>(
   }
 
   if (result !== undefined) {
-    result.value = values[valueIndex];
+    result.value = values[nodes[valueIndex]];
     result.lastIndex = i;
     return result;
   }
 
   return {
-    value: values[valueIndex],
+    value: values[nodes[valueIndex]],
     lastIndex: i,
   };
 }
