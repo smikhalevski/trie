@@ -1,15 +1,15 @@
 import { ArrayTrie, Trie } from './trie-types';
 
 /**
- * Encodes a {@linkcode Trie} instance as an {@linkcode ArrayTrie}.
+ * Encodes a {@link Trie} instance as an {@link ArrayTrie}.
  *
  * @param trie The trie to encode.
  * @returns The array trie that contains all nodes from the `trie`.
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
+export function arrayTrieEncode<Value>(trie: Trie<Value>): ArrayTrie<Value> {
   const nodes: number[] = [];
-  const values: T[] = [];
+  const values: Value[] = [];
 
   appendNode(trie, nodes, values);
 
@@ -17,7 +17,7 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
 }
 
 /**
- * {@linkcode ArrayTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node
+ * {@link ArrayTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node
  * constrains the consequent array elements as described in the snippet below. Square brackets denote a single array
  * element.
  *
@@ -31,11 +31,11 @@ export function arrayTrieEncode<T>(trie: Trie<T>): ArrayTrie<T> {
  * [childCharCodesLength, BRANCH_N_LEAF ], [valueIndex], ([charCode], [offset]) * childCharCodesLength
  * ```
  *
- * - `leafCharCodesLength` is the length of {@linkcode Trie.leafCharCodes}.
+ * - `leafCharCodesLength` is the length of {@link Trie.leafCharCodes}.
  * - `childCharCodesLength` is the number of sub-tries in a trie.
- * - `valueIndex` is an index in {@linkcode ArrayTrie.values} that corresponds to a leaf node.
+ * - `valueIndex` is an index in {@link ArrayTrie.values} that corresponds to a leaf node.
  * - `nextNode` is the next node that the search algorithm must process.
- * - `offset` is a relative index in {@linkcode ArrayTrie.nodes} at which the next node of the trie is stored.
+ * - `offset` is a relative index in {@link ArrayTrie.nodes} at which the next node of the trie is stored.
  * It is relative to the index at which it is written.
  */
 export const enum NodeType {

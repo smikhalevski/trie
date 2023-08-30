@@ -8,9 +8,9 @@ import { trieCreate } from './trieCreate';
  * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.
  * @returns The leaf to which the value was set.
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
+export function trieSet<Value>(trie: Trie<Value>, key: string, value: Value): Trie<Value> {
   const keyLength = key.length;
 
   let i = 0;
@@ -64,7 +64,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
 
         const charCode = childLeafCharCodes[0];
 
-        const parent = trieCreate<T>();
+        const parent = trieCreate<Value>();
         parent[charCode] = parent.next = parent.last = child;
         parent.charCode = childCharCode;
         parent.parent = trie;
@@ -97,7 +97,7 @@ export function trieSet<T>(trie: Trie<T>, key: string, value: T): Trie<T> {
     const prevNext = prev.next;
 
     // Append the new leaf and establish links
-    const leaf = trieCreate<T>();
+    const leaf = trieCreate<Value>();
     leaf.charCode = keyCharCode;
     leaf.parent = trie;
     leaf.prev = prev;

@@ -1,11 +1,11 @@
 import { ArrayTrie } from './trie-types';
 import { NodeType } from './arrayTrieEncode';
 
-export interface ArrayTrieSearchResult<T> {
+export interface ArrayTrieSearchResult<Value> {
   /**
    * The value that corresponds to the matched key.
    */
-  value: T;
+  value: Value;
 
   /**
    * The last index at which the key was successfully matched.
@@ -19,19 +19,19 @@ export interface ArrayTrieSearchResult<T> {
  *
  * @param trie The array trie.
  * @param input The string to search for the key from the `trie`.
- * @param [startIndex = 0] The index in `input` to start reading substring from.
- * @param [endIndex = input.length] The index in `input` to stop reading.
- * @param [result] The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
+ * @param result The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
  * @returns The `result` object or `null` if there's no matching key.
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function arrayTrieSearch<T>(
-  trie: ArrayTrie<T>,
+export function arrayTrieSearch<Value>(
+  trie: ArrayTrie<Value>,
   input: string,
   startIndex = 0,
   endIndex = input.length,
-  result?: ArrayTrieSearchResult<T>
-): ArrayTrieSearchResult<T> | null {
+  result?: ArrayTrieSearchResult<Value>
+): ArrayTrieSearchResult<Value> | null {
   const { nodes, values } = trie;
 
   let i = startIndex;
