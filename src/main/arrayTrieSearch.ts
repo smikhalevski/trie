@@ -1,5 +1,5 @@
 import { ArrayTrie } from './trie-types';
-import { NodeType } from './arrayTrieEncode';
+import { getCharCodeAt, BRANCH, BRANCH_1, LEAF } from './utils';
 
 export interface ArrayTrieSearchResult<Value> {
   /**
@@ -8,7 +8,7 @@ export interface ArrayTrieSearchResult<Value> {
   value: Value;
 
   /**
-   * The last index at which the key was successfully matched.
+   * The last index in the input at which the key was successfully matched.
    */
   lastIndex: number;
 }
@@ -22,6 +22,7 @@ export interface ArrayTrieSearchResult<Value> {
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
  * @param result The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
+ * @param charCodeAt Reads the char code at the given index.
  * @returns The `result` object or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
@@ -30,7 +31,8 @@ export function arrayTrieSearch<Value>(
   input: string,
   startIndex = 0,
   endIndex = input.length,
-  result?: ArrayTrieSearchResult<Value>
+  result?: ArrayTrieSearchResult<Value>,
+  charCodeAt = getCharCodeAt
 ): ArrayTrieSearchResult<Value> | null {
   const { nodes, values } = trie;
 
@@ -42,14 +44,14 @@ export function arrayTrieSearch<Value>(
     const node = nodes[cursor];
     const data = node >> 3;
 
-    if ((node & NodeType.LEAF) === NodeType.LEAF) {
+    if ((node & LEAF) === LEAF) {
       // The node has a value
 
-      if ((node & NodeType.BRANCH) === 0) {
+      if ((node & BRANCH) === 0) {
         // The node doesn't have children
         // data = leafCharCodesLength
         let j = 0;
-        while (j < data && input.charCodeAt(i) === nodes[cursor + j + 2]) {
+        while (j < data && charCodeAt(input, i) === nodes[cursor + j + 2]) {
           ++j;
           ++i;
         }
@@ -65,10 +67,10 @@ export function arrayTrieSearch<Value>(
 
     ++cursor;
 
-    if ((node & NodeType.BRANCH_1) === NodeType.BRANCH_1) {
+    if ((node & BRANCH_1) === BRANCH_1) {
       // The node has a single child
       // data = charCode
-      if (input.charCodeAt(i) === data) {
+      if (charCodeAt(input, i) === data) {
         ++i;
         continue;
       }
@@ -80,7 +82,7 @@ export function arrayTrieSearch<Value>(
     // data = childCharCodesLength
 
     // Binary search
-    for (let left = 0, right = data - 1, inputCharCode = input.charCodeAt(i); left <= right; ) {
+    for (let left = 0, right = data - 1, inputCharCode = charCodeAt(input, i); left <= right; ) {
       const index = (right + left) >> 1;
       const charCodeIndex = cursor + (index << 1);
       const charCode = nodes[charCodeIndex];
@@ -105,7 +107,7 @@ export function arrayTrieSearch<Value>(
   if (i === endIndex && cursor !== -1) {
     const node = nodes[cursor];
 
-    if (node === NodeType.LEAF || ((node & NodeType.BRANCH) !== 0 && (node & NodeType.LEAF) === NodeType.LEAF)) {
+    if (node === LEAF || ((node & BRANCH) !== 0 && (node & LEAF) === LEAF)) {
       valueIndex = cursor + 1;
     }
   }

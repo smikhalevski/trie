@@ -1,4 +1,5 @@
 import { ArrayTrie, Trie } from './trie-types';
+import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from './utils';
 
 /**
  * Encodes a {@link Trie} instance as an {@link ArrayTrie}.
@@ -16,37 +17,6 @@ export function arrayTrieEncode<Value>(trie: Trie<Value>): ArrayTrie<Value> {
   return { nodes, values };
 }
 
-/**
- * {@link ArrayTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node
- * constrains the consequent array elements as described in the snippet below. Square brackets denote a single array
- * element.
- *
- * ```
- * Node                                    Consequent array elements
- *
- * [leafCharCodesLength,  LEAF          ], [valueIndex], [charCode] * leafCharCodesLength
- * [charCode,             BRANCH_1      ], [nextNode]
- * [charCode,             BRANCH_1_LEAF ], [valueIndex], [nextNode]
- * [childCharCodesLength, BRANCH_N      ], ([charCode], [offset]) * childCharCodesLength
- * [childCharCodesLength, BRANCH_N_LEAF ], [valueIndex], ([charCode], [offset]) * childCharCodesLength
- * ```
- *
- * - `leafCharCodesLength` is the length of {@link Trie.leafCharCodes}.
- * - `childCharCodesLength` is the number of sub-tries in a trie.
- * - `valueIndex` is an index in {@link ArrayTrie.values} that corresponds to a leaf node.
- * - `nextNode` is the next node that the search algorithm must process.
- * - `offset` is a relative index in {@link ArrayTrie.nodes} at which the next node of the trie is stored.
- * It is relative to the index at which it is written.
- */
-export const enum NodeType {
-  LEAF = 0b001,
-  BRANCH_1 = 0b010,
-  BRANCH_N = 0b100,
-  BRANCH_1_LEAF = BRANCH_1 | LEAF,
-  BRANCH_N_LEAF = BRANCH_N | LEAF,
-  BRANCH = BRANCH_1 | BRANCH_N,
-}
-
 function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
   const { value } = trie;
 
@@ -57,11 +27,11 @@ function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): vo
       return;
     }
     if (leafCharCodes === null) {
-      nodes.push(createNode(NodeType.LEAF, 0), addValue(values, value));
+      nodes.push(createNode(LEAF, 0), addValue(values, value));
       return;
     }
 
-    nodes.push(createNode(NodeType.LEAF, leafCharCodes.length), addValue(values, value));
+    nodes.push(createNode(LEAF, leafCharCodes.length), addValue(values, value));
     nodes.push(...leafCharCodes);
     return;
   }
@@ -73,18 +43,18 @@ function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): vo
     const charCode = charCodes[0];
 
     if (trie.isLeaf) {
-      nodes.push(createNode(NodeType.BRANCH_1_LEAF, charCode), addValue(values, value));
+      nodes.push(createNode(BRANCH_1_LEAF, charCode), addValue(values, value));
     } else {
-      nodes.push(createNode(NodeType.BRANCH_1, charCode));
+      nodes.push(createNode(BRANCH_1, charCode));
     }
     appendNode(trie[charCode]!, nodes, values);
     return;
   }
 
   if (trie.isLeaf) {
-    nodes.push(createNode(NodeType.BRANCH_N_LEAF, charCodesLength), addValue(values, value));
+    nodes.push(createNode(BRANCH_N_LEAF, charCodesLength), addValue(values, value));
   } else {
-    nodes.push(createNode(NodeType.BRANCH_N, charCodesLength));
+    nodes.push(createNode(BRANCH_N, charCodesLength));
   }
 
   let offset = nodes.length;
@@ -103,12 +73,12 @@ function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): vo
 }
 
 function addValue(values: unknown[], value: unknown): number {
-  const index = value === value ? values.indexOf(value) : values.findIndex(Number.isNaN);
+  const index = value === value ? values.indexOf(value) : values.findIndex(isNaN);
 
   return index !== -1 ? index : values.push(value) - 1;
 }
 
-function createNode(type: NodeType, data: number): number {
+function createNode(type: number, data: number): number {
   return type + (data << 3);
 }
 

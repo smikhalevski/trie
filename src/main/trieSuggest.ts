@@ -1,4 +1,5 @@
 import { Trie } from './trie-types';
+import { getCharCodeAt } from './utils';
 
 /**
  * Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
@@ -7,6 +8,7 @@ import { Trie } from './trie-types';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
+ * @param charCodeAt Reads the char code at the given index.
  * @returns The cached readonly array of leafs or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
@@ -14,7 +16,8 @@ export function trieSuggest<Value>(
   trie: Trie<Value>,
   input: string,
   startIndex = 0,
-  endIndex = input.length
+  endIndex = input.length,
+  charCodeAt = getCharCodeAt
 ): readonly Trie<Value>[] | null {
   let i = startIndex;
 
@@ -23,7 +26,7 @@ export function trieSuggest<Value>(
       break;
     }
 
-    const child = trie[input.charCodeAt(i)];
+    const child = trie[charCodeAt(input, i)];
     if (child === undefined) {
       break;
     }
@@ -47,7 +50,7 @@ export function trieSuggest<Value>(
     }
 
     let j = 0;
-    while (j < restLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
+    while (j < restLength && charCodeAt(input, i) === trieLeafCharCodes[j]) {
       ++j;
       ++i;
     }

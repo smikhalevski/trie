@@ -42,152 +42,154 @@ function createTrieMap() {
 
 keys.length = 20;
 
-describe(
-  'Get',
-  () => {
+describe('Get', () => {
+  test('trieSearch', measure => {
+    const trie = createTrie();
+
     for (const key of keys) {
-      describe('Key length ' + key.length, () => {
-        test('trieSearch', measure => {
-          const trie = createTrie();
-
-          measure(() => {
-            trieSearch(trie, key);
-          });
-        });
-
-        test('arrayTrieSearch', measure => {
-          const arrayTrie = arrayTrieEncode(createTrie());
-
-          measure(() => {
-            arrayTrieSearch(arrayTrie, key);
-          });
-        });
-
-        test('Map', measure => {
-          const map = createMap();
-
-          measure(() => {
-            map.get(key);
-          });
-        });
-
-        test('trie-search', measure => {
-          const trieSearch = createTrieSearch();
-
-          measure(() => {
-            trieSearch.search(key);
-          });
-        });
-
-        test('mnemonist/trie-map', measure => {
-          const trieMap = createTrieMap();
-
-          measure(() => {
-            trieMap.get(key);
-          });
-        });
+      measure(() => {
+        trieSearch(trie, key);
       });
     }
-  },
-  { warmupIterationCount: 100, targetRme: 0.002 }
-);
+  });
 
-describe(
-  'Add a new key',
-  () => {
+  test('arrayTrieSearch', measure => {
+    const arrayTrie = arrayTrieEncode(createTrie());
+
     for (const key of keys) {
-      describe('Key length ' + key.length, () => {
-        test('trieSet', measure => {
-          let trie;
-
-          beforeIteration(() => {
-            trie = trieCreate();
-          });
-
-          measure(() => {
-            trieSet(trie, key, key);
-          });
-        });
-
-        test('Map', measure => {
-          let map;
-
-          beforeIteration(() => {
-            map = new Map();
-          });
-
-          measure(() => {
-            map.set(key, key);
-          });
-        });
-
-        test('trie-search', measure => {
-          let trieSearch;
-
-          beforeIteration(() => {
-            trieSearch = new TrieSearch();
-          });
-
-          measure(() => {
-            trieSearch.map(key, key);
-          });
-        });
-
-        test('mnemonist/trie-map', measure => {
-          let trieMap;
-
-          beforeIteration(() => {
-            trieMap = new TrieMap();
-          });
-
-          measure(() => {
-            trieMap.set(key, key);
-          });
-        });
+      measure(() => {
+        arrayTrieSearch(arrayTrie, key);
       });
     }
-  },
-  { warmupIterationCount: 100, targetRme: 0.002 }
-);
+  });
 
-describe(
-  'Update an existing key',
-  () => {
+  test('Map', measure => {
+    const map = createMap();
+
     for (const key of keys) {
-      describe('Key length ' + key.length, () => {
-        test('trieSet', measure => {
-          const trie = createTrie();
-
-          measure(() => {
-            trieSet(trie, key, key);
-          });
-        });
-
-        test('Map', measure => {
-          const map = createMap();
-
-          measure(() => {
-            map.set(key, key);
-          });
-        });
-
-        test('trie-search', measure => {
-          const trieSearch = createTrieSearch();
-
-          measure(() => {
-            trieSearch.map(key, key);
-          });
-        });
-
-        test('mnemonist/trie-map', measure => {
-          const trieMap = createTrieMap();
-
-          measure(() => {
-            trieMap.set(key, key);
-          });
-        });
+      measure(() => {
+        map.get(key);
       });
     }
-  },
-  { warmupIterationCount: 100, targetRme: 0.002 }
-);
+  });
+
+  test('trie-search', measure => {
+    const trieSearch = createTrieSearch();
+
+    for (const key of keys) {
+      measure(() => {
+        trieSearch.search(key);
+      });
+    }
+  });
+
+  test('mnemonist/trie-map', measure => {
+    const trieMap = createTrieMap();
+
+    for (const key of keys) {
+      measure(() => {
+        trieMap.get(key);
+      });
+    }
+  });
+});
+
+describe('Add a new key', () => {
+  test('trieSet', measure => {
+    let trie;
+
+    beforeIteration(() => {
+      trie = trieCreate();
+    });
+
+    for (const key of keys) {
+      measure(() => {
+        trieSet(trie, key, key);
+      });
+    }
+  });
+
+  test('Map', measure => {
+    let map;
+
+    beforeIteration(() => {
+      map = new Map();
+    });
+
+    for (const key of keys) {
+      measure(() => {
+        map.set(key, key);
+      });
+    }
+  });
+
+  test('trie-search', measure => {
+    let trieSearch;
+
+    beforeIteration(() => {
+      trieSearch = new TrieSearch();
+    });
+
+    for (const key of keys) {
+      measure(() => {
+        trieSearch.map(key, key);
+      });
+    }
+  });
+
+  test('mnemonist/trie-map', measure => {
+    let trieMap;
+
+    beforeIteration(() => {
+      trieMap = new TrieMap();
+    });
+
+    for (const key of keys) {
+      measure(() => {
+        trieMap.set(key, key);
+      });
+    }
+  });
+});
+
+describe('Update an existing key', () => {
+  test('trieSet', measure => {
+    const trie = createTrie();
+
+    for (const key of keys) {
+      measure(() => {
+        trieSet(trie, key, key);
+      });
+    }
+  });
+
+  test('Map', measure => {
+    const map = createMap();
+
+    for (const key of keys) {
+      measure(() => {
+        map.set(key, key);
+      });
+    }
+  });
+
+  test('trie-search', measure => {
+    const trieSearch = createTrieSearch();
+
+    for (const key of keys) {
+      measure(() => {
+        trieSearch.map(key, key);
+      });
+    }
+  });
+
+  test('mnemonist/trie-map', measure => {
+    const trieMap = createTrieMap();
+
+    for (const key of keys) {
+      measure(() => {
+        trieMap.set(key, key);
+      });
+    }
+  });
+});

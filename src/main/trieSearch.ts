@@ -1,4 +1,5 @@
 import { Trie } from './trie-types';
+import { getCharCodeAt } from './utils';
 
 /**
  * Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at `endIndex`,
@@ -8,6 +9,7 @@ import { Trie } from './trie-types';
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
+ * @param charCodeAt Reads the char code at the given index.
  * @returns A leaf in the trie or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
@@ -15,7 +17,8 @@ export function trieSearch<Value>(
   trie: Trie<Value>,
   input: string,
   startIndex = 0,
-  endIndex = input.length
+  endIndex = input.length,
+  charCodeAt = getCharCodeAt
 ): Trie<Value> | null {
   let leaf: Trie<Value> | null = null;
   let i = startIndex;
@@ -26,7 +29,7 @@ export function trieSearch<Value>(
         leaf = trie;
       }
 
-      const child = trie[input.charCodeAt(i)];
+      const child = trie[charCodeAt(input, i)];
       if (child === undefined) {
         break;
       }
@@ -45,7 +48,7 @@ export function trieSearch<Value>(
       }
 
       let j = 0;
-      while (j < trieLeafCharCodesLength && input.charCodeAt(i) === trieLeafCharCodes[j]) {
+      while (j < trieLeafCharCodesLength && charCodeAt(input, i) === trieLeafCharCodes[j]) {
         ++j;
         ++i;
       }
