@@ -5,17 +5,17 @@ import { Trie } from './trie-types';
  *
  * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
- * @param [startIndex = 0] The index in `input` to start reading substring from.
- * @param [endIndex = input.length] The index in `input` to stop reading.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
  * @returns The cached readonly array of leafs or `null` if there's no matching key.
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function trieSuggest<T>(
-  trie: Trie<T>,
+export function trieSuggest<Value>(
+  trie: Trie<Value>,
   input: string,
   startIndex = 0,
   endIndex = input.length
-): readonly Trie<T>[] | null {
+): readonly Trie<Value>[] | null {
   let i = startIndex;
 
   while (i < endIndex) {
@@ -61,7 +61,7 @@ export function trieSuggest<T>(
     return trieSuggestions;
   }
 
-  const suggestions: Trie<T>[] = [];
+  const suggestions: Trie<Value>[] = [];
 
   if (trie.isLeaf) {
     suggestions.push(trie);

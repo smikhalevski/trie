@@ -6,13 +6,18 @@ import { Trie } from './trie-types';
  *
  * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
- * @param [startIndex = 0] The index in `input` to start reading substring from.
- * @param [endIndex = input.length] The index in `input` to stop reading.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
  * @returns A leaf in the trie or `null` if there's no matching key.
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function trieSearch<T>(trie: Trie<T>, input: string, startIndex = 0, endIndex = input.length): Trie<T> | null {
-  let leaf: Trie<T> | null = null;
+export function trieSearch<Value>(
+  trie: Trie<Value>,
+  input: string,
+  startIndex = 0,
+  endIndex = input.length
+): Trie<Value> | null {
+  let leaf: Trie<Value> | null = null;
   let i = startIndex;
 
   while (i < endIndex) {

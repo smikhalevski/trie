@@ -3,9 +3,9 @@ import { Trie } from './trie-types';
 /**
  * Creates a compressed trie data structure.
  *
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export function trieCreate<T>(): Trie<T> {
+export function trieCreate<Value>(): Trie<Value> {
   return {
     charCode: -1,
     parent: null,

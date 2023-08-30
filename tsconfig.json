@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
     "moduleResolution": "Node",
-    "esModuleInterop": true,
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
     "strict": true,
     "target": "ES5",
-    "module": "ESNext"
+    "module": "ES6",
+    "outDir": "./gen"
   },
   "include": [
-    "rollup.config.ts",
     "./src/**/*"
   ]
 }

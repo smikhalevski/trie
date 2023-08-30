@@ -1,38 +1,38 @@
 /**
  * The compressed trie data structure.
  *
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export interface Trie<T> {
+export interface Trie<Value> {
   /**
    * Mapping from char code to a corresponding child trie.
    */
-  [charCode: number]: Trie<T> | undefined;
+  [charCode: number]: Trie<Value> | undefined;
 
   /**
-   * The char code in {@linkcode parent} that is associated with this trie, or -1 if trie has no {@linkcode parent}.
+   * The char code in {@link parent} that is associated with this trie, or -1 if trie has no {@link parent}.
    */
   charCode: number;
 
   /**
    * The preceding trie or `null` if this trie is a root.
    */
-  parent: Trie<T> | null;
+  parent: Trie<Value> | null;
 
   /**
    * The previous trie in the linked list of all nodes in the trie.
    */
-  prev: Trie<T> | null;
+  prev: Trie<Value> | null;
 
   /**
    * The next trie in the linked list of all nodes in the trie.
    */
-  next: Trie<T> | null;
+  next: Trie<Value> | null;
 
   /**
    * The last child of the trie.
    */
-  last: Trie<T> | null;
+  last: Trie<Value> | null;
 
   /**
    * The key that the leaf trie represents or `null` for a non-leaf trie.
@@ -40,13 +40,13 @@ export interface Trie<T> {
   key: string | null;
 
   /**
-   * The value set to the trie or `undefined` for a non-leaf trie. Use {@linkcode isLeaf} to distinguish between leaf
+   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf
    * and non-leaf tries.
    */
-  value: T | undefined;
+  value: Value | undefined;
 
   /**
-   * `true` if the trie is a leaf and has a {@linkcode value}.
+   * `true` if the trie is a leaf and has a {@link value}.
    */
   isLeaf: boolean;
 
@@ -56,18 +56,18 @@ export interface Trie<T> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@linkcode trieSuggest} and cleaned by
-   * {@linkcode trieSet} and {@linkcode trieDelete}.
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSuggest} and cleaned by
+   * {@link trieSet} and {@link trieDelete}.
    */
-  suggestions: Trie<T>[] | null;
+  suggestions: Trie<Value>[] | null;
 }
 
 /**
  * The array trie stores all trie branches in a flat array.
  *
- * @template T The value stored in a trie.
+ * @template Value The value stored in a trie.
  */
-export interface ArrayTrie<T> {
+export interface ArrayTrie<Value> {
   /**
    * The nodes of a trie.
    */
@@ -76,5 +76,5 @@ export interface ArrayTrie<T> {
   /**
    * Values associated with trie nodes.
    */
-  values: ArrayLike<T>;
+  values: ArrayLike<Value>;
 }
