@@ -18,6 +18,14 @@ describe('trieSearch', () => {
     expect(trieSearch(trie, '', 0)).toBe(trie);
   });
 
+  test('finds a trie using a char code getter', () => {
+    trieSet(trie, 'abc', 111);
+
+    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+
+    expect(trieSearch(trie, 'ABC', 0, 3, charCodeAt)).toBe(trie[A]);
+  });
+
   test('finds a trie with one entry', () => {
     trieSet(trie, 'abc', 111);
 

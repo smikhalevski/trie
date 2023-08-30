@@ -1,7 +1,7 @@
 {
   "testOptions": {
     "warmupIterationCount": 100,
-    "targetRme": 0.02
+    "targetRme": 0.002
   },
   "include": [
     "./src/test/perf.js"

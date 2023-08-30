@@ -25,6 +25,18 @@ describe('trieSuggest', () => {
     expect(suggestions).toEqual([trie[A]![B]![C], trie[A]![B]![C]![D]]);
   });
 
+  test('suggests leaf tries using a char code getter', () => {
+    trieSet(trie, 'abcd', 111);
+    trieSet(trie, 'abc', 222);
+    trieSet(trie, 'abef', 333);
+
+    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+
+    const suggestions = trieSuggest(trie, 'ABC', 0, 3, charCodeAt);
+
+    expect(suggestions).toEqual([trie[A]![B]![C], trie[A]![B]![C]![D]]);
+  });
+
   test('suggests leaf tries for an empty key', () => {
     trieSet(trie, 'abcd', 111);
     trieSet(trie, 'abc', 222);

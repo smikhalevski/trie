@@ -24,6 +24,16 @@ describe('arrayTrieSearch', () => {
     expect(arrayTrieSearch(arrayTrie, 'a')).toEqual({ value: 111, lastIndex: 1 });
   });
 
+  test('finds a key using a char code getter', () => {
+    trieSet(trie, 'aaa', 111);
+
+    const arrayTrie = arrayTrieEncode(trie);
+
+    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+
+    expect(arrayTrieSearch(arrayTrie, 'AAA', 0, 3, undefined, charCodeAt)).toEqual({ value: 111, lastIndex: 3 });
+  });
+
   test('finds a key for multiple values', () => {
     trieSet(trie, 'a', 111);
     trieSet(trie, 'b', 222);
