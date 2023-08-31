@@ -12,7 +12,7 @@ import { search } from './search';
  * getValue(trie, 'foo');
  * // ⮕ 111
  *
- * getLeaf(trie, 'bar');
+ * getValue(trie, 'bar');
  * // ⮕ undefined
  * ```
  *

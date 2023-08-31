@@ -14,10 +14,10 @@ import { suggestLeafs } from './suggestLeafs';
  * suggestValues(trie, 'hot');
  * // ⮕ [111, 222, 333]
  *
- * suggestLeafs(trie, 'hott');
+ * suggestValues(trie, 'hott');
  * // ⮕ [222, 333]
  *
- * suggestLeafs(trie, 'cold');
+ * suggestValues(trie, 'cold');
  * // ⮕ []
  * ```
  *
