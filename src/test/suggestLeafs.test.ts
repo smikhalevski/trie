@@ -8,7 +8,7 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
 describe('suggestLeafs', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();

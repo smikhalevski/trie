@@ -43,7 +43,7 @@ export interface Match<Value = any> {
  * @returns The search result or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const searchEncoded = createSearchEncoded(getCharCodeAt);
+export const searchEncoded = createSearchEncoded();
 
 /**
  * Creates a function that searches the array trie and uses `charCodeAt` to read chars from the input string.

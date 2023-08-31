@@ -25,7 +25,7 @@ import { getCharCodeAt } from './utils';
  * @returns A leaf in the trie or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const search = createSearch(getCharCodeAt);
+export const search = createSearch();
 
 /**
  * Creates a function that searches the trie and uses `charCodeAt` to read chars from the input string.

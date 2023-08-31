@@ -1,7 +1,7 @@
 import { createTrie, encodeTrie, setValue, Trie } from '../main';
 
 describe('encodeTrie', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();

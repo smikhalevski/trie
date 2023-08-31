@@ -2,7 +2,7 @@ import { createSearchEncoded, createTrie, encodeTrie, searchEncoded, setValue, T
 import dictionary from './dictionary.json';
 
 describe('searchEncoded', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();

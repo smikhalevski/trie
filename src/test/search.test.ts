@@ -6,7 +6,7 @@ const C = 'c'.charCodeAt(0);
 const D = 'd'.charCodeAt(0);
 
 describe('search', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();

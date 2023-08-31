@@ -15,7 +15,7 @@ import { Trie } from './types';
  *
  * @param leaf The leaf to delete.
  */
-export function deleteLeaf(leaf: Trie<any> | null): void {
+export function deleteLeaf(leaf: Trie | null): void {
   if (leaf === null || !leaf.isLeaf) {
     return;
   }

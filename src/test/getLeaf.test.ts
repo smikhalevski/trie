@@ -1,7 +1,7 @@
 import { createTrie, getLeaf, setValue, Trie } from '../main';
 
 describe('getLeaf', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();

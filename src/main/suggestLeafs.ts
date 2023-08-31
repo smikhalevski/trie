@@ -30,7 +30,7 @@ import { getCharCodeAt } from './utils';
  * @template Value The value stored in a trie.
  * @see {@link suggestValues}
  */
-export const suggestLeafs = createSuggestLeafs(getCharCodeAt);
+export const suggestLeafs = createSuggestLeafs();
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.

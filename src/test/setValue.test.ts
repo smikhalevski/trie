@@ -9,7 +9,7 @@ const E = 'e'.charCodeAt(0);
 const F = 'f'.charCodeAt(0);
 
 describe('setValue', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();
@@ -18,7 +18,7 @@ describe('setValue', () => {
   test('sets an empty key to an empty trie', () => {
     expect(setValue(trie, '', 111)).toBe(trie);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -38,7 +38,7 @@ describe('setValue', () => {
     expect(setValue(trie, '', 111)).toBe(trie);
     expect(setValue(trie, 'a', 222)).toBe(trie[A]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -76,7 +76,7 @@ describe('setValue', () => {
     setValue(trie, 'abc', 222);
     setValue(trie, 'abc', 222);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -113,7 +113,7 @@ describe('setValue', () => {
   test('sets the value with the non-empty key to an empty trie', () => {
     expect(setValue(trie, 'abc', 111)).toBe(trie[A]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -151,7 +151,7 @@ describe('setValue', () => {
     expect(setValue(trie, 'abc', 111)).toBe(trie[A]);
     expect(setValue(trie, 'ade', 222)).toBe(trie![A]![D]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -223,7 +223,7 @@ describe('setValue', () => {
     setValue(trie, 'ade', 222);
     setValue(trie, 'abf', 333);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -327,7 +327,7 @@ describe('setValue', () => {
     setValue(trie, 'abc', 111);
     setValue(trie, 'abcdef', 222);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -417,7 +417,7 @@ describe('setValue', () => {
     setValue(trie, 'abcdef', 222);
     setValue(trie, 'abcde', 333);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -542,7 +542,7 @@ describe('setValue', () => {
     setValue(trie, 'abef', 333);
     setValue(trie, 'a', 444);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,

@@ -8,7 +8,7 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
 describe('deleteLeaf', () => {
-  let trie: Trie<any>;
+  let trie: Trie;
 
   beforeEach(() => {
     trie = createTrie();
@@ -22,7 +22,7 @@ describe('deleteLeaf', () => {
     setValue(trie, '', 111);
     deleteLeaf(getLeaf(trie, ''));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -44,7 +44,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abd', 333);
     deleteLeaf(getLeaf(trie, 'ab'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -133,7 +133,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 222);
     deleteLeaf(getLeaf(trie, 'ab'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -173,7 +173,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abd', 333);
     deleteLeaf(getLeaf(trie, 'abd'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -248,7 +248,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abd', 333);
     deleteLeaf(getLeaf(trie, 'abc'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -324,7 +324,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abe', 444);
     deleteLeaf(getLeaf(trie, 'abd'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -415,7 +415,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abe', 333);
     deleteLeaf(getLeaf(trie, 'abe'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -506,7 +506,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abe', 333);
     deleteLeaf(getLeaf(trie, 'abc'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -597,7 +597,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abe', 333);
     deleteLeaf(getLeaf(trie, 'abd'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -687,7 +687,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 222);
     deleteLeaf(getLeaf(trie, 'abc'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -728,7 +728,7 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abe', 444);
     deleteLeaf(getLeaf(trie, 'abe'));
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -823,7 +823,7 @@ describe('deleteLeaf', () => {
       deleteLeaf(getLeaf(trie, key));
     });
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
