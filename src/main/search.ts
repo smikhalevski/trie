@@ -1,25 +1,28 @@
 import { CharCodeAt, Trie } from './types';
 import { charCodeAt } from './utils';
 
-export const trieSearch = createTrieSearch(charCodeAt);
+/**
+ * Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at `endIndex`,
+ * and returns the corresponding leaf.
+ *
+ * @param trie The trie root.
+ * @param input The string to search for the key from the `trie`.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
+ * @returns A leaf in the trie or `null` if there's no matching key.
+ * @template Value The value stored in a trie.
+ */
+export const search = createSearch(charCodeAt);
 
 /**
  * Creates a function that searches the trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
  */
-export function createTrieSearch(charCodeAt: CharCodeAt) {
+export function createSearch(charCodeAt: CharCodeAt) {
   return (
     /**
-     * Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at
-     * `endIndex`, and returns the corresponding leaf.
-     *
-     * @param trie The trie root.
-     * @param input The string to search for the key from the `trie`.
-     * @param startIndex The index in `input` to start reading substring from.
-     * @param endIndex The index in `input` to stop reading.
-     * @returns A leaf in the trie or `null` if there's no matching key.
-     * @template Value The value stored in a trie.
+     * {@inheritDoc search}
      */
     <Value>(trie: Trie<Value>, input: string, startIndex = 0, endIndex = input.length): Trie<Value> | null => {
       let leaf: Trie<Value> | null = null;

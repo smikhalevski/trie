@@ -1,11 +1,11 @@
 import { Trie } from './types';
 
 /**
- * Deletes the leaf from its trie.
+ * Deletes the leaf from the trie to which it belongs.
  *
  * @param leaf The leaf to delete.
  */
-export function trieDelete(leaf: Trie<any> | null): void {
+export function deleteLeaf(leaf: Trie<any> | null): void {
   if (leaf === null || !leaf.isLeaf) {
     return;
   }

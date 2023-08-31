@@ -5,7 +5,7 @@ import { Trie } from './types';
  *
  * @template Value The value stored in a trie.
  */
-export function trieCreate<Value>(): Trie<Value> {
+export function createTrie<Value>(): Trie<Value> {
   return {
     charCode: -1,
     parent: null,

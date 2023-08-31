@@ -8,40 +8,40 @@ npm install --save-prod @smikhalevski/trie
 ```
 
 - Object-backed trie
-  - [`trieCreate`](#triecreate)
-  - [`trieSet`](#trieset)
-  - [`trieGet`](#trieget)
-  - [`trieSearch`](#triesearch)
-  - [`trieSuggest`](#triesuggest)
-  - [`trieDelete`](#triedelete)
+  - [`createTrie`](#triecreate)
+  - [`setValue`](#trieset)
+  - [`getLeaf`](#trieget)
+  - [`search`](#triesearch)
+  - [`suggest`](#triesuggest)
+  - [`deleteLeaf`](#triedelete)
 
 - Array-backed trie
-  - [`arrayTrieEncode`](#arraytrieencode)
-  - [`arrayTrieGet`](#arraytrieget)
-  - [`arrayTrieSearch`](#arraytriesearch)
+  - [`encodeTrie`](#arraytrieencode)
+  - [`getEncodedValue`](#arraytrieget)
+  - [`searchEncoded`](#arraytriesearch)
 
 # Usage
 
 🔎 [API documentation is available here.](https://smikhalevski.github.io/trie/)
 
-### `trieCreate()`<a name="triecreate"></a>
+### `createTrie()`<a name="triecreate"></a>
 
 Creates a blank [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) instance. `Trie` is a plain object
 that you pass as an argument to various functions that traverse and update the data structure.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 // ⮕ { key: null, value: undefined, … }
 ```
 
-### `trieSet(trie, key, value)`<a name="trieset"></a>
+### `setValue(trie, key, value)`<a name="trieset"></a>
 
 Associates the `key` with the `value` in the `trie` and returns the leaf trie object that withholds the key-value pair.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
+setValue(trie, 'foo', 111);
 // ⮕ { key: 'foo', value: 111, … }
 ```
 
@@ -50,99 +50,99 @@ The returned leaf trie instance has stable identity: this object would represent
 returned leaf object would still correspond to the original key.
 
 ```ts
-const leaf1 = trieSet(trie, 'foo', 111);
-const leaf2 = trieSet(trie, 'foo', 222);
+const leaf1 = setValue(trie, 'foo', 111);
+const leaf2 = setValue(trie, 'foo', 222);
 
 leaf1 === leaf2 // ⮕ true
 ```
 
-### `trieGet(trie, key)`<a name="trieget"></a>
+### `getLeaf(trie, key)`<a name="trieget"></a>
 
 Returns a leaf associated with the `key`.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
+setValue(trie, 'foo', 111);
 
-trieGet(trie, 'foo');
+getLeaf(trie, 'foo');
 // ⮕ { key: 'foo', value: 111, … }
 
-trieGet(trie, 'wow');
+getLeaf(trie, 'wow');
 // ⮕ null
 ```
 
-### `trieSearch(trie, input, startIndex?, endIndex?)`<a name="triesearch"></a>
+### `search(trie, input, startIndex?, endIndex?)`<a name="triesearch"></a>
 
 Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at `endIndex`, and
 returns the corresponding leaf.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
-trieSet(trie, 'foobar', 222);
+setValue(trie, 'foo', 111);
+setValue(trie, 'foobar', 222);
 
-trieSearch(trie, '___foobar___', 3);
+search(trie, '___foobar___', 3);
 // ⮕ { key: 'foobar', value: 222, length: 6, … }
 
-trieSearch(trie, '___fooba___', 3);
+search(trie, '___fooba___', 3);
 // ⮕ { key: 'foo', value: 111, length: 3, … }
 ```
 
 You can provide the `endIndex` to limit the searched key length:
 
 ```ts
-trieSearch(trie, '___foobar___', 3, 7);
+search(trie, '___foobar___', 3, 7);
 // ⮕ { key: 'foo', value: 111, length: 3, … }
 ```
 
-### `trieSuggest(trie, input, startIndex?, endIndex?)`<a name="triesuggest"></a>
+### `suggest(trie, input, startIndex?, endIndex?)`<a name="triesuggest"></a>
 
 Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'hotdog', 111);
-trieSet(trie, 'hotter', 222);
-trieSet(trie, 'hottest', 333);
+setValue(trie, 'hotdog', 111);
+setValue(trie, 'hotter', 222);
+setValue(trie, 'hottest', 333);
 
-trieSuggest(trie, 'hot');
+suggest(trie, 'hot');
 // ⮕ [{ key: 'hotdog', … }, { key: 'hotter', … }, { key: 'hottest', … }]
 
-trieSuggest(trie, 'hott');
+suggest(trie, 'hott');
 // ⮕ [{ key: 'hotter', … }, { key: 'hottest', … }]
 
-trieSuggest(trie, 'wow');
+suggest(trie, 'wow');
 // ⮕ null
 ```
 
-### `trieDelete(leaf)`<a name="triedelete"></a>
+### `deleteLeaf(leaf)`<a name="triedelete"></a>
 
 Deletes the `leaf` trie from its parent.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-const leaf = trieSet(trie, 'foo', 111);
+const leaf = setValue(trie, 'foo', 111);
 
-trieDelete(leaf);
+deleteLeaf(leaf);
 ```
 
-Or you can combine it with `trieGet`:
+Or you can combine it with `getLeaf`:
 
 ```ts
-trieDelete(trieGet(trie, 'foo'));
+deleteLeaf(getLeaf(trie, 'foo'));
 ```
 
 You can delete all values with a particular prefix:
 
 ```ts
-trieSuggest(trie, 'foo')?.forEach(trieDelete);
+suggest(trie, 'foo')?.forEach(deleteLeaf);
 ```
 
-### `arrayTrieEncode(trie)`<a name="arraytrieencode"></a>
+### `encodeTrie(trie)`<a name="arraytrieencode"></a>
 
 Converts [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) into an
 [`ArrayTrie`](https://smikhalevski.github.io/trie/interfaces/ArrayTrie.html).
@@ -151,62 +151,62 @@ Converts [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) into
 `Trie` instance in just 3 objects regardless the number of key-value pairs in the original `Trie` instance.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
+setValue(trie, 'foo', 111);
 
-const arrayTrie = arrayTrieEncode(trie);
+const encodedTrie = encodeTrie(trie);
 
-arrayTrieGet(arrayTrie, 'foo');
+getEncodedValue(encodedTrie, 'foo');
 // ⮕ 111
 ```
 
 `ArrayTrie` is backed by an array of indices instead of a tree of objects, it has a tiny memory footprint. It requires
 400&times; less memory than the `Trie` instance with the same set of key-value pairs.
 
-### `arrayTrieGet(arrayTrie, key)`<a name="arraytrieget"></a>
+### `getEncodedValue(encodedTrie, key)`<a name="arraytrieget"></a>
 
 Returns a value associated with the `key`.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
-trieSet(trie, 'bar', 222);
+setValue(trie, 'foo', 111);
+setValue(trie, 'bar', 222);
 
-const arrayTrie = arrayTrieEncode(trie);
+const encodedTrie = encodeTrie(trie);
 
-arrayTrieGet(arrayTrie, 'bar');
+getEncodedValue(encodedTrie, 'bar');
 // ⮕ 222
 
-arrayTrieGet(arrayTrie, 'wow');
+getEncodedValue(encodedTrie, 'wow');
 // ⮕ null
 ```
 
-### `arrayTrieSearch(arrayTrie, input, startIndex?, endIndex?)`<a name="arraytriesearch"></a>
+### `searchEncoded(encodedTrie, input, startIndex?, endIndex?)`<a name="arraytriesearch"></a>
 
 Searches for a key that matches the longest substring in `input` that starts at `startIndex` and ends at `endIndex`, and
 returns the corresponding value.
 
 ```ts
-const trie = trieCreate();
+const trie = createTrie();
 
-trieSet(trie, 'foo', 111);
-trieSet(trie, 'foobar', 222);
+setValue(trie, 'foo', 111);
+setValue(trie, 'foobar', 222);
 
-const arrayTrie = arrayTrieEncode(trie);
+const encodedTrie = encodeTrie(trie);
 
-arrayTrieSearch(arrayTrie, '___foobar___', 3);
+searchEncoded(encodedTrie, '___foobar___', 3);
 // ⮕ { value: 222, lastIndex: 9 }
 
-arrayTrieSearch(arrayTrie, '___fooba___', 3);
+searchEncoded(encodedTrie, '___fooba___', 3);
 // ⮕ { value: 111, lastIndex: 6 }
 ```
 
 You can provide the `endIndex` to limit the searched key length:
 
 ```ts
-arrayTrieSearch(arrayTrie, '___foobar___', 3, 7);
+searchEncoded(encodedTrie, '___foobar___', 3, 7);
 // ⮕ { value: 111, lastIndex: 6 }
 ```
 

@@ -1,5 +1,5 @@
 import { Trie } from './types';
-import { trieSearch } from './trieSearch';
+import { search } from './search';
 
 /**
  * Returns a leaf associated with the key, or `null` if there's no such key.
@@ -9,8 +9,8 @@ import { trieSearch } from './trieSearch';
  * @returns A leaf in the `trie`, or `null` if there's no such key.
  * @template Value The value stored in a trie.
  */
-export function trieGet<Value>(trie: Trie<Value>, key: string): Trie<Value> | null {
-  const leaf = trieSearch(trie, key);
+export function getLeaf<Value>(trie: Trie<Value>, key: string): Trie<Value> | null {
+  const leaf = search(trie, key);
 
   if (leaf !== null && leaf.key === key) {
     return leaf;

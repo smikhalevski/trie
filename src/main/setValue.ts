@@ -1,5 +1,5 @@
 import { Trie } from './types';
-import { trieCreate } from './trieCreate';
+import { createTrie } from './createTrie';
 
 /**
  * Sets a new key-value pair to the trie.
@@ -10,7 +10,7 @@ import { trieCreate } from './trieCreate';
  * @returns The leaf to which the value was set.
  * @template Value The value stored in a trie.
  */
-export function trieSet<Value>(trie: Trie<Value>, key: string, value: Value): Trie<Value> {
+export function setValue<Value>(trie: Trie<Value>, key: string, value: Value): Trie<Value> {
   const keyLength = key.length;
 
   let i = 0;
@@ -64,7 +64,7 @@ export function trieSet<Value>(trie: Trie<Value>, key: string, value: Value): Tr
 
         const charCode = childLeafCharCodes[0];
 
-        const parent = trieCreate<Value>();
+        const parent = createTrie<Value>();
         parent[charCode] = parent.next = parent.last = child;
         parent.charCode = childCharCode;
         parent.parent = trie;
@@ -97,7 +97,7 @@ export function trieSet<Value>(trie: Trie<Value>, key: string, value: Value): Tr
     const prevNext = prev.next;
 
     // Append the new leaf and establish links
-    const leaf = trieCreate<Value>();
+    const leaf = createTrie<Value>();
     leaf.charCode = keyCharCode;
     leaf.parent = trie;
     leaf.prev = prev;

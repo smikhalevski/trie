@@ -1,7 +1,7 @@
-import { ArrayTrie, CharCodeAt } from './types';
+import { CharCodeAt, EncodedTrie } from './types';
 import { BRANCH, BRANCH_1, charCodeAt, LEAF } from './utils';
 
-export interface ArrayTrieSearchResult<Value> {
+export interface Match<Value> {
   /**
    * The value that corresponds to the matched key.
    */
@@ -13,34 +13,37 @@ export interface ArrayTrieSearchResult<Value> {
   lastIndex: number;
 }
 
-export const arrayTrieSearch = createArrayTrieSearch(charCodeAt);
+/**
+ * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
+ * at `endIndex`.
+ *
+ * @param trie The array trie.
+ * @param input The string to search for the key from the `trie`.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
+ * @param match The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
+ * @returns The search result or `null` if there's no matching key.
+ * @template Value The value stored in a trie.
+ */
+export const searchEncoded = createSearchEncoded(charCodeAt);
 
 /**
  * Creates a function that searches the array trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
  */
-export function createArrayTrieSearch(charCodeAt: CharCodeAt) {
+export function createSearchEncoded(charCodeAt: CharCodeAt) {
   return (
     /**
-     * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
-     * at `endIndex`.
-     *
-     * @param trie The array trie.
-     * @param input The string to search for the key from the `trie`.
-     * @param startIndex The index in `input` to start reading substring from.
-     * @param endIndex The index in `input` to stop reading.
-     * @param result The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
-     * @returns The `result` object or `null` if there's no matching key.
-     * @template Value The value stored in a trie.
+     * {@inheritDoc searchEncoded}
      */
     <Value>(
-      trie: ArrayTrie<Value>,
+      trie: EncodedTrie<Value>,
       input: string,
       startIndex = 0,
       endIndex = input.length,
-      result?: ArrayTrieSearchResult<Value>
-    ): ArrayTrieSearchResult<Value> | null => {
+      match?: Match<Value>
+    ): Match<Value> | null => {
       const { nodes, values } = trie;
 
       let i = startIndex;
@@ -125,10 +128,10 @@ export function createArrayTrieSearch(charCodeAt: CharCodeAt) {
         return null;
       }
 
-      if (result !== undefined) {
-        result.value = values[nodes[valueIndex]];
-        result.lastIndex = i;
-        return result;
+      if (match !== undefined) {
+        match.value = values[nodes[valueIndex]];
+        match.lastIndex = i;
+        return match;
       }
 
       return {

@@ -56,8 +56,8 @@ export interface Trie<Value> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@link trieSuggest} and cleaned by
-   * {@link trieSet} and {@link trieDelete}.
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@link suggest} and cleaned by
+   * {@link setValue} and {@link deleteLeaf}.
    */
   suggestions: Trie<Value>[] | null;
 }
@@ -67,7 +67,7 @@ export interface Trie<Value> {
  *
  * @template Value The value stored in a trie.
  */
-export interface ArrayTrie<Value> {
+export interface EncodedTrie<Value> {
   /**
    * The nodes of a trie.
    */

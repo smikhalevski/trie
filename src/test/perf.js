@@ -1,6 +1,6 @@
 const TrieSearch = require('trie-search');
 const TrieMap = require('mnemonist/trie-map');
-const { arrayTrieEncode, arrayTrieSearch, trieSet, trieCreate, trieSearch } = require('../../lib');
+const { encodeTrie, searchEncoded, setValue, createTrie, search } = require('../../lib');
 const dictionary = require('./dictionary.json');
 
 const keys = [];
@@ -8,15 +8,15 @@ for (const key of dictionary) {
   keys[key.length] = key;
 }
 
-function createTrie() {
-  const trie = trieCreate();
+function initTrie() {
+  const trie = createTrie();
   for (const key of dictionary) {
-    trieSet(trie, key, key);
+    setValue(trie, key, key);
   }
   return trie;
 }
 
-function createMap() {
+function initMap() {
   const map = new Map();
   for (const key of dictionary) {
     map.set(key, key);
@@ -24,15 +24,15 @@ function createMap() {
   return map;
 }
 
-function createTrieSearch() {
-  const trieSearch = new TrieSearch();
+function initTrieSearch() {
+  const search = new TrieSearch();
   for (const key of dictionary) {
-    trieSearch.map(key, key);
+    search.map(key, key);
   }
-  return trieSearch;
+  return search;
 }
 
-function createTrieMap() {
+function initTrieMap() {
   const trieMap = new TrieMap();
   for (const key of dictionary) {
     trieMap.set(key, key);
@@ -43,28 +43,28 @@ function createTrieMap() {
 keys.length = 20;
 
 describe('Get', () => {
-  test('trieSearch', measure => {
-    const trie = createTrie();
+  test('search', measure => {
+    const trie = initTrie();
 
     for (const key of keys) {
       measure(() => {
-        trieSearch(trie, key);
+        search(trie, key);
       });
     }
   });
 
-  test('arrayTrieSearch', measure => {
-    const arrayTrie = arrayTrieEncode(createTrie());
+  test('searchEncoded', measure => {
+    const encodedTrie = encodeTrie(initTrie());
 
     for (const key of keys) {
       measure(() => {
-        arrayTrieSearch(arrayTrie, key);
+        searchEncoded(encodedTrie, key);
       });
     }
   });
 
   test('Map', measure => {
-    const map = createMap();
+    const map = initMap();
 
     for (const key of keys) {
       measure(() => {
@@ -74,17 +74,17 @@ describe('Get', () => {
   });
 
   test('trie-search', measure => {
-    const trieSearch = createTrieSearch();
+    const search = initTrieSearch();
 
     for (const key of keys) {
       measure(() => {
-        trieSearch.search(key);
+        search.search(key);
       });
     }
   });
 
   test('mnemonist/trie-map', measure => {
-    const trieMap = createTrieMap();
+    const trieMap = initTrieMap();
 
     for (const key of keys) {
       measure(() => {
@@ -95,16 +95,16 @@ describe('Get', () => {
 });
 
 describe('Add a new key', () => {
-  test('trieSet', measure => {
+  test('setValue', measure => {
     let trie;
 
     beforeIteration(() => {
-      trie = trieCreate();
+      trie = initTrie();
     });
 
     for (const key of keys) {
       measure(() => {
-        trieSet(trie, key, key);
+        setValue(trie, key, key);
       });
     }
   });
@@ -124,15 +124,15 @@ describe('Add a new key', () => {
   });
 
   test('trie-search', measure => {
-    let trieSearch;
+    let search;
 
     beforeIteration(() => {
-      trieSearch = new TrieSearch();
+      search = new TrieSearch();
     });
 
     for (const key of keys) {
       measure(() => {
-        trieSearch.map(key, key);
+        search.map(key, key);
       });
     }
   });
@@ -153,18 +153,18 @@ describe('Add a new key', () => {
 });
 
 describe('Update an existing key', () => {
-  test('trieSet', measure => {
-    const trie = createTrie();
+  test('setValue', measure => {
+    const trie = initTrie();
 
     for (const key of keys) {
       measure(() => {
-        trieSet(trie, key, key);
+        setValue(trie, key, key);
       });
     }
   });
 
   test('Map', measure => {
-    const map = createMap();
+    const map = initMap();
 
     for (const key of keys) {
       measure(() => {
@@ -174,17 +174,17 @@ describe('Update an existing key', () => {
   });
 
   test('trie-search', measure => {
-    const trieSearch = createTrieSearch();
+    const search = initTrieSearch();
 
     for (const key of keys) {
       measure(() => {
-        trieSearch.map(key, key);
+        search.map(key, key);
       });
     }
   });
 
   test('mnemonist/trie-map', measure => {
-    const trieMap = createTrieMap();
+    const trieMap = initTrieMap();
 
     for (const key of keys) {
       measure(() => {

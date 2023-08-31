@@ -1,4 +1,4 @@
-import { Trie, trieCreate, trieDelete, trieGet, trieSet } from '../main';
+import { createTrie, deleteLeaf, getLeaf, setValue, Trie } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -7,20 +7,20 @@ const C = 'c'.charCodeAt(0);
 const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
-describe('trieDelete', () => {
+describe('deleteLeaf', () => {
   let trie: Trie<any>;
 
   beforeEach(() => {
-    trie = trieCreate();
+    trie = createTrie();
   });
 
   test('ignores null', () => {
-    expect(() => trieDelete(null)).not.toThrow();
+    expect(() => deleteLeaf(null)).not.toThrow();
   });
 
   test('root leaf is not compacted (3)', () => {
-    trieSet(trie, '', 111);
-    trieDelete(trieGet(trie, ''));
+    setValue(trie, '', 111);
+    deleteLeaf(getLeaf(trie, ''));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -39,10 +39,10 @@ describe('trieDelete', () => {
   });
 
   test('multiple children after deletion are not compacted (1.1)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abd', 333);
-    trieDelete(trieGet(trie, 'ab'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abd', 333);
+    deleteLeaf(getLeaf(trie, 'ab'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -129,9 +129,9 @@ describe('trieDelete', () => {
   });
 
   test('single child after deletion can be compacted (1.2)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieDelete(trieGet(trie, 'ab'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    deleteLeaf(getLeaf(trie, 'ab'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -168,10 +168,10 @@ describe('trieDelete', () => {
   });
 
   test('deletes the last sibling when parent is a leaf (2.3)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abd', 333);
-    trieDelete(trieGet(trie, 'abd'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abd', 333);
+    deleteLeaf(getLeaf(trie, 'abd'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -243,10 +243,10 @@ describe('trieDelete', () => {
   });
 
   test('deletes the first sibling when parent is a leaf (2.3)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abd', 333);
-    trieDelete(trieGet(trie, 'abc'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abd', 333);
+    deleteLeaf(getLeaf(trie, 'abc'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -318,11 +318,11 @@ describe('trieDelete', () => {
   });
 
   test('deletes an intermediate sibling when parent is a leaf (2.4)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abd', 333);
-    trieSet(trie, 'abe', 444);
-    trieDelete(trieGet(trie, 'abd'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abd', 333);
+    setValue(trie, 'abe', 444);
+    deleteLeaf(getLeaf(trie, 'abd'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -410,10 +410,10 @@ describe('trieDelete', () => {
   });
 
   test('deletes the last sibling when parent has multiple children remaining (2.4)', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abd', 222);
-    trieSet(trie, 'abe', 333);
-    trieDelete(trieGet(trie, 'abe'));
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'abd', 222);
+    setValue(trie, 'abe', 333);
+    deleteLeaf(getLeaf(trie, 'abe'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -501,10 +501,10 @@ describe('trieDelete', () => {
   });
 
   test('deletes the first sibling when parent has multiple children remaining (2.4)', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abd', 222);
-    trieSet(trie, 'abe', 333);
-    trieDelete(trieGet(trie, 'abc'));
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'abd', 222);
+    setValue(trie, 'abe', 333);
+    deleteLeaf(getLeaf(trie, 'abc'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -592,10 +592,10 @@ describe('trieDelete', () => {
   });
 
   test('deletes an intermediate sibling when parent has multiple children remaining (2.4)', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abd', 222);
-    trieSet(trie, 'abe', 333);
-    trieDelete(trieGet(trie, 'abd'));
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'abd', 222);
+    setValue(trie, 'abe', 333);
+    deleteLeaf(getLeaf(trie, 'abd'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -683,9 +683,9 @@ describe('trieDelete', () => {
   });
 
   test('deletes a single child from a leaf parent (2.2)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieDelete(trieGet(trie, 'abc'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    deleteLeaf(getLeaf(trie, 'abc'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -722,11 +722,11 @@ describe('trieDelete', () => {
   });
 
   test('deletes the last sibling with  (2.1)', () => {
-    trieSet(trie, 'ab', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abcd', 333);
-    trieSet(trie, 'abe', 444);
-    trieDelete(trieGet(trie, 'abe'));
+    setValue(trie, 'ab', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abcd', 333);
+    setValue(trie, 'abe', 444);
+    deleteLeaf(getLeaf(trie, 'abe'));
 
     const result: Trie<any> = {
       charCode: -1,
@@ -816,11 +816,11 @@ describe('trieDelete', () => {
 
   test('works with a huge dictionary', () => {
     dictionary.forEach(key => {
-      trieSet(trie, key, key);
+      setValue(trie, key, key);
     });
 
     dictionary.forEach(key => {
-      trieDelete(trieGet(trie, key));
+      deleteLeaf(getLeaf(trie, key));
     });
 
     const result: Trie<any> = {

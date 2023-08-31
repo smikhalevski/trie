@@ -1,14 +1,14 @@
-import { ArrayTrie, Trie } from './types';
+import { EncodedTrie, Trie } from './types';
 import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from './utils';
 
 /**
- * Encodes a {@link Trie} instance as an {@link ArrayTrie}.
+ * Encodes a {@link Trie} instance as an {@link EncodedTrie}.
  *
  * @param trie The trie to encode.
  * @returns The array trie that contains all nodes from the `trie`.
  * @template Value The value stored in a trie.
  */
-export function arrayTrieEncode<Value>(trie: Trie<Value>): ArrayTrie<Value> {
+export function encodeTrie<Value>(trie: Trie<Value>): EncodedTrie<Value> {
   const nodes: number[] = [];
   const values: Value[] = [];
 

@@ -1,25 +1,28 @@
 import { CharCodeAt, Trie } from './types';
 import { charCodeAt } from './utils';
 
-export const trieSuggest = createTrieSuggest(charCodeAt);
+/**
+ * Returns the cached readonly array of trie leafs that have keys starting with
+ * `input.substring(startIndex, endIndex)`.
+ *
+ * @param trie The trie root.
+ * @param input The string to search for the key from the `trie`.
+ * @param startIndex The index in `input` to start reading substring from.
+ * @param endIndex The index in `input` to stop reading.
+ * @returns The cached readonly array of leafs or `null` if there's no matching key.
+ * @template Value The value stored in a trie.
+ */
+export const suggest = createSuggest(charCodeAt);
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
  */
-export function createTrieSuggest(charCodeAt: CharCodeAt) {
+export function createSuggest(charCodeAt: CharCodeAt) {
   return (
     /**
-     * Returns the cached readonly array of trie leafs that have keys starting with
-     * `input.substring(startIndex, endIndex)`.
-     *
-     * @param trie The trie root.
-     * @param input The string to search for the key from the `trie`.
-     * @param startIndex The index in `input` to start reading substring from.
-     * @param endIndex The index in `input` to stop reading.
-     * @returns The cached readonly array of leafs or `null` if there's no matching key.
-     * @template Value The value stored in a trie.
+     * {@inheritDoc suggest}
      */
     <Value>(
       trie: Trie<Value>,
