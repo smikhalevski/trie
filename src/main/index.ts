@@ -7,5 +7,6 @@ export { getValue } from './getValue';
 export { createSearch, search } from './search';
 export { createSearchEncoded, searchEncoded, Match } from './searchEncoded';
 export { setValue } from './setValue';
-export { createSuggest, suggest } from './suggest';
+export { createSuggestLeafs, suggestLeafs } from './suggestLeafs';
+export { suggestValues } from './suggestValues';
 export { Trie, EncodedTrie } from './types';

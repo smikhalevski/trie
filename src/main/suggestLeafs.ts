@@ -12,13 +12,13 @@ import { getCharCodeAt } from './utils';
  * setValue(trie, 'hotter', 222);
  * setValue(trie, 'hottest', 333);
  *
- * suggest(trie, 'hot');
+ * suggestLeafs(trie, 'hot');
  * // ⮕ [Trie { key: 'hotdog' }, Trie { key: 'hotter' }, Trie { key: 'hottest' }]
  *
- * suggest(trie, 'hott');
+ * suggestLeafs(trie, 'hott');
  * // ⮕ [Trie { key: 'hotter' }, Trie { key: 'hottest' }]
  *
- * suggest(trie, 'cold');
+ * suggestLeafs(trie, 'cold');
  * // ⮕ null
  * ```
  *
@@ -28,8 +28,9 @@ import { getCharCodeAt } from './utils';
  * @param endIndex The index in `input` to stop reading.
  * @returns The cached readonly array of leafs or `null` if there's no matching key.
  * @template Value The value stored in a trie.
+ * @see {@link suggestValues}
  */
-export const suggest = createSuggest(getCharCodeAt);
+export const suggestLeafs = createSuggestLeafs(getCharCodeAt);
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.
@@ -37,7 +38,7 @@ export const suggest = createSuggest(getCharCodeAt);
  * @param charCodeAt Reads the char code at the given index.
  * @see {@link suggest}
  */
-export function createSuggest(charCodeAt = getCharCodeAt) {
+export function createSuggestLeafs(charCodeAt = getCharCodeAt) {
   return (
     /**
      * Returns the cached readonly array of trie leafs that have keys starting with

@@ -97,7 +97,7 @@ search(trie, '___foobar___', 3, 7);
 // ⮕ { key: 'foo', value: 111, length: 3, … }
 ```
 
-### `suggest(trie, input, startIndex?, endIndex?)`<a name="triesuggest"></a>
+### `suggestLeafs(trie, input, startIndex?, endIndex?)`<a name="triesuggest"></a>
 
 Returns the cached readonly array of trie leafs that have keys starting with `input.substring(startIndex, endIndex)`.
 
@@ -108,13 +108,13 @@ setValue(trie, 'hotdog', 111);
 setValue(trie, 'hotter', 222);
 setValue(trie, 'hottest', 333);
 
-suggest(trie, 'hot');
+suggestLeafs(trie, 'hot');
 // ⮕ [{ key: 'hotdog', … }, { key: 'hotter', … }, { key: 'hottest', … }]
 
-suggest(trie, 'hott');
+suggestLeafs(trie, 'hott');
 // ⮕ [{ key: 'hotter', … }, { key: 'hottest', … }]
 
-suggest(trie, 'wow');
+suggestLeafs(trie, 'wow');
 // ⮕ null
 ```
 
@@ -139,7 +139,7 @@ deleteLeaf(getLeaf(trie, 'foo'));
 You can delete all values with a particular prefix:
 
 ```ts
-suggest(trie, 'foo')?.forEach(deleteLeaf);
+suggestLeafs(trie, 'foo')?.forEach(deleteLeaf);
 ```
 
 ### `encodeTrie(trie)`<a name="arraytrieencode"></a>
