@@ -99,7 +99,7 @@ describe('Add a new key', () => {
     let trie;
 
     beforeIteration(() => {
-      trie = initTrie();
+      trie = createTrie();
     });
 
     for (const key of keys) {
@@ -124,15 +124,15 @@ describe('Add a new key', () => {
   });
 
   test('trie-search', measure => {
-    let search;
+    let trieSearch;
 
     beforeIteration(() => {
-      search = new TrieSearch();
+      trieSearch = new TrieSearch();
     });
 
     for (const key of keys) {
       measure(() => {
-        search.map(key, key);
+        trieSearch.map(key, key);
       });
     }
   });
@@ -174,11 +174,11 @@ describe('Update an existing key', () => {
   });
 
   test('trie-search', measure => {
-    const search = initTrieSearch();
+    const trieSearch = initTrieSearch();
 
     for (const key of keys) {
       measure(() => {
-        search.map(key, key);
+        trieSearch.map(key, key);
       });
     }
   });

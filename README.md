@@ -1,4 +1,4 @@
-# @smikhalevski/trie 🌲
+# trie 🌲
 
 The [extremely fast](#performance) [compressed trie](https://en.wikipedia.org/wiki/Trie#Compressed_tries) implementation
 in [2 kB gzipped](https://bundlephobia.com/result?p=@smikhalevski/trie) and tree-shakeable.
@@ -197,3 +197,18 @@ searchEncoded(encodedTrie, '___foobar___', 3, 7);
 ```
 
 # Performance
+
+The chart below showcases the performance comparison of this library and its peers, in terms of millions of operations
+per second (greater is better).
+
+<img src="./images/perf.svg" alt="Performance">
+
+Tests were conducted using [TooFast](https://github.com/smikhalevski/toofast#readme) on Apple M1 with Node.js v20.4.0.
+
+To reproduce [the performance test suite](./src/test/perf.js) results, clone this repo and run:
+
+```shell
+npm ci
+npm run build
+npm run perf
+```
