@@ -1,4 +1,4 @@
-import { ArrayTrie, Trie } from './trie-types';
+import { ArrayTrie, Trie } from './types';
 import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from './utils';
 
 /**

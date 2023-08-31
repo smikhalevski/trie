@@ -1,5 +1,6 @@
 import { arrayTrieEncode, arrayTrieSearch, Trie, trieCreate, trieSet } from '../main';
 import dictionary from './dictionary.json';
+import { createArrayTrieSearch } from '../main/arrayTrieSearch';
 
 describe('arrayTrieSearch', () => {
   let trie: Trie<any>;
@@ -29,9 +30,9 @@ describe('arrayTrieSearch', () => {
 
     const arrayTrie = arrayTrieEncode(trie);
 
-    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+    const arrayTrieSearch = createArrayTrieSearch((str, index) => str.toLowerCase().charCodeAt(index));
 
-    expect(arrayTrieSearch(arrayTrie, 'AAA', 0, 3, undefined, charCodeAt)).toEqual({ value: 111, lastIndex: 3 });
+    expect(arrayTrieSearch(arrayTrie, 'AAA', 0, 3, undefined)).toEqual({ value: 111, lastIndex: 3 });
   });
 
   test('finds a key for multiple values', () => {

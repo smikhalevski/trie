@@ -1,4 +1,4 @@
-import { Trie, trieCreate, trieSearch, trieSet } from '../main';
+import { createTrieSearch, Trie, trieCreate, trieSearch, trieSet } from '../main';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -21,9 +21,9 @@ describe('trieSearch', () => {
   test('finds a trie using a char code getter', () => {
     trieSet(trie, 'abc', 111);
 
-    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+    const trieSearch = createTrieSearch((str, index) => str.toLowerCase().charCodeAt(index));
 
-    expect(trieSearch(trie, 'ABC', 0, 3, charCodeAt)).toBe(trie[A]);
+    expect(trieSearch(trie, 'ABC', 0, 3)).toBe(trie[A]);
   });
 
   test('finds a trie with one entry', () => {

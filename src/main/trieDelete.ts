@@ -1,4 +1,4 @@
-import { Trie } from './trie-types';
+import { Trie } from './types';
 
 /**
  * Deletes the leaf from its trie.

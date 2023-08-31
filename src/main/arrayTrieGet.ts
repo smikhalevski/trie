@@ -1,4 +1,4 @@
-import { ArrayTrie } from './trie-types';
+import { ArrayTrie } from './types';
 import { arrayTrieSearch } from './arrayTrieSearch';
 
 const result = { value: null, lastIndex: -1 };

@@ -78,3 +78,12 @@ export interface ArrayTrie<Value> {
    */
   values: ArrayLike<Value>;
 }
+
+/**
+ * Provide this function is you want to alter the chars that are read from the string on the fly. For example, you can
+ * change case or replace chars.
+ *
+ * @param str The string to read the char from
+ * @param index The inder of the char.
+ */
+export type CharCodeAt = (str: string, index: number) => number;

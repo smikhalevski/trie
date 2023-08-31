@@ -1,5 +1,6 @@
 import { Trie, trieCreate, trieSet, trieSuggest } from '../main';
 import dictionary from './dictionary.json';
+import { createTrieSuggest } from '../main/trieSuggest';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -30,9 +31,9 @@ describe('trieSuggest', () => {
     trieSet(trie, 'abc', 222);
     trieSet(trie, 'abef', 333);
 
-    const charCodeAt = (str: string, index: number) => str.toLowerCase().charCodeAt(index);
+    const trieSuggest = createTrieSuggest((str, index) => str.toLowerCase().charCodeAt(index));
 
-    const suggestions = trieSuggest(trie, 'ABC', 0, 3, charCodeAt);
+    const suggestions = trieSuggest(trie, 'ABC', 0, 3);
 
     expect(suggestions).toEqual([trie[A]![B]![C], trie[A]![B]![C]![D]]);
   });

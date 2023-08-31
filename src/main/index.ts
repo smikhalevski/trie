@@ -1,10 +1,10 @@
-export { Trie, ArrayTrie } from './trie-types';
+export { Trie, ArrayTrie, CharCodeAt } from './types';
 export { arrayTrieEncode } from './arrayTrieEncode';
 export { arrayTrieGet } from './arrayTrieGet';
-export { arrayTrieSearch, ArrayTrieSearchResult } from './arrayTrieSearch';
+export { createArrayTrieSearch, arrayTrieSearch, ArrayTrieSearchResult } from './arrayTrieSearch';
 export { trieCreate } from './trieCreate';
 export { trieDelete } from './trieDelete';
 export { trieGet } from './trieGet';
-export { trieSearch } from './trieSearch';
+export { createTrieSearch, trieSearch } from './trieSearch';
 export { trieSet } from './trieSet';
-export { trieSuggest } from './trieSuggest';
+export { createTrieSuggest, trieSuggest } from './trieSuggest';
