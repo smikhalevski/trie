@@ -3,7 +3,7 @@
  *
  * @template Value The value stored in a trie.
  */
-export interface Trie<Value> {
+export interface Trie<Value = any> {
   /**
    * Mapping from char code to a corresponding child trie.
    */
@@ -67,7 +67,7 @@ export interface Trie<Value> {
  *
  * @template Value The value stored in a trie.
  */
-export interface EncodedTrie<Value> {
+export interface EncodedTrie<Value = any> {
   /**
    * The nodes of a trie.
    */

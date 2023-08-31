@@ -1,7 +1,7 @@
 import { EncodedTrie } from './types';
 import { Match, searchEncoded } from './searchEncoded';
 
-const match: Match<any> = { value: null, lastIndex: -1 };
+const match: Match = { value: null, lastIndex: -1 };
 
 /**
  * Returns a value associated with the key, or `undefined` if there's no such key.

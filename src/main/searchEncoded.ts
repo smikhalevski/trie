@@ -4,7 +4,7 @@ import { BRANCH, BRANCH_1, getCharCodeAt, LEAF } from './utils';
 /**
  * The search result returned from {@link searchEncoded}.
  */
-export interface Match<Value> {
+export interface Match<Value = any> {
   /**
    * The value that corresponds to the matched key.
    */
