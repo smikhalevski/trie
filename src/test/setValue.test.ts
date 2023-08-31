@@ -1,4 +1,4 @@
-import { Trie, trieCreate, trieGet, trieSet } from '../main';
+import { createTrie, getLeaf, setValue, Trie } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -8,17 +8,17 @@ const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 const F = 'f'.charCodeAt(0);
 
-describe('trieSet', () => {
-  let trie: Trie<any>;
+describe('setValue', () => {
+  let trie: Trie;
 
   beforeEach(() => {
-    trie = trieCreate();
+    trie = createTrie();
   });
 
   test('sets an empty key to an empty trie', () => {
-    expect(trieSet(trie, '', 111)).toBe(trie);
+    expect(setValue(trie, '', 111)).toBe(trie);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -35,10 +35,10 @@ describe('trieSet', () => {
   });
 
   test('sets an empty key and a non-empty key to a trie', () => {
-    expect(trieSet(trie, '', 111)).toBe(trie);
-    expect(trieSet(trie, 'a', 222)).toBe(trie[A]);
+    expect(setValue(trie, '', 111)).toBe(trie);
+    expect(setValue(trie, 'a', 222)).toBe(trie[A]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -73,10 +73,10 @@ describe('trieSet', () => {
   });
 
   test('updated the existing key', () => {
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abc', 222);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abc', 222);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -111,9 +111,9 @@ describe('trieSet', () => {
   });
 
   test('sets the value with the non-empty key to an empty trie', () => {
-    expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
+    expect(setValue(trie, 'abc', 111)).toBe(trie[A]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -148,10 +148,10 @@ describe('trieSet', () => {
   });
 
   test('sets the value to a non-empty trie', () => {
-    expect(trieSet(trie, 'abc', 111)).toBe(trie[A]);
-    expect(trieSet(trie, 'ade', 222)).toBe(trie![A]![D]);
+    expect(setValue(trie, 'abc', 111)).toBe(trie[A]);
+    expect(setValue(trie, 'ade', 222)).toBe(trie![A]![D]);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -219,11 +219,11 @@ describe('trieSet', () => {
   });
 
   test('sets the value to a deep trie trie', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'ade', 222);
-    trieSet(trie, 'abf', 333);
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'ade', 222);
+    setValue(trie, 'abf', 333);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -324,10 +324,10 @@ describe('trieSet', () => {
   });
 
   test('preserves overlapping keys', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abcdef', 222);
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'abcdef', 222);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -413,11 +413,11 @@ describe('trieSet', () => {
   });
 
   test('sets the shorter key after longer key', () => {
-    trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abcdef', 222);
-    trieSet(trie, 'abcde', 333);
+    setValue(trie, 'abc', 111);
+    setValue(trie, 'abcdef', 222);
+    setValue(trie, 'abcde', 333);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -537,12 +537,12 @@ describe('trieSet', () => {
   });
 
   test('correctly infers next for distant keys', () => {
-    trieSet(trie, 'abcd', 111);
-    trieSet(trie, 'abc', 222);
-    trieSet(trie, 'abef', 333);
-    trieSet(trie, 'a', 444);
+    setValue(trie, 'abcd', 111);
+    setValue(trie, 'abc', 222);
+    setValue(trie, 'abef', 333);
+    setValue(trie, 'a', 444);
 
-    const result: Trie<any> = {
+    const result: Trie = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -644,28 +644,28 @@ describe('trieSet', () => {
   });
 
   test('preserves stable identity when a forked', () => {
-    const leaf = trieSet(trie, 'abc', 111);
-    trieSet(trie, 'ab', 222);
-    trieSet(trie, 'abc', 333);
+    const leaf = setValue(trie, 'abc', 111);
+    setValue(trie, 'ab', 222);
+    setValue(trie, 'abc', 333);
 
     expect(leaf.value).toBe(333);
   });
 
   test('preserves stable identity when a child is added', () => {
-    const leaf = trieSet(trie, 'abc', 111);
-    trieSet(trie, 'abcd', 222);
-    trieSet(trie, 'abc', 333);
+    const leaf = setValue(trie, 'abc', 111);
+    setValue(trie, 'abcd', 222);
+    setValue(trie, 'abc', 333);
 
     expect(leaf.value).toBe(333);
   });
 
   test('works with a huge dictionary', () => {
     dictionary.forEach(key => {
-      trieSet(trie, key, key);
+      setValue(trie, key, key);
     });
 
     dictionary.forEach(key => {
-      expect(trieGet(trie, key)!.key).toEqual(key);
+      expect(getLeaf(trie, key)!.key).toEqual(key);
     });
   });
 });
