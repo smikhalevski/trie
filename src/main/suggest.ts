@@ -1,9 +1,26 @@
-import { CharCodeAt, Trie } from './types';
-import { charCodeAt } from './utils';
+import { Trie } from './types';
+import { getCharCodeAt } from './utils';
 
 /**
  * Returns the cached readonly array of trie leafs that have keys starting with
  * `input.substring(startIndex, endIndex)`.
+ *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'hotdog', 111);
+ * setValue(trie, 'hotter', 222);
+ * setValue(trie, 'hottest', 333);
+ *
+ * suggest(trie, 'hot');
+ * // ⮕ [Trie { key: 'hotdog' }, Trie { key: 'hotter' }, Trie { key: 'hottest' }]
+ *
+ * suggest(trie, 'hott');
+ * // ⮕ [Trie { key: 'hotter' }, Trie { key: 'hottest' }]
+ *
+ * suggest(trie, 'cold');
+ * // ⮕ null
+ * ```
  *
  * @param trie The trie root.
  * @param input The string to search for the key from the `trie`.
@@ -12,17 +29,26 @@ import { charCodeAt } from './utils';
  * @returns The cached readonly array of leafs or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const suggest = createSuggest(charCodeAt);
+export const suggest = createSuggest(getCharCodeAt);
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
+ * @see {@link suggest}
  */
-export function createSuggest(charCodeAt: CharCodeAt) {
+export function createSuggest(charCodeAt = getCharCodeAt) {
   return (
     /**
-     * {@inheritDoc suggest}
+     * Returns the cached readonly array of trie leafs that have keys starting with
+     * `input.substring(startIndex, endIndex)`.
+     *
+     * @param trie The trie root.
+     * @param input The string to search for the key from the `trie`.
+     * @param startIndex The index in `input` to start reading substring from.
+     * @param endIndex The index in `input` to stop reading.
+     * @returns The cached readonly array of leafs or `null` if there's no matching key.
+     * @template Value The value stored in a trie.
      */
     <Value>(
       trie: Trie<Value>,

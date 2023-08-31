@@ -1,5 +1,3 @@
-import { CharCodeAt } from './types';
-
 /**
  * {@link EncodedTrie.nodes} contain encoded trie nodes. Each node has a type and additional data. Each node constrains
  * the consequent array elements as described in the snippet below. Square brackets denote a single array element.
@@ -28,6 +26,15 @@ export const BRANCH_1_LEAF = BRANCH_1 | LEAF;
 export const BRANCH_N_LEAF = BRANCH_N | LEAF;
 export const BRANCH = BRANCH_1 | BRANCH_N;
 
-export const charCodeAt: CharCodeAt = (str, index) => str.charCodeAt(index);
+/**
+ * Provide this function is you want to alter the chars that are read from the string on the fly. For example, you can
+ * change case or replace chars.
+ *
+ * @param str The string to read the char from
+ * @param index The inder of the char.
+ */
+export function getCharCodeAt(str: string, index: number): number {
+  return str.charCodeAt(index);
+}
 
 export const isNaN = Number.isNaN || (value => value !== value);

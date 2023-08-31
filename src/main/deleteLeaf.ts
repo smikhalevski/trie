@@ -3,6 +3,16 @@ import { Trie } from './types';
 /**
  * Deletes the leaf from the trie to which it belongs.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * const leaf = setValue(trie, 'foo', 111);
+ *
+ * deleteLeaf(leaf);
+ * // or
+ * deleteLeaf(getLeaf(trie, 'foo'));
+ * ```
+ *
  * @param leaf The leaf to delete.
  */
 export function deleteLeaf(leaf: Trie<any> | null): void {

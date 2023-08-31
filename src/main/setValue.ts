@@ -4,6 +4,12 @@ import { createTrie } from './createTrie';
 /**
  * Sets a new key-value pair to the trie.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'foo', 111);
+ * ```
+ *
  * @param trie The trie root.
  * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.

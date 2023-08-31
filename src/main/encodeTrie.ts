@@ -4,6 +4,17 @@ import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from '.
 /**
  * Encodes a {@link Trie} instance as an {@link EncodedTrie}.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'foo', 111);
+ *
+ * const encodedTrie = encodeTrie(trie);
+ *
+ * getEncodedValue(encodedTrie, 'foo');
+ * // ⮕ 111
+ * ```
+ *
  * @param trie The trie to encode.
  * @returns The array trie that contains all nodes from the `trie`.
  * @template Value The value stored in a trie.

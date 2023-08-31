@@ -4,6 +4,18 @@ import { search } from './search';
 /**
  * Returns a value associated with the key, or `undefined` if there's no such key.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'foo', 111);
+ *
+ * getValue(trie, 'foo');
+ * // ⮕ 111
+ *
+ * getLeaf(trie, 'bar');
+ * // ⮕ undefined
+ * ```
+ *
  * @param trie The trie to search in.
  * @param key The key to retrieve.
  * @returns The value associated with the key, or `undefined` if there's no such key.

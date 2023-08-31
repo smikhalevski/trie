@@ -8,4 +8,4 @@ export { createSearch, search } from './search';
 export { createSearchEncoded, searchEncoded, Match } from './searchEncoded';
 export { setValue } from './setValue';
 export { createSuggest, suggest } from './suggest';
-export { Trie, EncodedTrie, CharCodeAt } from './types';
+export { Trie, EncodedTrie } from './types';

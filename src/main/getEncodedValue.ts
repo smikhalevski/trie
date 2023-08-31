@@ -6,6 +6,21 @@ const match: Match<any> = { value: null, lastIndex: -1 };
 /**
  * Returns a value associated with the key, or `undefined` if there's no such key.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'foo', 111);
+ * setValue(trie, 'bar', 222);
+ *
+ * const encodedTrie = encodeTrie(trie);
+ *
+ * getEncodedValue(encodedTrie, 'bar');
+ * // ⮕ 222
+ *
+ * getEncodedValue(encodedTrie, 'qux');
+ * // ⮕ undefined
+ * ```
+ *
  * @param trie The trie to search in.
  * @param key The key to retrieve.
  * @returns The value associated with the key, or `undefined` if there's no such key.

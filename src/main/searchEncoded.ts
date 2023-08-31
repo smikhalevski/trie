@@ -1,6 +1,9 @@
-import { CharCodeAt, EncodedTrie } from './types';
-import { BRANCH, BRANCH_1, charCodeAt, LEAF } from './utils';
+import { EncodedTrie } from './types';
+import { BRANCH, BRANCH_1, getCharCodeAt, LEAF } from './utils';
 
+/**
+ * The search result returned from {@link searchEncoded}.
+ */
 export interface Match<Value> {
   /**
    * The value that corresponds to the matched key.
@@ -17,6 +20,21 @@ export interface Match<Value> {
  * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
  * at `endIndex`.
  *
+ * ```ts
+ * const trie = createTrie();
+ *
+ * setValue(trie, 'foo', 111);
+ * setValue(trie, 'foobar', 222);
+ *
+ * const encodedTrie = encodeTrie(trie);
+ *
+ * searchEncoded(encodedTrie, '___foobar___', 3);
+ * // ⮕ Match { value: 222, lastIndex: 9 }
+ *
+ * searchEncoded(encodedTrie, '___fooba___', 3);
+ * // ⮕ Match { value: 111, lastIndex: 6 }
+ * ```
+ *
  * @param trie The array trie.
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
@@ -25,17 +43,27 @@ export interface Match<Value> {
  * @returns The search result or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const searchEncoded = createSearchEncoded(charCodeAt);
+export const searchEncoded = createSearchEncoded(getCharCodeAt);
 
 /**
  * Creates a function that searches the array trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
+ * @see {@link searchEncoded}
  */
-export function createSearchEncoded(charCodeAt: CharCodeAt) {
+export function createSearchEncoded(charCodeAt = getCharCodeAt) {
   return (
     /**
-     * {@inheritDoc searchEncoded}
+     * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
+     * at `endIndex`.
+     *
+     * @param trie The array trie.
+     * @param input The string to search for the key from the `trie`.
+     * @param startIndex The index in `input` to start reading substring from.
+     * @param endIndex The index in `input` to stop reading.
+     * @param match The in-out parameter, that holds the search result. If omitted, a new object is returned on every call.
+     * @returns The search result or `null` if there's no matching key.
+     * @template Value The value stored in a trie.
      */
     <Value>(
       trie: EncodedTrie<Value>,
