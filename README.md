@@ -149,14 +149,14 @@ suggestLeafs(trie, 'hott')?.forEach(deleteLeaf);
 Each leaf in the trie is an object. So storing _a lot_ of key-value pairs in a trie may require a significant amount of
 memory. Encoded tries reduce the amount of required memory, and can also be easily serialized.
 
-[`EncodedTrie`](https://smikhalevski.github.io/trie/interfaces/EncodedTrie.html) is backed by an array of indices
+[`ArrayTrie`](https://smikhalevski.github.io/trie/interfaces/ArrayTrie.html) is backed by an array of indices
 instead of a multitude of objects, that's why it has a tiny memory footprint. For example, encoded trie requires
 400&times; less memory than [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) to store 60K key-value
 pairs.
 
 _Encoded tries are read-only._
 
-To create an [`EncodedTrie`](https://smikhalevski.github.io/trie/interfaces/EncodedTrie.html), we first need to create
+To create an [`ArrayTrie`](https://smikhalevski.github.io/trie/interfaces/ArrayTrie.html), we first need to create
 a [`Trie`](https://smikhalevski.github.io/trie/interfaces/Trie.html) and then encode it. Usually you may want to encode
 a trie at build time, serialize it, write to a JSON file and then import it at runtime.
 
@@ -167,7 +167,7 @@ setValue(trie, 'foo', 111);
 
 const encodedTrie = encodeTrie(trie);
 
-getEncodedValue(encodedTrie, 'foo');
+getValue(encodedTrie, 'foo');
 // ⮕ 111
 ```
 
@@ -182,17 +182,17 @@ setValue(trie, 'foobar', 222);
 
 const encodedTrie = encodeTrie(trie);
 
-searchEncoded(encodedTrie, '___foobar___', 3);
+search(encodedTrie, '___foobar___', 3);
 // ⮕ Match { value: 222, lastIndex: 9 }
 
-searchEncoded(encodedTrie, '___fooba___', 3);
+search(encodedTrie, '___fooba___', 3);
 // ⮕ Match { value: 111, lastIndex: 6 }
 ```
 
 You can provide the `endIndex` to limit the searched key length:
 
 ```ts
-searchEncoded(encodedTrie, '___foobar___', 3, 7);
+search(encodedTrie, '___foobar___', 3, 7);
 // ⮕ { value: 111, lastIndex: 6 }
 ```
 

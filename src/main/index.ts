@@ -1,12 +1,10 @@
 export { createTrie } from './createTrie';
 export { deleteLeaf } from './deleteLeaf';
-export { encodeTrie } from './encodeTrie';
-export { getEncodedValue } from './getEncodedValue';
+export { encodeTrie } from './array/encodeTrie';
 export { getLeaf } from './getLeaf';
 export { getValue } from './getValue';
 export { createSearch, search } from './search';
-export { createSearchEncoded, searchEncoded, Match } from './searchEncoded';
 export { setValue } from './setValue';
 export { createSuggestLeafs, suggestLeafs } from './suggestLeafs';
 export { suggestValues } from './suggestValues';
-export { Trie, EncodedTrie } from './types';
+export { Trie } from './types';

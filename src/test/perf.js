@@ -1,6 +1,6 @@
 const TrieSearch = require('trie-search');
 const TrieMap = require('mnemonist/trie-map');
-const { encodeTrie, searchEncoded, setValue, createTrie, search } = require('../../lib');
+const { encodeTrie, search, setValue, createTrie, search } = require('../../lib');
 const dictionary = require('./dictionary.json');
 
 const keys = [];
@@ -53,12 +53,12 @@ describe('Get', () => {
     }
   });
 
-  test('searchEncoded', measure => {
+  test('search', measure => {
     const encodedTrie = encodeTrie(initTrie());
 
     for (const key of keys) {
       measure(() => {
-        searchEncoded(encodedTrie, key);
+        search(encodedTrie, key);
       });
     }
   });

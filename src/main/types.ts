@@ -61,20 +61,3 @@ export interface Trie<Value = any> {
    */
   suggestions: Trie<Value>[] | null;
 }
-
-/**
- * The array trie stores all trie branches in a flat array.
- *
- * @template Value The value stored in a trie.
- */
-export interface EncodedTrie<Value = any> {
-  /**
-   * The nodes of a trie.
-   */
-  nodes: ArrayLike<number>;
-
-  /**
-   * Values associated with trie nodes.
-   */
-  values: ArrayLike<Value>;
-}

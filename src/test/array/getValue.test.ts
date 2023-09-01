@@ -1,6 +1,7 @@
-import { createTrie, encodeTrie, getEncodedValue, setValue, Trie } from '../main';
+import { createTrie, encodeTrie, setValue, Trie } from '../../main';
+import { getValue } from '../../main/array';
 
-describe('getEncodedValue', () => {
+describe('getValue', () => {
   let trie: Trie;
 
   beforeEach(() => {
@@ -12,7 +13,7 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, '')).toBe(111);
+    expect(getValue(encodedTrie, '')).toBe(111);
   });
 
   test('finds a key for a single leaf', () => {
@@ -20,7 +21,7 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'a')).toBe(111);
+    expect(getValue(encodedTrie, 'a')).toBe(111);
   });
 
   test('finds a key for multiple values', () => {
@@ -29,8 +30,8 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'a')).toBe(111);
-    expect(getEncodedValue(encodedTrie, 'b')).toBe(222);
+    expect(getValue(encodedTrie, 'a')).toBe(111);
+    expect(getValue(encodedTrie, 'b')).toBe(222);
   });
 
   test('finds keys with common prefix', () => {
@@ -39,8 +40,8 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'aa')).toBe(111);
-    expect(getEncodedValue(encodedTrie, 'ab')).toBe(222);
+    expect(getValue(encodedTrie, 'aa')).toBe(111);
+    expect(getValue(encodedTrie, 'ab')).toBe(222);
   });
 
   test('finds a key with leaf chars', () => {
@@ -48,7 +49,7 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'aab')).toBe(111);
+    expect(getValue(encodedTrie, 'aab')).toBe(111);
   });
 
   test('finds keys that fully intersect', () => {
@@ -57,10 +58,10 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'aa')).toBe(111);
-    expect(getEncodedValue(encodedTrie, 'aac')).toBe(undefined);
-    expect(getEncodedValue(encodedTrie, 'aab')).toBe(222);
-    expect(getEncodedValue(encodedTrie, 'aabd')).toBe(undefined);
+    expect(getValue(encodedTrie, 'aa')).toBe(111);
+    expect(getValue(encodedTrie, 'aac')).toBe(undefined);
+    expect(getValue(encodedTrie, 'aab')).toBe(222);
+    expect(getValue(encodedTrie, 'aabd')).toBe(undefined);
   });
 
   test('finds keys with common prefix and siblings', () => {
@@ -70,8 +71,8 @@ describe('getEncodedValue', () => {
 
     const encodedTrie = encodeTrie(trie);
 
-    expect(getEncodedValue(encodedTrie, 'a')).toBe(111);
-    expect(getEncodedValue(encodedTrie, 'ab')).toBe(222);
-    expect(getEncodedValue(encodedTrie, 'ac')).toBe(333);
+    expect(getValue(encodedTrie, 'a')).toBe(111);
+    expect(getValue(encodedTrie, 'ab')).toBe(222);
+    expect(getValue(encodedTrie, 'ac')).toBe(333);
   });
 });

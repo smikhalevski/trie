@@ -1,20 +1,5 @@
-import { EncodedTrie } from './types';
-import { BRANCH, BRANCH_1, getCharCodeAt, LEAF } from './utils';
-
-/**
- * The search result returned from {@link searchEncoded}.
- */
-export interface Match<Value = any> {
-  /**
-   * The value that corresponds to the matched key.
-   */
-  value: Value;
-
-  /**
-   * The last index in the input at which the key was successfully matched.
-   */
-  lastIndex: number;
-}
+import { BRANCH, BRANCH_1, getCharCodeAt, LEAF } from '../utils';
+import { ArrayTrie, Match } from './types';
 
 /**
  * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
@@ -28,10 +13,10 @@ export interface Match<Value = any> {
  *
  * const encodedTrie = encodeTrie(trie);
  *
- * searchEncoded(encodedTrie, '___foobar___', 3);
+ * search(encodedTrie, '___foobar___', 3);
  * // ⮕ Match { value: 222, lastIndex: 9 }
  *
- * searchEncoded(encodedTrie, '___fooba___', 3);
+ * search(encodedTrie, '___fooba___', 3);
  * // ⮕ Match { value: 111, lastIndex: 6 }
  * ```
  *
@@ -43,15 +28,15 @@ export interface Match<Value = any> {
  * @returns The search result or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const searchEncoded = createSearchEncoded();
+export const search = createSearch();
 
 /**
  * Creates a function that searches the array trie and uses `charCodeAt` to read chars from the input string.
  *
  * @param charCodeAt Reads the char code at the given index.
- * @see {@link searchEncoded}
+ * @see {@link search}
  */
-export function createSearchEncoded(charCodeAt = getCharCodeAt) {
+export function createSearch(charCodeAt = getCharCodeAt) {
   return (
     /**
      * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
@@ -66,7 +51,7 @@ export function createSearchEncoded(charCodeAt = getCharCodeAt) {
      * @template Value The value stored in a trie.
      */
     <Value>(
-      trie: EncodedTrie<Value>,
+      trie: ArrayTrie<Value>,
       input: string,
       startIndex = 0,
       endIndex = input.length,

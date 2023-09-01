@@ -1,5 +1,5 @@
-import { EncodedTrie } from './types';
-import { Match, searchEncoded } from './searchEncoded';
+import { search } from './search';
+import { ArrayTrie, Match } from './types';
 
 const match: Match = { value: null, lastIndex: -1 };
 
@@ -14,10 +14,10 @@ const match: Match = { value: null, lastIndex: -1 };
  *
  * const encodedTrie = encodeTrie(trie);
  *
- * getEncodedValue(encodedTrie, 'bar');
+ * getValue(encodedTrie, 'bar');
  * // ⮕ 222
  *
- * getEncodedValue(encodedTrie, 'qux');
+ * getValue(encodedTrie, 'qux');
  * // ⮕ undefined
  * ```
  *
@@ -26,8 +26,8 @@ const match: Match = { value: null, lastIndex: -1 };
  * @returns The value associated with the key, or `undefined` if there's no such key.
  * @template Value The value stored in a trie.
  */
-export function getEncodedValue<Value>(trie: EncodedTrie<Value>, key: string): Value | undefined {
-  if (searchEncoded(trie, key, 0, key.length, match) !== null && match.lastIndex === key.length) {
+export function getValue<Value>(trie: ArrayTrie<Value>, key: string): Value | undefined {
+  if (search(trie, key, 0, key.length, match) !== null && match.lastIndex === key.length) {
     const { value } = match;
     match.value = null;
     return value;

@@ -1,4 +1,4 @@
-import { createTrie, encodeTrie, setValue, Trie } from '../main';
+import { createTrie, encodeTrie, setValue, Trie } from '../../main';
 
 describe('encodeTrie', () => {
   let trie: Trie;

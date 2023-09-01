@@ -1,8 +1,9 @@
-import { EncodedTrie, Trie } from './types';
-import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from './utils';
+import { Trie } from '../types';
+import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from '../utils';
+import { ArrayTrie } from './types';
 
 /**
- * Encodes a {@link Trie} instance as an {@link EncodedTrie}.
+ * Encodes a {@link Trie} instance as an {@link ArrayTrie}.
  *
  * ```ts
  * const trie = createTrie();
@@ -11,7 +12,7 @@ import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from '.
  *
  * const encodedTrie = encodeTrie(trie);
  *
- * getEncodedValue(encodedTrie, 'foo');
+ * getValue(encodedTrie, 'foo');
  * // ⮕ 111
  * ```
  *
@@ -19,7 +20,7 @@ import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from '.
  * @returns The array trie that contains all nodes from the `trie`.
  * @template Value The value stored in a trie.
  */
-export function encodeTrie<Value>(trie: Trie<Value>): EncodedTrie<Value> {
+export function encodeTrie<Value>(trie: Trie<Value>): ArrayTrie<Value> {
   const nodes: number[] = [];
   const values: Value[] = [];
 
