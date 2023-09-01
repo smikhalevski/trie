@@ -1,6 +1,5 @@
 export { createTrie } from './createTrie';
 export { deleteLeaf } from './deleteLeaf';
-export { encodeTrie } from './array/encodeTrie';
 export { getLeaf } from './getLeaf';
 export { getValue } from './getValue';
 export { createSearch, search } from './search';
@@ -8,3 +7,4 @@ export { setValue } from './setValue';
 export { createSuggestLeafs, suggestLeafs } from './suggestLeafs';
 export { suggestValues } from './suggestValues';
 export { Trie } from './types';
+export * from './object';

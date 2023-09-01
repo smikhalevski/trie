@@ -56,7 +56,7 @@ export interface Trie<Value = any> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@link suggest} and cleaned by
+   * The list of all leafs of this trie. A memoization mechanism, populated by {@link suggestLeafs} and cleaned by
    * {@link setValue} and {@link deleteLeaf}.
    */
   suggestions: Trie<Value>[] | null;
