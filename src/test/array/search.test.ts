@@ -1,10 +1,10 @@
-import { createTrie, encodeTrie, setValue, Trie } from '../../main';
+import { createTrie, convertTrie, setValue, Node } from '../../main';
 import dictionary from '../dictionary.json';
 import { search } from '../../main/array';
 import { createSearch } from '../../main/array/search';
 
 describe('search', () => {
-  let trie: Trie;
+  let trie: Node;
 
   beforeEach(() => {
     trie = createTrie();
@@ -13,7 +13,7 @@ describe('search', () => {
   test('finds a key for a root leaf', () => {
     setValue(trie, '', 111);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, '')).toEqual({ value: 111, lastIndex: 0 });
   });
@@ -21,7 +21,7 @@ describe('search', () => {
   test('finds a key for a single leaf', () => {
     setValue(trie, 'a', 111);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'a')).toEqual({ value: 111, lastIndex: 1 });
   });
@@ -29,7 +29,7 @@ describe('search', () => {
   test('finds a key using a char code getter', () => {
     setValue(trie, 'aaa', 111);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     const search = createSearch((str, index) => str.toLowerCase().charCodeAt(index));
 
@@ -40,7 +40,7 @@ describe('search', () => {
     setValue(trie, 'a', 111);
     setValue(trie, 'b', 222);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'a')).toEqual({ value: 111, lastIndex: 1 });
     expect(search(encodedTrie, 'b')).toEqual({ value: 222, lastIndex: 1 });
@@ -50,7 +50,7 @@ describe('search', () => {
     setValue(trie, 'aa', 111);
     setValue(trie, 'ab', 222);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'aa')).toEqual({ value: 111, lastIndex: 2 });
     expect(search(encodedTrie, 'ab')).toEqual({ value: 222, lastIndex: 2 });
@@ -59,7 +59,7 @@ describe('search', () => {
   test('finds a key with leaf chars', () => {
     setValue(trie, 'aab', 111);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'aab')).toEqual({ value: 111, lastIndex: 3 });
   });
@@ -68,7 +68,7 @@ describe('search', () => {
     setValue(trie, 'aa', 111);
     setValue(trie, 'aab', 222);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'aa')).toEqual({ value: 111, lastIndex: 2 });
     expect(search(encodedTrie, 'aac')).toEqual({ value: 111, lastIndex: 2 });
@@ -81,7 +81,7 @@ describe('search', () => {
     setValue(trie, 'ab', 222);
     setValue(trie, 'ac', 333);
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     expect(search(encodedTrie, 'a')).toEqual({ value: 111, lastIndex: 1 });
     expect(search(encodedTrie, 'ab')).toEqual({ value: 222, lastIndex: 2 });
@@ -93,7 +93,7 @@ describe('search', () => {
       setValue(trie, key, key);
     });
 
-    const encodedTrie = encodeTrie(trie);
+    const encodedTrie = convertTrie(trie);
 
     dictionary.forEach(key => {
       expect(search(encodedTrie, key)).toEqual({ value: key, lastIndex: key.length });

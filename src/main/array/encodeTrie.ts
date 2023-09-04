@@ -1,9 +1,10 @@
-import { Trie } from '../types';
-import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, isNaN, LEAF } from '../utils';
+import { Node } from '../types';
+import { isNaN } from '../utils';
 import { ArrayTrie } from './types';
+import { BRANCH_1, BRANCH_1_LEAF, BRANCH_N, BRANCH_N_LEAF, LEAF } from './utils';
 
 /**
- * Encodes a {@link Trie} instance as an {@link ArrayTrie}.
+ * Encodes a {@link Node} instance as an {@link ArrayTrie}.
  *
  * ```ts
  * const trie = createTrie();
@@ -20,7 +21,7 @@ import { ArrayTrie } from './types';
  * @returns The array trie that contains all nodes from the `trie`.
  * @template Value The value stored in a trie.
  */
-export function encodeTrie<Value>(trie: Trie<Value>): ArrayTrie<Value> {
+export function encodeTrie<Value>(trie: Node<Value>): ArrayTrie<Value> {
   const nodes: number[] = [];
   const values: Value[] = [];
 
@@ -29,7 +30,7 @@ export function encodeTrie<Value>(trie: Trie<Value>): ArrayTrie<Value> {
   return { nodes, values };
 }
 
-function appendNode(trie: Trie<unknown>, nodes: number[], values: unknown[]): void {
+function appendNode(trie: Node<unknown>, nodes: number[], values: unknown[]): void {
   const { value } = trie;
 
   if (trie.last === null) {
@@ -94,7 +95,7 @@ function createNode(type: number, data: number): number {
   return type + (data << 3);
 }
 
-function getCharCodes(trie: Trie<unknown>): number[] {
+function getCharCodes(trie: Node<unknown>): number[] {
   const charCodes = [];
 
   for (const key in trie) {

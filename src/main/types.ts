@@ -3,50 +3,50 @@
  *
  * @template Value The value stored in a trie.
  */
-export interface Trie<Value = any> {
+export interface Node<Value = any> {
   /**
-   * Mapping from char code to a corresponding child trie.
+   * Mapping from char code to a corresponding child node.
    */
-  [charCode: number]: Trie<Value> | undefined;
+  [charCode: number]: Node<Value> | undefined;
 
   /**
-   * The char code in {@link parent} that is associated with this trie, or -1 if trie has no {@link parent}.
+   * The char code in {@link parent} that is associated with this node, or -1 if node has no {@link parent}.
    */
   charCode: number;
 
   /**
-   * The preceding trie or `null` if this trie is a root.
+   * The preceding node or `null` if this node is a root.
    */
-  parent: Trie<Value> | null;
+  parent: Node<Value> | null;
 
   /**
-   * The previous trie in the linked list of all nodes in the trie.
+   * The previous node in the linked list of all nodes in the node.
    */
-  prev: Trie<Value> | null;
+  prev: Node<Value> | null;
 
   /**
-   * The next trie in the linked list of all nodes in the trie.
+   * The next node in the linked list of all nodes in the node.
    */
-  next: Trie<Value> | null;
+  next: Node<Value> | null;
 
   /**
-   * The last child of the trie.
+   * The last child of this node.
    */
-  last: Trie<Value> | null;
+  last: Node<Value> | null;
 
   /**
-   * The key that the leaf trie represents or `null` for a non-leaf trie.
+   * The key that the leaf node represents or `null` for a non-leaf node.
    */
   key: string | null;
 
   /**
-   * The value set to the trie or `undefined` for a non-leaf trie. Use {@link isLeaf} to distinguish between leaf
-   * and non-leaf tries.
+   * The value set to the node or `undefined` for a non-leaf node. Use {@link isLeaf} to distinguish between leaf
+   * and non-leaf nodes.
    */
   value: Value | undefined;
 
   /**
-   * `true` if the trie is a leaf and has a {@link value}.
+   * `true` if the node is a leaf and has a {@link value}.
    */
   isLeaf: boolean;
 
@@ -56,8 +56,8 @@ export interface Trie<Value = any> {
   leafCharCodes: number[] | null;
 
   /**
-   * The list of all leafs of this trie. A memoization mechanism, populated by {@link suggestLeafs} and cleaned by
-   * {@link setValue} and {@link deleteLeaf}.
+   * The list of all leafs of this node. A memoization mechanism, populated by {@link suggestNodes} and cleaned by
+   * {@link setValue} and {@link deleteNode}.
    */
-  suggestions: Trie<Value>[] | null;
+  suggestions: Node<Value>[] | null;
 }

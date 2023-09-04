@@ -1,9 +1,8 @@
-import { Trie } from './types';
+import { Node } from './types';
 import { getCharCodeAt } from './utils';
 
 /**
- * Returns the cached readonly array of trie leafs that have keys starting with
- * `input.substring(startIndex, endIndex)`.
+ * Returns the cached readonly array of leaf nodes that have keys starting with `input.substring(startIndex, endIndex)`.
  *
  * ```ts
  * const trie = createTrie();
@@ -12,25 +11,25 @@ import { getCharCodeAt } from './utils';
  * setValue(trie, 'hotter', 222);
  * setValue(trie, 'hottest', 333);
  *
- * suggestLeafs(trie, 'hot');
+ * suggestNodes(trie, 'hot');
  * // ⮕ [Trie { key: 'hotdog' }, Trie { key: 'hotter' }, Trie { key: 'hottest' }]
  *
- * suggestLeafs(trie, 'hott');
+ * suggestNodes(trie, 'hott');
  * // ⮕ [Trie { key: 'hotter' }, Trie { key: 'hottest' }]
  *
- * suggestLeafs(trie, 'cold');
+ * suggestNodes(trie, 'cold');
  * // ⮕ null
  * ```
  *
- * @param trie The trie root.
+ * @param node The root node of the trie.
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
- * @returns The cached readonly array of leafs or `null` if there's no matching key.
+ * @returns The cached readonly array of leaf nodes or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  * @see {@link suggestValues}
  */
-export const suggestLeafs = createSuggestLeafs();
+export const suggestNodes = createSuggestNodes(getCharCodeAt);
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.
@@ -38,13 +37,13 @@ export const suggestLeafs = createSuggestLeafs();
  * @param charCodeAt Reads the char code at the given index.
  * @see {@link suggest}
  */
-export function createSuggestLeafs(charCodeAt = getCharCodeAt) {
+export function createSuggestNodes(charCodeAt: typeof getCharCodeAt) {
   return (
     /**
-     * Returns the cached readonly array of trie leafs that have keys starting with
+     * Returns the cached readonly array of leaf nodes that have keys starting with
      * `input.substring(startIndex, endIndex)`.
      *
-     * @param trie The trie root.
+     * @param node The root node of the trie.
      * @param input The string to search for the key from the `trie`.
      * @param startIndex The index in `input` to start reading substring from.
      * @param endIndex The index in `input` to stop reading.
@@ -52,43 +51,43 @@ export function createSuggestLeafs(charCodeAt = getCharCodeAt) {
      * @template Value The value stored in a trie.
      */
     <Value>(
-      trie: Trie<Value>,
+      node: Node<Value>,
       input: string,
       startIndex = 0,
       endIndex = input.length
-    ): readonly Trie<Value>[] | null => {
+    ): readonly Node<Value>[] | null => {
       let i = startIndex;
 
       while (i < endIndex) {
-        if (trie.last === null) {
+        if (node.last === null) {
           break;
         }
 
-        const child = trie[charCodeAt(input, i)];
+        const child = node[charCodeAt(input, i)];
         if (child === undefined) {
           break;
         }
 
-        trie = child;
+        node = child;
         ++i;
       }
 
       // Check that there's a sufficient number of characters to satisfy the requested prefix
       if (i !== endIndex) {
-        const trieLeafCharCodes = trie.leafCharCodes;
-        if (trieLeafCharCodes === null) {
+        const nodeLeafCharCodes = node.leafCharCodes;
+        if (nodeLeafCharCodes === null) {
           return null;
         }
 
         const restLength = endIndex - i;
 
-        const trieLeafCharCodesLength = trieLeafCharCodes.length;
-        if (trieLeafCharCodesLength < restLength) {
+        const nodeLeafCharCodesLength = nodeLeafCharCodes.length;
+        if (nodeLeafCharCodesLength < restLength) {
           return null;
         }
 
         let j = 0;
-        while (j < restLength && charCodeAt(input, i) === trieLeafCharCodes[j]) {
+        while (j < restLength && charCodeAt(input, i) === nodeLeafCharCodes[j]) {
           ++j;
           ++i;
         }
@@ -97,19 +96,19 @@ export function createSuggestLeafs(charCodeAt = getCharCodeAt) {
         }
       }
 
-      const trieSuggestions = trie.suggestions;
-      if (trieSuggestions !== null) {
-        return trieSuggestions;
+      const nodeSuggestions = node.suggestions;
+      if (nodeSuggestions !== null) {
+        return nodeSuggestions;
       }
 
-      const suggestions: Trie<Value>[] = [];
+      const suggestions: Node<Value>[] = [];
 
-      if (trie.isLeaf) {
-        suggestions.push(trie);
+      if (node.isLeaf) {
+        suggestions.push(node);
       }
 
       // Collect leafs
-      for (let next = trie.next, last = trie.last; next !== null && last !== null; next = next.next) {
+      for (let next = node.next, last = node.last; next !== null && last !== null; next = next.next) {
         if (next.isLeaf) {
           suggestions.push(next);
         }
@@ -119,11 +118,11 @@ export function createSuggestLeafs(charCodeAt = getCharCodeAt) {
       }
 
       // Populate leafs for ancestors that have only one child
-      for (let parent = trie.parent; parent !== null && parent.next === parent.last; parent = parent.parent) {
+      for (let parent = node.parent; parent !== null && parent.next === parent.last; parent = parent.parent) {
         parent.suggestions = suggestions;
       }
 
-      trie.suggestions = suggestions;
+      node.suggestions = suggestions;
 
       return suggestions;
     }

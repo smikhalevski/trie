@@ -1,8 +1,8 @@
-import { encodeTrie } from '../../main/object';
-import { createTrie, setValue, Trie } from '../../main';
+import { convertTrie } from '../../main/object';
+import { createTrie, setValue, Node } from '../../main';
 
 describe('', () => {
-  let trie: Trie;
+  let trie: Node;
 
   beforeEach(() => {
     trie = createTrie();
@@ -13,6 +13,6 @@ describe('', () => {
     setValue(trie, 'aab', 222);
     setValue(trie, 'ccc', 333);
 
-    console.log(JSON.stringify(encodeTrie(trie), null, 2));
+    console.log(JSON.stringify(convertTrie(trie), null, 2));
   });
 });

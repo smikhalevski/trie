@@ -1,5 +1,6 @@
-import { BRANCH, BRANCH_1, getCharCodeAt, LEAF } from '../utils';
+import { getCharCodeAt } from '../utils';
 import { ArrayTrie, Match } from './types';
+import { BRANCH, BRANCH_1, LEAF } from './utils';
 
 /**
  * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends
@@ -28,7 +29,7 @@ import { ArrayTrie, Match } from './types';
  * @returns The search result or `null` if there's no matching key.
  * @template Value The value stored in a trie.
  */
-export const search = createSearch();
+export const search = createSearch(getCharCodeAt);
 
 /**
  * Creates a function that searches the array trie and uses `charCodeAt` to read chars from the input string.
@@ -36,7 +37,7 @@ export const search = createSearch();
  * @param charCodeAt Reads the char code at the given index.
  * @see {@link search}
  */
-export function createSearch(charCodeAt = getCharCodeAt) {
+export function createSearch(charCodeAt: typeof getCharCodeAt) {
   return (
     /**
      * Searches for a leaf with the key that matches the longest substring in `input` that starts at `startIndex` and ends

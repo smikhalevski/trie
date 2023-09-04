@@ -1,4 +1,4 @@
-import { createSearch, createTrie, search, setValue, Trie } from '../main';
+import { createSearch, createTrie, search, setValue, Node } from '../main';
 
 const A = 'a'.charCodeAt(0);
 const B = 'b'.charCodeAt(0);
@@ -6,7 +6,7 @@ const C = 'c'.charCodeAt(0);
 const D = 'd'.charCodeAt(0);
 
 describe('search', () => {
-  let trie: Trie;
+  let trie: Node;
 
   beforeEach(() => {
     trie = createTrie();

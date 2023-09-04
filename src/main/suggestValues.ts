@@ -1,8 +1,8 @@
-import { Trie } from './types';
-import { suggestLeafs } from './suggestLeafs';
+import { Node } from './types';
+import { suggestNodes } from './suggestNodes';
 
 /**
- * Returns the array of value from the trie that have keys starting with `input.substring(startIndex, endIndex)`.
+ * Returns the array of values from the trie that have keys starting with `input.substring(startIndex, endIndex)`.
  *
  * ```ts
  * const trie = createTrie();
@@ -21,21 +21,21 @@ import { suggestLeafs } from './suggestLeafs';
  * // ⮕ []
  * ```
  *
- * @param trie The trie root.
+ * @param node The root node of the trie.
  * @param input The string to search for the key from the `trie`.
  * @param startIndex The index in `input` to start reading substring from.
  * @param endIndex The index in `input` to stop reading.
  * @returns The array of values associated with the matching keys.
  * @template Value The value stored in a trie.
- * @see {@link suggestLeafs}
+ * @see {@link suggestNodes}
  */
 export function suggestValues<Value>(
-  trie: Trie<Value>,
+  node: Node<Value>,
   input: string,
   startIndex = 0,
   endIndex = input.length
 ): Value[] {
-  const leafs = suggestLeafs(trie, input, startIndex, endIndex);
+  const leafs = suggestNodes(node, input, startIndex, endIndex);
 
   if (leafs === null) {
     return [];

@@ -54,10 +54,10 @@ getValue(trie, 'bar');
 Or you can retrieve the whole leaf that withholds the key-value pair:
 
 ```ts
-getLeaf(trie, 'foo');
+getNode(trie, 'foo');
 // ⮕ Trie { key: 'foo', value: 111 }
 
-getLeaf(trie, 'bar');
+getNode(trie, 'bar');
 // ⮕ null
 ```
 
@@ -66,13 +66,13 @@ You can delete a key from the trie:
 ```ts
 const leaf = setValue(trie, 'foo', 111);
 
-deleteLeaf(leaf);
+deleteNode(leaf);
 ```
 
 Or you can retrieve a leaf and then delete it:
 
 ```ts
-deleteLeaf(getLeaf(trie, 'foo'));
+deleteNode(getNode(trie, 'foo'));
 ```
 
 # Search
@@ -127,21 +127,21 @@ suggestValues(trie, 'cold');
 Or you can retrieve all leaf tries that withhold key-value pairs:
 
 ```ts
-suggestLeafs(trie, 'hot');
+suggestNodes(trie, 'hot');
 // ⮕ [Trie { key: 'hotdog' }, Trie { key: 'hotter' }, Trie { key: 'hottest' }]
 
-suggestLeafs(trie, 'hott');
+suggestNodes(trie, 'hott');
 // ⮕ [Trie { key: 'hotter' }, Trie { key: 'hottest' }]
 
 // 🟡 null is returned if there are no matching leafs
-suggestLeafs(trie, 'cold');
+suggestNodes(trie, 'cold');
 // ⮕ null
 ```
 
 Using suggestions, you can delete all values with a particular prefix:
 
 ```ts
-suggestLeafs(trie, 'hott')?.forEach(deleteLeaf);
+suggestNodes(trie, 'hott')?.forEach(deleteNode);
 ```
 
 # Encoded tries

@@ -1,4 +1,4 @@
-import { createTrie, deleteLeaf, getLeaf, setValue, Trie } from '../main';
+import { createTrie, deleteNode, getNode, setValue, Node } from '../main';
 import dictionary from './dictionary.json';
 
 const A = 'a'.charCodeAt(0);
@@ -7,22 +7,22 @@ const C = 'c'.charCodeAt(0);
 const D = 'd'.charCodeAt(0);
 const E = 'e'.charCodeAt(0);
 
-describe('deleteLeaf', () => {
-  let trie: Trie;
+describe('deleteNode', () => {
+  let trie: Node;
 
   beforeEach(() => {
     trie = createTrie();
   });
 
   test('ignores null', () => {
-    expect(() => deleteLeaf(null)).not.toThrow();
+    expect(() => deleteNode(null)).not.toThrow();
   });
 
   test('root leaf is not compacted (3)', () => {
     setValue(trie, '', 111);
-    deleteLeaf(getLeaf(trie, ''));
+    deleteNode(getNode(trie, ''));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -42,9 +42,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'ab', 111);
     setValue(trie, 'abc', 222);
     setValue(trie, 'abd', 333);
-    deleteLeaf(getLeaf(trie, 'ab'));
+    deleteNode(getNode(trie, 'ab'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -131,9 +131,9 @@ describe('deleteLeaf', () => {
   test('single child after deletion can be compacted (1.2)', () => {
     setValue(trie, 'ab', 111);
     setValue(trie, 'abc', 222);
-    deleteLeaf(getLeaf(trie, 'ab'));
+    deleteNode(getNode(trie, 'ab'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -171,9 +171,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'ab', 111);
     setValue(trie, 'abc', 222);
     setValue(trie, 'abd', 333);
-    deleteLeaf(getLeaf(trie, 'abd'));
+    deleteNode(getNode(trie, 'abd'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -246,9 +246,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'ab', 111);
     setValue(trie, 'abc', 222);
     setValue(trie, 'abd', 333);
-    deleteLeaf(getLeaf(trie, 'abc'));
+    deleteNode(getNode(trie, 'abc'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -322,9 +322,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 222);
     setValue(trie, 'abd', 333);
     setValue(trie, 'abe', 444);
-    deleteLeaf(getLeaf(trie, 'abd'));
+    deleteNode(getNode(trie, 'abd'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -413,9 +413,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 111);
     setValue(trie, 'abd', 222);
     setValue(trie, 'abe', 333);
-    deleteLeaf(getLeaf(trie, 'abe'));
+    deleteNode(getNode(trie, 'abe'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -504,9 +504,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 111);
     setValue(trie, 'abd', 222);
     setValue(trie, 'abe', 333);
-    deleteLeaf(getLeaf(trie, 'abc'));
+    deleteNode(getNode(trie, 'abc'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -595,9 +595,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 111);
     setValue(trie, 'abd', 222);
     setValue(trie, 'abe', 333);
-    deleteLeaf(getLeaf(trie, 'abd'));
+    deleteNode(getNode(trie, 'abd'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -685,9 +685,9 @@ describe('deleteLeaf', () => {
   test('deletes a single child from a leaf parent (2.2)', () => {
     setValue(trie, 'ab', 111);
     setValue(trie, 'abc', 222);
-    deleteLeaf(getLeaf(trie, 'abc'));
+    deleteNode(getNode(trie, 'abc'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -726,9 +726,9 @@ describe('deleteLeaf', () => {
     setValue(trie, 'abc', 222);
     setValue(trie, 'abcd', 333);
     setValue(trie, 'abe', 444);
-    deleteLeaf(getLeaf(trie, 'abe'));
+    deleteNode(getNode(trie, 'abe'));
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,
@@ -820,10 +820,10 @@ describe('deleteLeaf', () => {
     });
 
     dictionary.forEach(key => {
-      deleteLeaf(getLeaf(trie, key));
+      deleteNode(getNode(trie, key));
     });
 
-    const result: Trie = {
+    const result: Node = {
       charCode: -1,
       parent: null,
       prev: null,

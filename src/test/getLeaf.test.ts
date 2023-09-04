@@ -1,7 +1,7 @@
-import { createTrie, getLeaf, setValue, Trie } from '../main';
+import { createTrie, getNode, setValue, Node } from '../main';
 
-describe('getLeaf', () => {
-  let trie: Trie;
+describe('getNode', () => {
+  let trie: Node;
 
   beforeEach(() => {
     trie = createTrie();
@@ -10,10 +10,10 @@ describe('getLeaf', () => {
   test('returns the leaf by key', () => {
     const leaf = setValue(trie, 'abc', 111);
 
-    expect(getLeaf(trie, 'abc')).toBe(leaf);
+    expect(getNode(trie, 'abc')).toBe(leaf);
   });
 
   test('returns null if key does not exist in the trie', () => {
-    expect(getLeaf(trie, 'abc')).toBe(null);
+    expect(getNode(trie, 'abc')).toBe(null);
   });
 });

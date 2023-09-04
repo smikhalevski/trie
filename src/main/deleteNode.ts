@@ -1,26 +1,26 @@
-import { Trie } from './types';
+import { Node } from './types';
 
 /**
- * Deletes the leaf from the trie to which it belongs.
+ * Deletes the leaf node from the trie to which it belongs.
  *
  * ```ts
  * const trie = createTrie();
  *
  * const leaf = setValue(trie, 'foo', 111);
  *
- * deleteLeaf(leaf);
+ * deleteNode(leaf);
  * // or
- * deleteLeaf(getLeaf(trie, 'foo'));
+ * deleteNode(getNode(trie, 'foo'));
  * ```
  *
  * @param leaf The leaf to delete.
  */
-export function deleteLeaf(leaf: Trie | null): void {
+export function deleteNode(leaf: Node | null): void {
   if (leaf === null || !leaf.isLeaf) {
     return;
   }
 
-  for (let parent: Trie<unknown> | null = leaf; parent !== null; parent = parent.parent) {
+  for (let parent: Node<unknown> | null = leaf; parent !== null; parent = parent.parent) {
     parent.suggestions = null;
   }
 
@@ -136,6 +136,4 @@ export function deleteLeaf(leaf: Trie | null): void {
     parent.charCode = -1;
     parent.parent = parent.prev = parent.next = parent.last = parent.suggestions = null;
   }
-
-  return;
 }

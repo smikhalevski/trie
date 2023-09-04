@@ -1,1 +1,1 @@
-export * from './encodeTrie';
+export * from './convertTrie';

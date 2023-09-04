@@ -1,4 +1,4 @@
-import { Trie } from './types';
+import { Node } from './types';
 import { createTrie } from './createTrie';
 import { getCharCodeAt } from './utils';
 
@@ -11,13 +11,13 @@ import { getCharCodeAt } from './utils';
  * setValue(trie, 'foo', 111);
  * ```
  *
- * @param trie The trie root.
+ * @param node The root node of the trie.
  * @param key The key of to add to the `trie`.
  * @param value The value to associate with the key.
- * @returns The leaf to which the value was set.
+ * @returns The leaf node to which the value was set.
  * @template Value The value stored in a trie.
  */
-export const setValue = createSetValue();
+export const setValue = createSetValue(getCharCodeAt);
 
 /**
  * Creates a function that produces suggestions from a trie and uses `charCodeAt` to read chars from the input string.
@@ -25,38 +25,38 @@ export const setValue = createSetValue();
  * @param charCodeAt Reads the char code at the given index.
  * @see {@link suggest}
  */
-export function createSetValue(charCodeAt = getCharCodeAt) {
+export function createSetValue(charCodeAt: typeof getCharCodeAt) {
   return (
     /**
      * Sets a new key-value pair to the trie.
      *
-     * @param trie The trie root.
+     * @param node The root node of the trie.
      * @param key The key of to add to the `trie`.
      * @param value The value to associate with the key.
-     * @returns The leaf to which the value was set.
+     * @returns The leaf node to which the value was set.
      * @template Value The value stored in a trie.
      */
-    <Value>(trie: Trie<Value>, key: string, value: Value): Trie<Value> => {
+    <Value>(node: Node<Value>, key: string, value: Value): Node<Value> => {
       const keyLength = key.length;
 
       let i = 0;
 
-      // Find the trie with the longest common prefix
+      // Find the node with the longest common prefix
       while (i < keyLength) {
-        trie.suggestions = null;
+        node.suggestions = null;
 
         const keyCharCode = charCodeAt(key, i++);
-        const trieLast = trie.last;
+        const nodeLast = node.last;
 
         // Links between prev → leaf → prev.next would be established for the new leaf
-        let prev = trie;
+        let prev = node;
 
-        if (trieLast !== null) {
-          const child = trie[keyCharCode];
+        if (nodeLast !== null) {
+          const child = node[keyCharCode];
           if (child !== undefined) {
             const childLeafCharCodes = child.leafCharCodes;
             if (childLeafCharCodes === null) {
-              trie = child;
+              node = child;
               continue;
             }
 
@@ -71,7 +71,7 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
               }
               // Child exactly matches the key
               if (j === childLeafCharCodesLength) {
-                trie = child;
+                node = child;
                 break;
               }
             }
@@ -93,14 +93,14 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
             const parent = createTrie<Value>();
             parent[charCode] = parent.next = parent.last = child;
             parent.charCode = childCharCode;
-            parent.parent = trie;
+            parent.parent = node;
             parent.prev = childPrev;
 
             child.charCode = charCode;
-            trie[childCharCode] = childPrev.next = child.parent = child.prev = parent;
+            node[childCharCode] = childPrev.next = child.parent = child.prev = parent;
 
-            if (trie.last === child) {
-              trie.last = parent;
+            if (node.last === child) {
+              node.last = parent;
             }
 
             if (childLeafCharCodes.length === 1) {
@@ -109,12 +109,12 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
               childLeafCharCodes.shift();
             }
 
-            trie = parent;
+            node = parent;
             continue;
           }
 
-          // Find the latest trie child
-          prev = trieLast;
+          // Find the latest child
+          prev = nodeLast;
           while (prev.last !== null) {
             prev = prev.last;
           }
@@ -125,7 +125,7 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
         // Append the new leaf and establish links
         const leaf = createTrie<Value>();
         leaf.charCode = keyCharCode;
-        leaf.parent = trie;
+        leaf.parent = node;
         leaf.prev = prev;
         leaf.next = prevNext;
 
@@ -133,11 +133,10 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
           prevNext.prev = leaf;
         }
 
-        trie = trie[keyCharCode] = trie.last = prev.next = leaf;
+        node = node[keyCharCode] = node.last = prev.next = leaf;
 
         if (i < keyLength) {
-          // noinspection JSMismatchedCollectionQueryUpdate
-          const leafCharCodes: number[] = (trie.leafCharCodes = []);
+          const leafCharCodes: number[] = (node.leafCharCodes = []);
 
           while (i < keyLength) {
             leafCharCodes.push(charCodeAt(key, i++));
@@ -146,12 +145,12 @@ export function createSetValue(charCodeAt = getCharCodeAt) {
         break;
       }
 
-      trie.key = key;
-      trie.value = value;
-      trie.isLeaf = true;
-      trie.suggestions = null;
+      node.key = key;
+      node.value = value;
+      node.isLeaf = true;
+      node.suggestions = null;
 
-      return trie;
+      return node;
     }
   );
 }

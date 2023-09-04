@@ -1,11 +1,11 @@
-import { Trie } from './types';
+import { Node } from './types';
 
 /**
  * Creates a compressed trie data structure.
  *
  * @template Value The value stored in a trie.
  */
-export function createTrie<Value>(): Trie<Value> {
+export function createTrie<Value>(): Node<Value> {
   return {
     charCode: -1,
     parent: null,

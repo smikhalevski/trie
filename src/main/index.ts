@@ -1,10 +1,10 @@
 export { createTrie } from './createTrie';
-export { deleteLeaf } from './deleteLeaf';
-export { getLeaf } from './getLeaf';
+export { deleteNode } from './deleteNode';
+export { getNode } from './getNode';
 export { getValue } from './getValue';
 export { createSearch, search } from './search';
 export { setValue } from './setValue';
-export { createSuggestLeafs, suggestLeafs } from './suggestLeafs';
+export { createSuggestNodes, suggestNodes } from './suggestNodes';
 export { suggestValues } from './suggestValues';
-export { Trie } from './types';
+export { Node } from './types';
 export * from './object';
